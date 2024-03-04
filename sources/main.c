@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/02/29 20:55:48 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:04:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	main(int argc, char **argv, char **env)
 		if (prompt)
 		{
 			my_prompt = ft_split(prompt, ' ');
+			add_history(prompt);
+			free(prompt);
 			if (!my_prompt || !*my_prompt)
 				continue ;
 			if (is_builtin(my_prompt) == false)
@@ -39,10 +41,9 @@ int	main(int argc, char **argv, char **env)
 			else
 				ft_builtin(my_prompt, my_env);
 		}
-		free(prompt);
-		// free le **my_prompt
 		av_signal();
 	}
+		// free le **my_prompt
 	system("leaks minishell");
 	return (0);
 }
