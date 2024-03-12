@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/12 16:22:24 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/12 21:44:33 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@
 # include <stdbool.h> // type bool
 # include <sys/syslimits.h> // PATH_MAX
 
+enum e_quotes
+{
+	DOUBLE_Q = 45,
+	SINGLE_Q = 47
+};
+
 typedef	struct s_env
 {
 	char			*var;
@@ -37,6 +43,9 @@ void	ft_test(int nb);
 
 void	ft_show_env(char **env);
 int		av_input(char *in);
+
+/* Handle tokenization : tokenizer.c */
+char	**ft_tokenizer(char const *s, char c);
 
 /*		AV_signals								*/
 void	av_signal(void);
