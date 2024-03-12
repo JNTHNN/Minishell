@@ -3,53 +3,108 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 11:59:03 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/11 12:05:22 by anvoets          ###   ########.fr       */
+/*   Created: 2023/11/09 12:13:42 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*get_next_line(int fd)
+static char	*clean_bucket(char *bucket)
 {
-	static char	buff[BUFFER_SIZE + 1] = "";
-	char		*res;
-	static long	check;
+	size_t	i;
+	size_t	j;
+	char	*new_bucket;
 
-	res = NULL;
-	if (fd < 0 || BUFFER_SIZE < 0)
-		return (0);
-	if (!buff[0])
-		check = read(fd, buff, BUFFER_SIZE);
-	if (check == -1)
-		return (0);
-	buff[check] = '\0';
-	res = av_gnl_logic(buff, check, res, fd);
-	return (res);
+	i = 0;
+	while (bucket[i] && bucket[i] != '\n')
+		i++;
+	if (bucket[i] == '\n')
+		i++;
+	j = 0;
+	if (!bucket[i])
+		return (free_elem(&bucket, NULL));
+	while (bucket[i + j])
+		j++;
+	new_bucket = malloc(sizeof(char) * (j + 1));
+	if (!new_bucket)
+		return (free_elem(&bucket, NULL));
+	j = 0;
+	while (bucket[i + ++j - 1])
+		new_bucket[j - 1] = bucket[i + j - 1];
+	new_bucket[j - 1] = '\0';
+	free(bucket);
+	return (new_bucket);
 }
 
-char	*av_gnl_logic(char *buff, long check, char *res, int fd)
+static char	*get_current_line(char *bucket)
 {
-	while (av_check_nl(res) == NO && check > 0)
+	int		i;
+	int		j;
+	char	*line;
+
+	if (!bucket)
+		return (NULL);
+	i = 0;
+	while (bucket[i] != '\n' && bucket[i])
+		i++;
+	if (bucket[i] == '\n')
+		i++;
+	line = malloc(sizeof(char) * (i + 1));
+	if (!line)
+		return (NULL);
+	j = 0;
+	while (j < i)
 	{
-		if (av_check_nl(buff) == YES && check > 0)
-			res = av_line_join(res, buff);
-		else if (av_check_nl(buff) == NO && check > 0)
-		{
-			res = av_line_join(res, buff);
-			check = av_readnclear(fd, buff);
-			if (check == -1)
-			{
-				free(res);
-				return (0);
-			}
-			buff[check] = '\0';
-			if (check != 0 && check != -1)
-				res = av_line_join(res, buff);
-		}
-		av_buff_move(buff);
+		line[j] = bucket[j];
+		j++;
 	}
-	return (res);
+	line[j] = '\0';
+	return (line);
+}
+
+static char	*read_and_save(int fd, char *bucket)
+{
+	char	*buffer;
+	size_t	bytes_read;
+
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (free_elem(&bucket, NULL));
+	if (!bucket)
+	{
+		bucket = malloc(sizeof(char));
+		if (!bucket)
+			return (free_elem(&bucket, &buffer));
+		bucket[0] = '\0';
+	}
+	bytes_read = 1;
+	while (!ft_find_endline(bucket) && bytes_read != 0)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if ((int)bytes_read == -1)
+			return (free_elem(&bucket, &buffer));
+		buffer[bytes_read] = '\0';
+		bucket = ft_strjoin_gnl(bucket, buffer);
+		if (!bucket)
+			return (free_elem(&buffer, NULL));
+	}
+	return (free(buffer), buffer = NULL, bucket);
+}
+
+char	*get_next_line(int fd)
+{
+	char			*line;
+	char static		*bucket;
+
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &bucket, 0) < 0)
+		return (free_elem(&bucket, NULL));
+	bucket = read_and_save(fd, bucket);
+	line = get_current_line(bucket);
+	if (!line)
+		return (free_elem(&bucket, NULL));
+	bucket = clean_bucket(bucket);
+	return (line);
 }

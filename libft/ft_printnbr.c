@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_printnbr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 09:49:38 by gdelvign          #+#    #+#             */
-/*   Updated: 2023/10/25 14:09:48 by gdelvign         ###   ########.fr       */
+/*   Created: 2023/11/02 09:49:05 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	ft_is_lower(int c)
-{
-	if (c >= 97 && c <= 122)
-		return (1);
-	return (0);
-}
+#include "libft.h"
 
-static int	ft_is_upper(int c)
+size_t	ft_printnbr(va_list lst, size_t *counter)
 {
-	if (c >= 65 && c <= 90)
-		return (1);
-	return (0);
-}
+	int		value;
 
-int	ft_isalpha(int c)
-{
-	return (ft_is_upper(c) || ft_is_lower(c));
+	value = (int)va_arg(lst, int);
+	if (ft_putnbr(value, counter))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

@@ -1,32 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_str.c                                    :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/10 16:38:59 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/11 12:06:09 by anvoets          ###   ########.fr       */
+/*   Created: 2023/10/30 14:35:17 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_printf_str(char *str)
+size_t	ft_putchar(char c, size_t *counter)
 {
-	int	i;
-	int	buf;
-
-	i = 0;
-	buf = 0;
-	if (!str)
-		return (ft_printf_str("(null)"));
-	while (str[i])
-	{
-		buf = write(1, &str[i], 1);
-		if (buf == -1)
-			return (buf);
-		i++;
-	}
-	return (i);
+	if (write(1, &c, 1) < 0)
+		return (EXIT_FAILURE);
+	(*counter)++;
+	return (EXIT_SUCCESS);
 }

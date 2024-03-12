@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/28 16:20:20 by anvoets           #+#    #+#             */
-/*   Updated: 2023/05/01 14:59:09 by anvoets          ###   ########.fr       */
+/*   Created: 2023/10/24 14:51:59 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*begin;
-	t_list	*new;
-	void	*temp;
+	t_list	*head;
+	t_list	*new_node;
+	void	*new_content;
 
-	if (!f || !del)
+	if (!lst || !f || !del)
 		return (NULL);
-	begin = NULL;
+	head = NULL;
 	while (lst)
 	{
-		temp = f(lst->content);
-		new = ft_lstnew(temp);
-		if (!new)
+		new_content = f(lst->content);
+		new_node = ft_lstnew(new_content);
+		if (!new_node)
 		{
-			free(temp);
-			ft_lstclear(&begin, del);
+			del(new_content);
+			ft_lstclear(&head, del);
 			return (NULL);
 		}
-		ft_lstadd_back(&begin, new);
+		ft_lstadd_back(&head, new_node);
 		lst = lst->next;
 	}
-	return (begin);
+	return (head);
 }

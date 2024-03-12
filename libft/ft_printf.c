@@ -3,64 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 10:39:24 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/11 12:06:01 by anvoets          ###   ########.fr       */
+/*   Created: 2023/10/30 13:56:19 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	av_check_arg(va_list args, char type)
+static size_t	ft_dispatch(const char *s, va_list lst, size_t *counter)
 {
-	int	ret;
-
-	ret = 0;
-	if (type == 'c')
-		ret = ft_printf_char(va_arg(args, int));
-	else if (type == 'd' || type == 'i')
-		ret = ft_printf_nb(va_arg(args, int));
-	else if (type == 's')
-		ret = ft_printf_str(va_arg(args, char *));
-	else if (type == 'p')
-		ret = ft_printf_void(va_arg(args, void *));
-	else if (type == 'u')
-		ret = ft_printf_unsigned(va_arg(args, unsigned int));
-	else if (type == 'x')
-		ret = ft_printf_lower_hex(va_arg(args, unsigned int));
-	else if (type == 'X')
-		ret = ft_printf_upper_hex(va_arg(args, unsigned int));
-	else if (type == '%')
-		ret = ft_printf_char('%');
-	return (ret);
+	if (*(s + 1) == 'c')
+		return (ft_printchar(lst, counter));
+	if (*(s + 1) == 's')
+		return (ft_printstr(lst, counter));
+	if (*(s + 1) == 'd' || *(s + 1) == 'i')
+		return (ft_printnbr(lst, counter));
+	if (*(s + 1) == 'u')
+		return (ft_printuint(lst, counter));
+	if (*(s + 1) == 'p')
+		return (ft_printaddress(lst, counter));
+	if (*(s + 1) == 'x' || *(s + 1) == 'X')
+		return (ft_printhex(lst, counter, *(s + 1)));
+	if (*(s + 1) == '%')
+		return (ft_putchar('%', counter));
+	return (EXIT_SUCCESS);
 }
 
-int	ft_printf(const char *format, ...)
+int	ft_printf(const char *s, ...)
 {
-	va_list	args;
-	int		i;
-	int		total;
-	int		buf;
+	va_list	parameters;
+	size_t	char_printed;
 
-	va_start(args, format);
-	i = 0;
-	total = 0;
-	buf = 0;
-	while (format[i])
+	char_printed = 0;
+	va_start(parameters, s);
+	while (*s)
 	{
-		if (format[i] != '%')
-			buf = write(1, &format[i], 1);
-		else if (format[i])
+		if (*s != '%')
 		{
-			buf = av_check_arg(args, format[i + 1]);
-			i++;
+			if (ft_putchar(*s, &char_printed))
+				return (-1);
 		}
-		if (buf == -1)
-			return (buf);
-		total += buf;
-		i++;
+		if (*s == '%')
+		{
+			if (ft_dispatch(s, parameters, &char_printed))
+				return (-1);
+			s++;
+		}
+		s++;
 	}
-	va_end(args);
-	return (total);
+	va_end(parameters);
+	return (char_printed);
 }
