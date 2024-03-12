@@ -58,16 +58,16 @@ CFLAGS		?=	-Wall -Wextra -Werror
 all			:	$(NAME)
 
 $(NAME)		:	$(OBJCS)
-	ar -rcs $(NAME) $(OBJCS)
+	@ar -rcs $(NAME) $(OBJCS)
 
 %.o			:	%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean		:
-	rm -f $(OBJCS)
+	@rm -f $(OBJCS)
 
 fclean		:	clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re			:	fclean all
 
