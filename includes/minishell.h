@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/02/01 17:07:18 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:22:24 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@ typedef	struct s_env
 
 
 /*		TEMP		*/
+void	ft_test(int nb);
 
-void	show_env(char **env);
-void	builtin_env(char **env);
-void	builtin_hist(HIST_ENTRY **history);
+void	ft_show_env(char **env);
 int		av_input(char *in);
 
 /*		AV_signals								*/
 void	av_signal(void);
 void	av_sigint(int sig);
 int		av_init_signal(void);
+void	rl_replace_line(const char *text, int clear_undo);
 
 /*		JG_builtins		*/
 void	ft_builtin(char **prompt, char **my_env);
-void	show_env(char **env);
+void	ft_show_env(char **env);
 void	cd_builtin(char **path);
-void	echo_builtin(char **str);
+void	ft_echo_builtin(char **str);
 void	exit_builtins(void);
 void	pwd_builtin(void);
 void	export_builtin(char **cmd, char **my_env);
@@ -57,11 +57,10 @@ void	export_builtin(char **cmd, char **my_env);
 int		create_exec(char **argv, char **env);
 void	cmd_exec(char **cmd, char **env);
 
-void	rl_replace_line(const char *text, int clear_undo);
 
 /*		UTILS		*/
 
 char	*ft_strcat(char *dest, const char *src);
-bool	is_builtin(char **cmd);
+bool	ft_is_builtin(char **cmd);
 
 #endif
