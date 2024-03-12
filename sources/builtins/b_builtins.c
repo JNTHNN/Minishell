@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_ft_builtin.c                                    :+:      :+:    :+:   */
+/*   b_builtins.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/01/29 14:36:13 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:20:52 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 // 	exit(EXIT_FAILURE);
 // }
 
-bool	is_builtin(char **cmd)
+bool	ft_is_builtin(char **cmd)
 {
 	const char	*built_in[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", "system", (char *)0};
 	int	i;
@@ -76,7 +76,7 @@ void	ft_builtin(char **new_prompt, char **my_env)
 	if (new_prompt)
 		add_history(*new_prompt);
 	if (!ft_strncmp(new_prompt[0], "echo", 4))
-		echo_builtin(new_prompt);
+		ft_echo_builtin(new_prompt);
 	if (!ft_strncmp(new_prompt[0], "cd", 2))
 		// cd_builtins(prompt + 3, my_env);
 		cd_builtin(new_prompt);
@@ -87,7 +87,7 @@ void	ft_builtin(char **new_prompt, char **my_env)
 	if (!ft_strncmp(new_prompt[0], "unset", 5))
 		return ;
 	if (!ft_strncmp(new_prompt[0], "env", 3))
-		show_env(my_env);
+		ft_show_env(my_env);
 	if (!ft_strncmp(new_prompt[0], "exit", 4))
 		exit_builtins();
 	if (!ft_strncmp(new_prompt[0], "system", 6))

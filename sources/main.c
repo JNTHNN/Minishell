@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/04 15:04:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:46:18 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 			free(prompt);
 			if (!my_prompt || !*my_prompt)
 				continue ;
-			if (is_builtin(my_prompt) == false)
+			if (ft_is_builtin(my_prompt) == false)
 				cmd_exec(my_prompt, my_env);
 			else
 				ft_builtin(my_prompt, my_env);
