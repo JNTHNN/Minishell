@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/12 13:13:47 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/03/12 15:07:29 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,8 @@ LIBFT 			:= libft.a
 # **************************************************************************** #
 
 SRC_FILES		:= main
-SIGNALS_SRC		:= GD_signals
-BUILTINS_SRC	:= JG_builtins JG_env JG_pwd JG_echo JG_cd JG_exit \
-				   JG_export JG_exec
+SIGNALS_SRC		:= signals
+BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
 SRC 			+= $(addprefix $(SRC_DIR)signals/, $(addsuffix .c, $(SIGNALS_SRC)))

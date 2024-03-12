@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_putaddress.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 09:49:38 by gdelvign          #+#    #+#             */
-/*   Updated: 2023/10/25 14:09:48 by gdelvign         ###   ########.fr       */
+/*   Created: 2023/11/01 16:05:50 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	ft_is_lower(int c)
-{
-	if (c >= 97 && c <= 122)
-		return (1);
-	return (0);
-}
+#include "libft.h"
 
-static int	ft_is_upper(int c)
+size_t	ft_putaddress(void *ptr, size_t *counter)
 {
-	if (c >= 65 && c <= 90)
-		return (1);
-	return (0);
-}
+	unsigned long long	u_ptr;
 
-int	ft_isalpha(int c)
-{
-	return (ft_is_upper(c) || ft_is_lower(c));
+	if (ft_putchar('0', counter))
+		return (EXIT_FAILURE);
+	if (ft_putchar('x', counter))
+		return (EXIT_FAILURE);
+	u_ptr = (unsigned long long)ptr;
+	if (ft_putulong(u_ptr, HEX_BASE_LOW, counter))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
