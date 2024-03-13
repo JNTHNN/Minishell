@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/13 12:09:35 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/13 22:09:09 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,22 @@ typedef struct s_env
 }	t_env;
 
 void		ft_show_env(char **env);
-int			av_input(char *in);
+int			ft_input(char *in);
 
-/* Handle tokenization : tokenizer.c */
+/* Handle tokenization : t_tokenizer.c */
 t_ast_node	*ft_tokenize(char *input);
 
-/*		AV_signals								*/
-void		av_signal(void);
-void		av_sigint(int sig);
-int			av_init_signal(void);
+/* Handle signals : s_signals.c	*/
+void		ft_signal(void);
+void		ft_sigint(int sig);
+int			ft_init_signal(void);
 void		rl_replace_line(const char *text, int clear_undo);
 
-/*		JG_builtins		*/
+/* Handle all builtins : builtins.c	*/
+bool		ft_is_builtin(char **cmd);
 void		ft_builtin(char **prompt, char **my_env);
+
+
 void		ft_show_env(char **env);
 void		cd_builtin(char **path);
 void		ft_echo_builtin(char **str);
@@ -83,6 +86,5 @@ void		cmd_exec(char **cmd, char **env);
 /*		UTILS		*/
 
 char		*ft_strcat(char *dest, const char *src);
-bool		ft_is_builtin(char **cmd);
 
 #endif

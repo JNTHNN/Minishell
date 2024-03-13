@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/13 11:06:36 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/13 22:08:32 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **env)
 	// path = ft_split(getenv("PATH"), ':');
 	// execve(*path, &argv[2], env);
 	
-	av_init_signal();
+	ft_init_signal();
 	while (true)
 	{
 		prompt = readline("bash-1.0$ ");
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **env)
 			else
 				ft_builtin(my_prompt, my_env);
 		}
-		av_signal();
+		ft_signal();
 	}
 		// free le **my_prompt
 	system("leaks minishell");
