@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/12 22:25:56 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:06:36 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ int	main(int argc, char **argv, char **env)
 	// execve(*path, &argv[2], env);
 	
 	av_init_signal();
-	while (19)
+	while (true)
 	{
-		prompt = readline("SHELLMINI$>");
+		prompt = readline("bash-1.0$ ");
 		if (prompt)
 		{
-			my_prompt = ft_tokenizer(prompt, ' ');
+			ft_tokenize(prompt);
+			my_prompt = ft_split(prompt, ' ');
 			add_history(prompt);
 			free(prompt);
 			if (!my_prompt || !*my_prompt)
