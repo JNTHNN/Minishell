@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/13 15:38:58 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:02:02 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,43 +24,47 @@ int	ft_count_tokens(char *input)
 {
 	int		count;
 	int		quote_char;
-	char	*input_start;
+	bool	in_quotes;
 
 	count = 0;
 	quote_char = 0;
-	input_start = input;
+	in_quotes = false;
 	while (*input)
 	{
 		if (ft_is_quote(*input))
 		{
-			quote_char = *input;
-			if (input == input_start || *(input - 1) == SP)
-				count++;
-			input++;
-			while (*input && *input != quote_char)
-				input++;
-			if (*input == EOS)
-				return (-1);
-			if (*input == quote_char)
+			if (!in_quotes)
 			{
-				if (*(input + 1) == EOS)
-					input++;
-				else
-				{
-					quote_char = 0;
-					input++;
-				}
+				in_quotes = true;
+				quote_char = *input;
+				count++;
 			}
+			else if (*input == quote_char)
+				in_quotes = false;
+			input++;
+			continue ;
 		}
-		else if (*input != SP)
+		if (!in_quotes && *input != SP)
 		{
 			count++;
-			while (*input && *input != SP)
+			while (*input && *input != SP && !ft_is_quote(*input))
 				input++;
 		}
-		else
+		else if (*input == SP)
 			input++;
+		if (in_quotes)
+		{
+			while (*input && (*input != quote_char))
+				input++;
+			if (*input == quote_char)
+			{
+				in_quotes = false;
+				input++;
+			}
+		}
 	}
+	if (in_quotes)
+		return (-1);
 	return (count);
 }
 
