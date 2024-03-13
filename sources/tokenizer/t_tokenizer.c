@@ -6,100 +6,39 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/12 22:41:28 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:13:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static size_t	ft_get_substr_len(char const *s, char c)
+int	ft_count_tokens(char *input)
 {
-	size_t	len;
+	int		count;
+	int		in_quotes;
+	int		quote_char;
+	char	*start_of_input;
 
-	len = 0;
-	while (*s && *s != c)
+	count = 0;
+	in_quotes = false;
+	quote_char = 0;
+	start_of_input = input;
+	printf("tu es ici\n");
+	while (*input)
 	{
-		len++;
-		s++;
+		
 	}
-	return (len);
+	if (in_quotes)
+		return (-1);
+	printf("tu es là\n");
+	return (count);
 }
 
-static int	ft_count_substrs(char const *str, char c)
+t_ast_node	*ft_tokenize(char *input)
 {
-	int		counter;
-	char	quote;
+	int	tok_nb;
 
-	counter = 0;
-	while (*str)
-	{
-		if (*str != c && *str != SINGLE_Q && *str != DOUBLE_Q)
-		{
-			counter++;
-			str += ft_get_substr_len(str, c);
-		}
-		else if (*str == SINGLE_Q || *str == DOUBLE_Q)
-		{
-			counter++;
-			quote = *str;
-			str += ft_get_substr_len(str, quote);
-			if (*str == '\0')
-				return (-1);
-		}
-		else
-			str++;
-	}
-	return (counter);
-}
-
-static void	*free_substrs(char **substrs)
-{
-	int	i;
-
-	i = 0;
-	while (substrs[i])
-		free(substrs[i++]);
-	free(substrs);
+	tok_nb = ft_count_tokens(input);
+	printf("nb of tokens = %i\n", tok_nb);
 	return (NULL);
-}
-
-char	**ft_tokenizer(char const *s, char c)
-{
-	char	**substrs;
-	int		nb_substr;
-	char	quote;
-	int		i;
-
-	if (!s)
-		return (NULL);
-	nb_substr = ft_count_substrs(s, c);
-	printf("nombre de mots : %i \n", nb_substr);
-	if (nb_substr < 0)
-		return (NULL);
-	substrs = (char **)malloc((nb_substr + 1) * sizeof(char *));
-	if (!substrs)
-		return (NULL);
-	i = 0;
-	while (*s)
-	{
-		if (*s != c && *s != SINGLE_Q && *s != DOUBLE_Q)
-		{
-			substrs[i] = ft_substr(s, 0, ft_get_substr_len(s, c));
-			if (!substrs[i++])
-				return (free_substrs(substrs));
-			s += ft_get_substr_len(s, c);
-		}
-		else if (*s == SINGLE_Q || *s == DOUBLE_Q)
-		{
-			quote = *s;
-			substrs[i] = ft_substr(s, 0, ft_get_substr_len(s, quote));
-			if (!substrs[i++])
-				return (free_substrs(substrs));
-			s += ft_get_substr_len(s, quote);
-		}
-		else
-			s++;
-	}
-	substrs[nb_substr] = NULL;
-	return (substrs);
 }
