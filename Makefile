@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/12 16:21:14 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/03/15 14:53:45 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,15 +36,17 @@ LIBFT 			:= libft.a
 # **************************************************************************** #
 
 SRC_FILES		:= main
-SIGNALS_SRC		:= s_signals
-BUILTINS_SRC	:= b_builtins b_env b_pwd b_echo b_cd b_exit b_export b_exec
-TOKEN_SRC		:= t_tokenizer
+SIGNALS_SRC		:= signals
+BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
+LEXER_SRC		:= lexer
+UTILS_SRC		:= utils
 # PARSER_SRC		:=
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
 SRC 			+= $(addprefix $(SRC_DIR)builtins/, $(addsuffix .c, $(BUILTINS_SRC)))
 SRC 			+= $(addprefix $(SRC_DIR)signals/, $(addsuffix .c, $(SIGNALS_SRC)))
-SRC 			+= $(addprefix $(SRC_DIR)tokenizer/, $(addsuffix .c, $(TOKEN_SRC)))
+SRC 			+= $(addprefix $(SRC_DIR)lexer/, $(addsuffix .c, $(LEXER_SRC)))
+SRC 			+= $(addprefix $(SRC_DIR)utils/, $(addsuffix .c, $(UTILS_SRC)))
 # SRC 			+= $(addprefix $(SRC_DIR)parser/, $(addsuffix .c, $(PARSER_SRC)))
 
 # **************************************************************************** #
