@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/15 17:13:28 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/15 21:26:32 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,6 @@
 # include "utils.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
-
-enum e_quotes_char
-{
-	DBL_Q = 34,
-	SGL_Q = 39
-};
 
 typedef enum e_token_type
 {

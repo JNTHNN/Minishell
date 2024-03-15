@@ -6,11 +6,17 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:39:02 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/15 15:17:39 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/15 21:32:34 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
+
+enum e_quotes_char
+{
+	DBL_Q = 34,
+	SGL_Q = 39
+};
 
 #endif
