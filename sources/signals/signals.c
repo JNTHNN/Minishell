@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:43:30 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/13 20:33:25 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/15 13:35:31 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_sigint(int sig)
 	rl_replace_line("", 1);
 	rl_redisplay();
 }
-
+ 
 void	ft_signal(void)
 {
 	signal(SIGINT, ft_sigint);
@@ -34,7 +34,7 @@ int	ft_input(char *in)
 	return (EXIT_SUCCESS);
 }
 
-/* replace ctrl+D,\,C (/D,/C,/\) with empty space to not parse signal commands (i think) */
+/* personnalize interruptions */
 int	ft_init_signal(void)
 {
 	struct termios	term;

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/13 22:09:09 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:13:28 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,29 @@
 # include <unistd.h>
 # include <stdbool.h> // type bool
 # include <sys/syslimits.h> // PATH_MAX
+# include "error.h"
+# include "lexer.h"
+# include "utils.h"
 
-enum e_ascii_char
+# define PROMPT "\033[0;33mminibash1.0$ \033[0m"
+
+enum e_quotes_char
 {
-	EOS = 0,
-	SP = 32,
 	DBL_Q = 34,
 	SGL_Q = 39
 };
+
+typedef enum e_token_type
+{
+	LITTERAL,
+	CMD,
+	ARGUMENT,
+	OPERATOR,
+	PIPE,
+	ENV_VAR,
+	EXIT_CODE,
+	BUILTIN
+}	t_token_type;
 
 typedef enum e_cmd_type
 {
@@ -40,6 +55,22 @@ typedef enum e_cmd_type
 	CMD_PIPE,
 	CMD_REDIRECT
 }	t_cmd_type;
+
+typedef struct s_data
+{
+	char	*input;
+	char	**env;
+	char	**env_cpy;
+}	t_data;
+
+typedef struct s_token_lst
+{
+	int					id;
+	char				*token;
+	t_token_type		type;
+	struct t_token_lst	*next;
+	struct t_token_lst	*prev;
+}	t_token_lst;
 
 typedef struct s_ast_node
 {
@@ -59,7 +90,7 @@ void		ft_show_env(char **env);
 int			ft_input(char *in);
 
 /* Handle tokenization : t_tokenizer.c */
-t_ast_node	*ft_tokenize(char *input);
+t_token_lst	*ft_tokenize(char *input);
 
 /* Handle signals : s_signals.c	*/
 void		ft_signal(void);
@@ -70,7 +101,6 @@ void		rl_replace_line(const char *text, int clear_undo);
 /* Handle all builtins : builtins.c	*/
 bool		ft_is_builtin(char **cmd);
 void		ft_builtin(char **prompt, char **my_env);
-
 
 void		ft_show_env(char **env);
 void		cd_builtin(char **path);
