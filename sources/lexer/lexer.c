@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/15 17:15:38 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/16 22:06:51 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static bool	ft_is_quote(char c)
 	return (false);
 }
 
-// static bool	ft_is_space(int c)
-// {
-// 	if (c == 32 || (c >= 9 && c <= 13))
-// 		return (true);
-// 	return (false);
-// }
+static bool	ft_is_space(int c)
+{
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (true);
+	return (false);
+}
 
 int	ft_check_quotes(char *input)
 {
@@ -52,59 +52,64 @@ int	ft_check_quotes(char *input)
 	return (EXIT_SUCCESS);
 }
 
-// int	ft_count_tokens(char *input)
-// {
-// 	int		count;
-// 	int		quote_char;
-// 	bool	in_quotes;
+/* TODO: count redirection operators as tokens  and refacto this function) */
+int	ft_count_tokens(char *input)
+{
+	int		count;
+	int		quote_char;
+	bool	in_quotes;
+	char 	*start; 
 
-// 	count = 0;
-// 	quote_char = 0;
-// 	in_quotes = false;
-// 	while (*input)
-// 	{
-// 		if (ft_is_quote(*input))
-// 		{
-// 			if (!in_quotes)
-// 			{
-// 				in_quotes = true;
-// 				quote_char = *input;
-// 				count++;
-// 			}
-// 			else if (*input == quote_char)
-// 				in_quotes = false;
-// 			input++;
-// 			continue ;
-// 		}
-// 		if (!in_quotes && !ft_is_space(*input))
-// 		{
-// 			count++;
-// 			while (*input && !ft_is_space(*input) && !ft_is_quote(*input))
-// 				input++;
-// 		}
-// 		else if (ft_is_space(*input))
-// 			input++;
-// 		if (in_quotes)
-// 		{
-// 			while (*input && (*input != quote_char))
-// 				input++;
-// 			if (*input == quote_char)
-// 			{
-// 				in_quotes = false;
-// 				input++;
-// 			}
-// 		}
-// 	}
-// 	if (in_quotes)
-// 		return (-1);
-// 	return (count);
-// }
+	start = input;
+	count = 0;
+	quote_char = 0;
+	in_quotes = false;
+	while (*input)
+	{
+		if (ft_is_quote(*input))
+		{
+			if (!in_quotes)
+			{
+				in_quotes = true;
+				quote_char = *input;
+				if (input == start
+					|| (input > start && ft_is_space(*(input - 1))))
+					count++;
+			}
+			else if (*input == quote_char)
+				in_quotes = false;
+			input++;
+			continue ;
+		}
+		if (!in_quotes && !ft_is_space(*input))
+		{
+			count++;
+			while (*input && !ft_is_space(*input) && !ft_is_quote(*input))
+				input++;
+		}
+		else if (ft_is_space(*input))
+			input++;
+		if (in_quotes)
+		{
+			while (*input && (*input != quote_char))
+				input++;
+			if (*input == quote_char)
+			{
+				in_quotes = false;
+				input++;
+			}
+		}
+	}
+	return (count);
+}
 
 t_token_lst	*ft_tokenize(char *input)
 {
-	int	value;
+	int	tok_nb;
 
-	value = ft_check_quotes(input);
-	printf("valid = %i\n", value);
+	if (ft_check_quotes(input))
+		ft_throw_error(0, ERR_QUOTES);
+	tok_nb = ft_count_tokens(input);
+	printf("nb of tokens = %i\n", tok_nb);
 	return (NULL);
 }

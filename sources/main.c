@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/15 16:33:55 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/16 20:52:04 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ int	main(int argc, char **argv, char **envp)
 	char	**my_prompt;
 
 	if (argc != 1 || argv[1])
-	{
-		printf(PREFIX "%s", ERR_ARG);
-		exit(EXIT_SUCCESS);
-	}
+		ft_throw_error(0, ERR_ARG);
 	data.env = envp;
 	data.env_cpy = ft_arrcpy(envp);
 	ft_init_signal();
