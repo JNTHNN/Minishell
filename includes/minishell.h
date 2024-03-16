@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/15 21:26:32 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/16 22:49:55 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef enum e_token_type
 	LITTERAL,
 	CMD,
 	ARGUMENT,
-	OPERATOR,
+	REDIRECT_OPERATOR,
 	PIPE,
 	ENV_VAR,
 	EXIT_CODE,

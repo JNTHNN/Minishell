@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/16 20:51:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/16 22:26:43 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,3 @@ char	**ft_arrcpy(char **arr)
 	return (cpy);
 }
 
-void	ft_throw_error(int err_code, char *err_msg)
-{
-	printf(PREFIX "%s", err_msg);
-	exit(err_code);
-}
