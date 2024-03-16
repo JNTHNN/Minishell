@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/16 23:12:49 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/16 23:15:45 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ int	ft_check_quotes(char *input)
 	return (EXIT_SUCCESS);
 }
 
-/* TODO: count redirection operators as tokens  and refacto this function) */
+/* TODO: refacto this function) */
 int	ft_count_tokens(char *input)
 {
 	int		count;
 	int		quote_char;
 	bool	in_quotes;
-	char 	*start; 
+	char	*start;
 
 	start = input;
 	count = 0;
