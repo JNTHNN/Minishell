@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/16 22:49:55 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/18 11:08:08 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,6 @@
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
-typedef enum e_token_type
-{
-	LITTERAL,
-	CMD,
-	ARGUMENT,
-	REDIRECT_OPERATOR,
-	PIPE,
-	ENV_VAR,
-	EXIT_CODE,
-	BUILTIN
-}	t_token_type;
-
 typedef enum e_cmd_type
 {
 	CMD_SIMPLE,
@@ -52,19 +40,11 @@ typedef enum e_cmd_type
 
 typedef struct s_data
 {
-	char	*input;
-	char	**env;
-	char	**env_cpy;
+	char		*input;
+	char		**env;
+	char		**env_cpy;
+	t_tok_lst	*tokens;
 }	t_data;
-
-typedef struct s_token_lst
-{
-	int					id;
-	char				*token;
-	t_token_type		type;
-	struct t_token_lst	*next;
-	struct t_token_lst	*prev;
-}	t_token_lst;
 
 typedef struct s_ast_node
 {
@@ -84,7 +64,7 @@ void		ft_show_env(char **env);
 int			ft_input(char *in);
 
 /* Handle tokenization : t_tokenizer.c */
-t_token_lst	*ft_tokenize(char *input);
+t_tok_lst	*ft_tokenize(t_data *data);
 
 /* Handle signals : s_signals.c	*/
 void		ft_signal(void);

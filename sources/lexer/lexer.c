@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/16 23:15:45 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:20:33 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,134 @@ int	ft_count_tokens(char *input)
 	return (count);
 }
 
-t_token_lst	*ft_tokenize(char *input)
+// void	ft_get_tokens(t_data *data)
+// {
+// 	int			count;
+// 	int			quote_char;
+// 	bool		in_quotes;
+// 	char 		*begin;
+// 	char		*start;
+// 	char		*end;
+// 	char 		*str;
+
+// 	str = data->input;
+// 	begin = str;
+// 	quote_char = 0;
+// 	count = 0;
+// 	in_quotes = false;
+// 	while (*str)
+// 	{
+// 		if (ft_is_quote(*str))
+// 		{
+// 			if (!in_quotes)
+// 			{
+// 				in_quotes = true;
+// 				start = str;
+// 				quote_char = *str;
+// 				//str++;
+// 				if (str == begin
+// 					|| (str > begin && ft_is_space(*(str - 1))))
+// 				{
+// 					count++;
+// 					while (*str && *str != quote_char)
+// 						str++;
+// 					end = str + 1;
+// 					if (*str)
+// 						str++;
+// 					printf("|%s|\n", ft_substr(data->input, start - data->input, end - start));
+// 					//ft_add_tok_node(ft_substr(data->input, start - data->input, end - start), count, LITTERAL, &data->tokens);
+// 				}
+// 			}
+// 			else if (*str == quote_char)
+// 				in_quotes = false;
+// 			str++;
+// 			continue ;
+// 		}
+// 		if (!in_quotes && ft_is_operator(*str))
+// 		{
+// 			count++;
+// 			while (*str && ft_is_operator(*(str)))
+// 				str++;
+// 		}
+// 		else
+// 			str++;
+// 	}
+// 	printf("%i", count);
+// }
+
+void	ft_get_tokens(t_data *data)
+{
+	char	*str;
+	char	*start;
+	int		quote_char;
+	bool	in_quotes;
+	int		token_id;
+	char	*previous;
+
+	str = data->input;
+	in_quotes = false;
+	token_id = 0;
+	previous = NULL;
+	while (*str)
+	{
+		if (ft_is_quote(*str))
+		{
+			in_quotes = !in_quotes;
+			start = str;
+			quote_char = *str;
+			str++;
+			while (*str && *str != quote_char)
+				str++;
+			if (in_quotes || (!in_quotes && (previous == NULL || (previous && ft_is_space(*previous)))))
+			{
+				if (*str)
+					str++;
+				ft_add_tok_node(ft_substr(data->input, start - data->input, str - start), token_id++, WORD, &data->tokens);
+			}
+		}
+		else if (!in_quotes && (ft_is_operator(*str) || !ft_is_space(*str)))
+		{
+			start = str;
+			if (ft_is_operator(*str))
+			{
+				while (*str && ft_is_operator(*str))
+					str++;
+				ft_add_tok_node(ft_substr(data->input, start - data->input, str - start), token_id++, OPERATOR, &data->tokens);
+			}
+			else
+			{
+				while (*str && !ft_is_space(*str) && !ft_is_quote(*str) && !ft_is_operator(*str))
+					str++;
+				ft_add_tok_node(ft_substr(data->input, start - data->input, str - start), token_id++, WORD, &data->tokens);
+			}
+		}
+		else
+		{
+			previous = str;
+			str++;
+		}
+	}
+}
+
+
+t_tok_lst	*ft_tokenize(t_data *data)
 {
 	int				tok_nb;
-	t_token_lst		*tokens;
 
-	if (ft_check_quotes(input))
+	data->tokens = NULL;
+	if (ft_check_quotes(data->input))
 		ft_throw_error(0, ERR_QUOTES);
-	tok_nb = ft_count_tokens(input);
+	tok_nb = ft_count_tokens(data->input);
+	ft_get_tokens(data);
+
+	t_tok_lst	*current;
+	current = data->tokens;
+	while (current != NULL)
+	{
+		printf("Le token est : \n%s\n", current->token);
+		current = current->next;
+	}
 	printf("nb of tokens = %i\n", tok_nb);
-	if (tok_nb)
-		tokens = (t_token_lst *)malloc(tok_nb * sizeof(t_token_lst));
-	if (!tokens)
-		return (NULL);
+
 	return (NULL);
 }
