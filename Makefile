@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/18 09:35:06 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/03/19 09:08:19 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRC_FILES		:= main
 SIGNALS_SRC		:= signals
 BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 LEXER_SRC		:= lexer
-UTILS_SRC		:= error utils lexer_utils
+UTILS_SRC		:= error utils lexer_utils lexer_utils2
 # PARSER_SRC		:=
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
