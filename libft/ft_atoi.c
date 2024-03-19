@@ -3,66 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/03 16:45:03 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/25 15:14:07 by anvoets          ###   ########.fr       */
+/*   Created: 2023/10/18 12:54:35 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	av_setpos(const char *str)
+#include "libft.h"
+
+static int	ft_isspace(int c)
 {
-	int	pos;
-
-	pos = 0;
-	while (((str[pos] >= 9 && str[pos] <= 13) || str[pos] == 32)
-		&& str[pos] != '\0')
-		pos++;
-	if ((str[pos] == '+' || str[pos] == '-') && str[pos] != '\0')
-		pos++;
-	return (pos);
-}
-
-static int	av_setmod(const char *str)
-{
-	int	pos;
-	int	mod;
-
-	pos = 0;
-	mod = 1;
-	while (((str[pos] >= 9 && str[pos] <= 13) || str[pos] == 32)
-		&& str[pos] != '\0')
-		pos++;
-	if ((str[pos] == '+' || str[pos] == '-') && str[pos] != '\0')
-	{
-		if (str[pos] == '-')
-			mod = mod * -1;
-		pos++;
-	}
-	return (mod);
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }
 
 int	ft_atoi(const char *str)
 {
-	int			pos;
-	int			mod;
-	long int	res;
-	long int	temp;
+	int				i;
+	int				sign;
+	unsigned long	nb;
 
-	res = 0;
-	temp = 0;
-	pos = av_setpos(str);
-	mod = av_setmod(str);
-	while ((str[pos] >= '0' && str[pos] <= '9') && str[pos] != '\0')
+	nb = 0;
+	sign = 1;
+	i = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		res = res * 10;
-		res = res + (str[pos] - '0');
-		pos++;
-		if (temp > res && mod > 0)
-			return (-1);
-		if (temp > res && mod < 0)
-			return (0);
-		temp = res;
+		if (str[i++] == '-')
+			sign = -1;
 	}
-	return (res * mod);
+	while (ft_isdigit(str[i]))
+	{
+		nb = str[i++] - '0' + nb * 10;
+		if (nb > LLONG_MAX && sign == 1)
+			return (-1);
+		if (nb > LLONG_MAX && sign == -1)
+			return (0);
+	}
+	return (nb * sign);
 }

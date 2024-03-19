@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_char.c                                   :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 14:44:59 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/11 12:06:23 by anvoets          ###   ########.fr       */
+/*   Created: 2024/03/15 14:49:29 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/16 22:27:23 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-int	ft_printf_char(char c)
-{
-	return (write(1, &c, 1));
-}
+/* utils.c */
+char	**ft_arrcpy(char **arr);
+
+#endif

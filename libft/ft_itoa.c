@@ -3,117 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/21 14:32:39 by anvoets           #+#    #+#             */
-/*   Updated: 2024/02/01 11:31:43 by jgasparo         ###   ########.fr       */
+/*   Created: 2023/10/20 13:43:27 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static long	av_lastnbr(long nb)
+static size_t	ft_numlen(int nb)
 {
-	long	ret;
+	size_t	nb_len;
 
-	ret = nb;
-	while (ret > 9)
+	nb_len = 0;
+	while (nb > 0)
 	{
-		ret = ret % 10;
+		nb_len++;
+		nb /= 10;
 	}
-	return (ret);
+	return (nb_len);
 }
 
-static long	av_nbrlen(long n)
+static char	*ft_malloc(size_t len)
 {
-	long	c;
-	long	len;
-	long	i;
+	char	*str;
 
-	c = n;
-	len = 0;
-	i = 0;
-	if (n < 0)
-	{
-		c = c * -1;
-		i++;
-	}
-	while (c > 0)
-	{
-		len++;
-		c = c / 10;
-	}
-	len = len + i;
-	return (len);
+	str = (char *)malloc((len) * sizeof(char));
+	if (!str)
+		return (NULL);
+	return (str);
 }
 
-static char	*av_setstr(char *res, long n, long len)
+static char	*ft_fillstr(char *str, size_t len, int nb)
 {
-	int	mod;
-
-	mod = 0;
-	if (n < 0)
+	str[len - 1] = '\0';
+	if (nb < 0)
 	{
-		n = n * -1;
-		res[0] = '-';
-		mod = 1;
-	}
-	res[len] = '\0';
-	len--;
-	while (len >= mod)
-	{
-		res[len] = (char)av_lastnbr(n) + 48;
-		len--;
-		n = n - av_lastnbr(n);
-		n = n / 10;
-	}
-	return (res);
-}
-
-static char	*av_exceptionset(int n)
-{
-	char	*res;
-
-	if (n == 0)
-	{
-		res = malloc(sizeof(char) * 2);
-		if (!res)
-			return (0);
-		res[0] = '0';
-		res[1] = '\0';
-		return (res);
+		while (nb)
+		{
+			len--;
+			str[len - 1] = ((nb % 10) * -1) + '0';
+			nb /= 10;
+		}
+		str[0] = '-';
 	}
 	else
 	{
-		res = malloc(sizeof(char) * 12);
-		if (!res)
-			return (0);
-		av_setstr(res, -2147483648, 11);
-		return (res);
+		while (nb)
+		{
+			len--;
+			str[len - 1] = (nb % 10) + '0';
+			nb /= 10;
+		}
 	}
-	return (res);
+	return (str);
+}
+
+static char	*ft_itoa_negative(int n)
+{
+	char	*nb_str;
+	size_t	str_len;
+
+	if (n == INT_MIN)
+		return (ft_strdup("-2147483648"));
+	str_len = ft_numlen(-n) + 2;
+	nb_str = ft_malloc(str_len);
+	if (!nb_str)
+		return (NULL);
+	ft_fillstr(nb_str, str_len, n);
+	return (nb_str);
 }
 
 char	*ft_itoa(int n)
 {
-	long	len;
-	char	*res;
+	char	*nb_str;
+	size_t	str_len;
 
-	len = 0;
-	if ((long)n < -2147483647 || n == 0)
+	nb_str = NULL;
+	if (n < 0)
 	{
-		res = av_exceptionset(n);
-		if (!res)
-			return (0);
-		return (res);
+		return (ft_itoa_negative(n));
 	}
+	else if (n == 0)
+		return (ft_strdup("0"));
 	else
 	{
-		len = av_nbrlen(n);
-		res = malloc(sizeof(char) * (len + 1));
-		if (!res)
-			return (0);
-		av_setstr(res, n, len);
+		str_len = ft_numlen(n) + 1;
+		nb_str = ft_malloc(str_len);
+		if (!nb_str)
+			return (NULL);
+		ft_fillstr(nb_str, str_len, n);
 	}
-	return (res);
+	return (nb_str);
 }

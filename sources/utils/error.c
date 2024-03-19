@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_env_builtins.c                                  :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 12:20:22 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/01/15 17:29:45 by jgasparo         ###   ########.fr       */
+/*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/19 09:20:31 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	show_env(char **env)
+void	ft_throw_error(int err_code, char *err_msg)
 {
-	int	i;
-
-	i = 0;
-	if (!env[i])
-		return ;
-	while (env[i])
-		printf("%s\n", env[i++]);
+	ft_putstr_fd(err_msg, STDERR_FILENO);
+	(void)err_code;
 }
+
