@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   lexer_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:12 by gdelvign         ###   ########.fr       */
+/*   Created: 2024/03/19 16:56:26 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/19 17:10:16 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*	exit sans rien va quitter le processus en cours donc le minishell
-**	veuillez a bien free tout ce qui a pu etre allouer
-**
-*/
-
 #include "../../includes/minishell.h"
 
-void	ft_exit_builtins(void)
+void	ft_handle_quoted_word(char **str, char *quote_c)
 {
-	ft_putendl_fd("exit", 1);
-	system("leaks minishell");
-	exit(EXIT_SUCCESS);
+	if (ft_is_quote(**str))
+	{
+		quote_c = *str;
+		(*str)++;
+		while (**str && **str != *quote_c)
+			(*str)++;
+		if (**str == *quote_c)
+			(*str)++;
+	}
+	else
+		(*str)++;
 }

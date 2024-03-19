@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_pwd_builtin.c                                   :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:19:45 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/01/20 12:32:51 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:54:59 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 // 	printf("%s\n", getcwd(where, 0));
 // }
 
-void	pwd_builtin(void)
+void	ft_pwd_builtin(void)
 {
 	char	cwd[PATH_MAX];
 	

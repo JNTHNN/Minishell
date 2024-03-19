@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:07:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/19 09:08:25 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:10:52 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,18 @@ int	ft_skip_whitespaces(char *str)
 	while (ft_is_space(*str))
 		str++;
 	return (str - start);
+}
+
+void	ft_trim_input(char **input)
+{
+	char	*trimmed;
+
+	trimmed = ft_strtrim(*input, " ");
+	if (trimmed)
+	{
+		free(*input);
+		*input = trimmed;
+	}
+	else
+		ft_throw_error(0, "TRIM ERROR");
 }
