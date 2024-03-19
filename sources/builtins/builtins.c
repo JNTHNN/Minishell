@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_builtins.c                                       :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/13 22:09:15 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:50:30 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,17 @@ void	ft_builtin(char **new_prompt, char **my_env)
 		ft_echo_builtin(new_prompt);
 	if (!ft_strncmp(new_prompt[0], "cd", 2))
 		// cd_builtins(prompt + 3, my_env);
-		cd_builtin(new_prompt);
+		ft_cd_builtin(new_prompt);
 	if (!ft_strncmp(new_prompt[0], "pwd", 3))
-		pwd_builtin();
+		ft_pwd_builtin();
 	if (!ft_strncmp(new_prompt[0], "export", 6))
-		export_builtin(new_prompt, my_env);
+		ft_export_builtin(new_prompt, my_env);
 	if (!ft_strncmp(new_prompt[0], "unset", 5))
 		return ;
 	if (!ft_strncmp(new_prompt[0], "env", 3))
 		ft_show_env(my_env);
 	if (!ft_strncmp(new_prompt[0], "exit", 4))
-		exit_builtins();
+		ft_exit_builtins();
 	if (!ft_strncmp(new_prompt[0], "system", 6))
 		system("leaks minishell");
 	if (!ft_strncmp(new_prompt[0], "xxx", 3))

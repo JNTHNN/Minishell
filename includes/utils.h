@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:49:29 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/16 22:27:23 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:38:24 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 /* utils.c */
 char	**ft_arrcpy(char **arr);
+void	*free_arr(char **arr);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/18 11:08:08 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:52:17 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,15 @@ bool		ft_is_builtin(char **cmd);
 void		ft_builtin(char **prompt, char **my_env);
 
 void		ft_show_env(char **env);
-void		cd_builtin(char **path);
+void		ft_cd_builtin(char **path);
 void		ft_echo_builtin(char **str);
-void		exit_builtins(void);
-void		pwd_builtin(void);
-void		export_builtin(char **cmd, char **my_env);
+void		ft_exit_builtins(void);
+void		ft_pwd_builtin(void);
+void		ft_export_builtin(char **cmd, char **my_env);
 
 /*		JG_exec			*/
-int			create_exec(char **argv, char **env);
-void		cmd_exec(char **cmd, char **env);
+int			ft_create_exec(char **argv, char **env);
+void		ft_cmd_exec(char **cmd, char **env);
 
 /*		UTILS		*/
 

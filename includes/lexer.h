@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:39:02 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/19 09:30:53 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:11:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,9 @@ bool	ft_is_quote(char c);
 bool	ft_is_space(int c);
 bool	ft_is_operator(char c);
 int		ft_skip_whitespaces(char *str);
+void	ft_trim_input(char **input);
+
+/* Lexer utils to handle the storing of tokens : lexer_utils3.c */
+void	ft_handle_quoted_word(char **str, char *quote_c);
 
 #endif
