@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_setup_env.c                                     :+:      :+:    :+:   */
+/*   setup_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:36:32 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/02/01 11:10:16 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:57:13 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ typedef struct s_env
     struct s_env *next;
 } t_env;
 
-t_env *new_node(char *var)
+t_env *ft_new_node(char *var)
 {
     t_env *node = malloc(sizeof(t_env));
     if (node)
     {
-        node->var = strdup(var);
+        node->var = ft_strdup(var);
         node->next = NULL;
     }
     return node;
 }
 
-t_env *setup_env(char **env)
+t_env *ft_setup_env(char **env)
 {
     t_env *head = NULL;
     t_env *current = NULL;
@@ -49,7 +49,7 @@ t_env *setup_env(char **env)
 
     while (*env)
     {
-        t_env *node = new_node(*env);
+        t_env *node = ft_new_node(*env);
         if (!head)
         {
             head = node;
@@ -66,14 +66,14 @@ t_env *setup_env(char **env)
     return head;
 }
 
-void swap_nodes(t_env *a, t_env *b)
+void ft_swap_nodes(t_env *a, t_env *b)
 {
     char *temp = a->var;
     a->var = b->var;
     b->var = temp;
 }
 
-void sort_env(t_env *head)
+void ft_sort_env(t_env *head)
 {
     int swapped;
     t_env *ptr1;
@@ -89,9 +89,9 @@ void sort_env(t_env *head)
 
         while (ptr1->next != lptr)
         {
-            if (strcmp(ptr1->var, ptr1->next->var) > 0)
+            if (ft_strcmp(ptr1->var, ptr1->next->var) > 0)
             {
-                swap_nodes(ptr1, ptr1->next);
+                ft_swap_nodes(ptr1, ptr1->next);
                 swapped = 1;
             }
             ptr1 = ptr1->next;
@@ -101,9 +101,9 @@ void sort_env(t_env *head)
     while (swapped);
 }
 
-void print_env(t_env *head)
+void ft_print_env(t_env *head)
 {
-    sort_env(head);
+    ft_sort_env(head);
     while (head)
     {
         printf("%s\n", head->var);

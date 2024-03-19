@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/18 12:10:36 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:59:16 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ int	main(int argc, char **argv, char **envp)
 			if (!my_prompt || !*my_prompt)
 				continue ;
 			if (ft_is_builtin(my_prompt) == false)
-				cmd_exec(my_prompt, data.env);
+				ft_cmd_exec(my_prompt, data.env);
 			else
 				ft_builtin(my_prompt, data.env);
+		// free le **my_prompt
+			free_arr(my_prompt);
 		}
 		ft_signal();
 	}
-		// free le **my_prompt
+	// free le **my_prompt
+	free_arr(my_prompt);
 	system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
