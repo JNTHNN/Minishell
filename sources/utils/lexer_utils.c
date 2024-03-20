@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 09:30:54 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/18 12:04:22 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:57:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
 	return (new_node);
 }
 
-int	ft_add_tok_node(char *str, int id, t_tok_type type, t_tok_lst **lst)
+int	ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data)
 {
 	t_tok_lst	*node;
 
 	node = ft_create_new_tok(str, id, type);
 	if (!node)
 		return (EXIT_FAILURE);
-	ft_tok_lstadd_back(lst, node);
+	ft_tok_lstadd_back(&data->tokens, node);
 	return (EXIT_SUCCESS);
 }
