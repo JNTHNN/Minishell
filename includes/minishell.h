@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/20 12:15:50 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/20 22:09:03 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data
 	char		**env;
 	char		**env_cpy;
 	t_tok_lst	*tokens;
+	t_cmd		*cmd;
 }	t_data;
 
 typedef struct s_env

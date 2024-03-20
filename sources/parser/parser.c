@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 08:42:22 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/20 22:07:45 by gdelvign         ###   ########.fr       */
+/*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/20 22:36:45 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
-#ifndef PARSER_H
-# define PARSER_H
-
-# include "minishell.h"
-
-typedef struct s_cmd
+int	ft_parse(t_data *data)
 {
-	char				**args;
-	t_tok_lst			*redirection;
-	bool				is_builtin;
-	struct s_cmd_node	*left;
-	struct s_cmd_node	*right;
-}	t_cmd;
+	t_tok_lst	*current;
 
-#endif
+	current = data->tokens;
+	while (current != NULL)
+	{
+		// agregate all previous nodes in one t_cmd node
+		if (current->token == PIPE)
+			break ;
+		{
+			
+			
+		}
+	}
+}

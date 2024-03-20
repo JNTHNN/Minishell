@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 08:42:22 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/20 22:07:45 by gdelvign         ###   ########.fr       */
+/*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/20 22:26:01 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
-#ifndef PARSER_H
-# define PARSER_H
-
-# include "minishell.h"
-
-typedef struct s_cmd
+t_tok_lst	*ft_tok_lstback(t_tok_lst *lst)
 {
-	char				**args;
-	t_tok_lst			*redirection;
-	bool				is_builtin;
-	struct s_cmd_node	*left;
-	struct s_cmd_node	*right;
-}	t_cmd;
-
-#endif
+	if (!lst)
+		return (NULL);
+	while (lst->prev != NULL || lst->prev->token != PIPE)
+		lst = lst->prev;
+	return (lst);
+}
