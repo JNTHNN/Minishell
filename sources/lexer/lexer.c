@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/19 17:12:24 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:11:04 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_check_quotes(char *input)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_store_operator(char *str, int *token_nb, t_tok_lst **lst)
+int	ft_store_operator(t_data *data, char *str, int *token_nb)
 {
 	char	*token;
 	int		length;
@@ -50,15 +50,15 @@ int	ft_store_operator(char *str, int *token_nb, t_tok_lst **lst)
 	else
 		length = 1;
 	token = ft_substr(str, 0, length);
-	if (!token || ft_add_tok_node(token, ++(*token_nb), OPERATOR, lst))
+	if (!token || ft_add_tok_node(token, ++(*token_nb), OPERATOR, data))
 	{
 		free(token);
-		ft_throw_error(0, ERR_MEM);
+		ft_throw_error(data, 0, ERR_MEM);
 	}
 	return (length);
 }
 
-int	ft_store_word(char *str, int *token_nb, t_tok_lst **lst)
+int	ft_store_word(t_data *data, char *str, int *token_nb)
 {
 	char	quote_char;
 	char	*start;
@@ -73,10 +73,10 @@ int	ft_store_word(char *str, int *token_nb, t_tok_lst **lst)
 			break ;
 	}
 	token = ft_substr(start, 0, str - start);
-	if (!token || ft_add_tok_node(token, ++(*token_nb), WORD, lst))
+	if (!token || ft_add_tok_node(token, ++(*token_nb), WORD, data))
 	{
 		free(token);
-		ft_throw_error(0, ERR_MEM);
+		ft_throw_error(data, 0, ERR_MEM);
 	}
 	return (str - start);
 }
@@ -92,31 +92,32 @@ int	ft_get_tokens(t_data *data)
 	{
 		str += ft_skip_whitespaces(str);
 		if (ft_is_operator(*str))
-			str += ft_store_operator(str, &token_nb, &data->tokens);
+			str += ft_store_operator(data, str, &token_nb);
 		else
-			str += ft_store_word(str, &token_nb, &data->tokens);
+			str += ft_store_word(data, str, &token_nb);
 	}
 	return (EXIT_SUCCESS);
 }
 
 
-t_tok_lst	*ft_tokenize(t_data *data)
+int	ft_tokenize(t_data *data)
 {
 	data->tokens = NULL;
 	if (ft_check_quotes(data->input))
-		ft_throw_error(0, ERR_QUOTES);
-	ft_trim_input(&data->input);
+		ft_throw_error(data, 0, ERR_QUOTES);
+	if (ft_trim_input(&data->input))
+		ft_throw_error(data, 0, "TRIM_ERROR");
 	ft_get_tokens(data);
 
-	/* print linked list nodes to check tokens only */
+	/* print token linked list nodes to check results while coding */
 	t_tok_lst	*current;
 	current = data->tokens;
 	while (current != NULL)
 	{
-		printf("Le token est : \n%s\n", current->token);
+		printf("Token %i = %s\n", current->id, current->token);
 		current = current->next;
 	}
-	/* end of printing */
+	/* end of printing results */
 	
-	return (NULL);
+	return (EXIT_SUCCESS);
 }
