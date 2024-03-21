@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/21 21:46:30 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/21 23:43:13 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_parse(t_data *data)
 
 	data->cmd = NULL;
 	current = data->tokens;
-	while (current != NULL
+	while (current->next != NULL
 		&& current->type != OPERATOR && current->token[0] != PIPE)
 		current = current->next;
 	cmd_args = (char **)malloc(current->id * sizeof(char *));
@@ -38,25 +38,23 @@ int	ft_parse(t_data *data)
 		ft_throw_error(data, 0, ERR_MEM);
 	i = current->id;
 	i--;
-	printf("NB === %i\n", i);
 	cmd_args[i] = NULL;
-	printf("%s\n", cmd_args[i]);
-	// i--;
-	// while (i > 0)
-	// {
-	// 	cmd_args[i] = current->token;
-	// 	if (current != NULL)
-	// 		current = current->prev;
-	// 	i--;
-	// }
+	i--;
+	while (i >= 0)
+	{
+		cmd_args[i] = current->prev->token;
+		if (current->prev != NULL)
+			current = current->prev;
+		i--;
+	}
 	
 	// Print test
-	// i = 0;
-	// while (cmd_args[i])
-	// {
-	// 	printf("ARGS %i = %s\n", i, cmd_args[i]);
-	// 	i++;
-	// }
+	i = 0;
+	while (cmd_args[i] != NULL)
+	{
+		printf("ARGS %i = %s\n", i, cmd_args[i]);
+		i++;
+	}
 	
 	
 	// create new cmd node 
