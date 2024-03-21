@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/20 11:42:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:23:27 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main(int argc, char **argv, char **envp)
 			my_prompt = ft_split(data.input, ' ');
 			add_history(data.input);
 			free(data.input);
+			ft_parse(&data);
 			if (!my_prompt || !*my_prompt)
 				continue ;
 			if (ft_is_builtin(my_prompt) == false)

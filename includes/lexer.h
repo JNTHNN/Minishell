@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:39:02 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/20 12:15:40 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/21 12:41:34 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@ enum e_redirect_op
 	REDIR_OUT = '>',
 	PIPE = '|'
 };
-
-typedef enum e_tok_type
-{
-	WORD,
-	OPERATOR
-}	t_tok_type;
-
-typedef struct s_tok_lst
-{
-	int					id;
-	char				*token;
-	t_tok_type			type;
-	struct s_tok_lst	*next;
-	struct s_tok_lst	*prev;
-}	t_tok_lst;
 
 /* Lexer utils to handle the storing of tokens : lexer_utils2.c */
 bool	ft_is_quote(char c);

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/20 15:11:04 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:39:42 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,13 @@ int	ft_tokenize(t_data *data)
 	ft_get_tokens(data);
 
 	/* print token linked list nodes to check results while coding */
-	t_tok_lst	*current;
-	current = data->tokens;
-	while (current != NULL)
-	{
-		printf("Token %i = %s\n", current->id, current->token);
-		current = current->next;
-	}
+	// t_tok_lst	*current;
+	// current = data->tokens;
+	// while (current != NULL)
+	// {
+	// 	printf("Token %i = %s\n", current->id, current->token);
+	// 	current = current->next;
+	// }
 	/* end of printing results */
 	
 	return (EXIT_SUCCESS);

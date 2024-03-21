@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/20 22:09:03 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:11:34 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 # define MINISHELL_H
 
 # include <errno.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <termios.h>
 # include <unistd.h>
-# include <stdbool.h> // type bool
+# include <stdbool.h>
+# include <termios.h>
+# include <signal.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <sys/syslimits.h> // PATH_MAX
 # include "../libft/libft.h"
+# include "typedef.h"
 # include "error.h"
 # include "lexer.h"
 # include "parser.h"
@@ -31,20 +32,6 @@
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
-typedef struct s_data
-{
-	char		*input;
-	char		**env;
-	char		**env_cpy;
-	t_tok_lst	*tokens;
-	t_cmd		*cmd;
-}	t_data;
-
-typedef struct s_env
-{
-	char			*var;
-	struct s_env	*next;
-}	t_env;
 
 void	ft_show_env(char **env);
 int		ft_input(char *in);
