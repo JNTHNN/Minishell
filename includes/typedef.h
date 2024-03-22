@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/21 16:19:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:48:03 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ struct s_tok_lst
 	int					id;
 	char				*token;
 	t_tok_type			type;
+	int					arg_size;
 	struct s_tok_lst	*next;
 	struct s_tok_lst	*prev;
 };

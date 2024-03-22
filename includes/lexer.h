@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:39:02 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/21 12:41:34 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 12:04:36 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ enum e_redirect_op
 	PIPE = '|'
 };
 
+/* Lexer utils to handle the storing of tokens : lexer_utils.c */
+t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst);
+
 /* Lexer utils to handle the storing of tokens : lexer_utils2.c */
 bool	ft_is_quote(char c);
 bool	ft_is_space(int c);
@@ -35,5 +38,6 @@ int		ft_trim_input(char **input);
 
 /* Lexer utils to handle the storing of tokens : lexer_utils3.c */
 void	ft_handle_quoted_word(char **str, char *quote_c);
+bool	ft_check_pipes(t_tok_lst *lst);
 
 #endif

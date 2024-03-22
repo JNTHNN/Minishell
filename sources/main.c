@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/21 16:23:27 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:12:34 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
+	int		ret;
 	char	**my_prompt;
 
 	if (argc != 1 || argv[1])
-		ft_throw_error(&data, 0, ERR_ARG);
+	{
+		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
+		exit(0);
+	}
 	data.env = envp;
 	data.env_cpy = ft_arrcpy(envp);
 	ft_init_signal();
@@ -27,11 +31,21 @@ int	main(int argc, char **argv, char **envp)
 		data.input = readline(PROMPT);
 		if (data.input)
 		{
-			ft_tokenize(&data);
-			my_prompt = ft_split(data.input, ' ');
 			add_history(data.input);
+			ret = ft_tokenize(&data);
+			if (ret)
+			{
+				ft_throw_error(&data, ret);
+				continue ;
+			}
+			my_prompt = ft_split(data.input, ' ');
 			free(data.input);
-			ft_parse(&data);
+			ret = ft_parse(&data);
+			if (ret)
+			{
+				ft_throw_error(&data, ret);
+				continue ;
+			}
 			if (!my_prompt || !*my_prompt)
 				continue ;
 			if (ft_is_builtin(my_prompt) == false)
@@ -45,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	// free le **my_prompt
 	free_arr(my_prompt);
-	system("leaks minishell");
+	//system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 

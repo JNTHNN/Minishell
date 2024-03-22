@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:12 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:05:35 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 void	ft_exit_builtins(void)
 {
 	ft_putendl_fd("exit", 1);
-	system("leaks minishell");
+	//system("leaks minishell");
 	exit(EXIT_SUCCESS);
 }

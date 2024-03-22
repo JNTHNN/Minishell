@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/21 16:39:42 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:48:50 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_store_operator(t_data *data, char *str, int *token_nb)
 	if (!token || ft_add_tok_node(token, ++(*token_nb), OPERATOR, data))
 	{
 		free(token);
-		ft_throw_error(data, 0, ERR_MEM);
+		return (E_MEM);
 	}
 	return (length);
 }
@@ -76,7 +76,7 @@ int	ft_store_word(t_data *data, char *str, int *token_nb)
 	if (!token || ft_add_tok_node(token, ++(*token_nb), WORD, data))
 	{
 		free(token);
-		ft_throw_error(data, 0, ERR_MEM);
+		return (E_MEM);
 	}
 	return (str - start);
 }
@@ -85,6 +85,7 @@ int	ft_get_tokens(t_data *data)
 {
 	char	*str;
 	int		token_nb;
+	int		ret;
 
 	token_nb = 0;
 	str = data->input;
@@ -92,31 +93,43 @@ int	ft_get_tokens(t_data *data)
 	{
 		str += ft_skip_whitespaces(str);
 		if (ft_is_operator(*str))
-			str += ft_store_operator(data, str, &token_nb);
+		{
+			ret = ft_store_operator(data, str, &token_nb);
+			if (ret < 0)
+				return (ret);
+			str += ret;
+		}
 		else
-			str += ft_store_word(data, str, &token_nb);
+		{
+			ret = ft_store_word(data, str, &token_nb);
+			if (ret < 0)
+				return (ret);
+			str += ret;
+		}
 	}
 	return (EXIT_SUCCESS);
 }
-
 
 int	ft_tokenize(t_data *data)
 {
 	data->tokens = NULL;
 	if (ft_check_quotes(data->input))
-		ft_throw_error(data, 0, ERR_QUOTES);
+		return (E_QUOTES);
 	if (ft_trim_input(&data->input))
-		ft_throw_error(data, 0, "TRIM_ERROR");
-	ft_get_tokens(data);
+		return (E_MEM);
+	if (ft_get_tokens(data))
+		return (E_MEM);
+	if (ft_check_pipes(data->tokens))
+		return (E_PIPE);
 
 	/* print token linked list nodes to check results while coding */
-	// t_tok_lst	*current;
-	// current = data->tokens;
-	// while (current != NULL)
-	// {
-	// 	printf("Token %i = %s\n", current->id, current->token);
-	// 	current = current->next;
-	// }
+	t_tok_lst	*current;
+	current = data->tokens;
+	while (current != NULL)
+	{
+		printf("Token %i = %s - %i\n", current->id, current->token, current->arg_size);
+		current = current->next;
+	}
 	/* end of printing results */
 	
 	return (EXIT_SUCCESS);

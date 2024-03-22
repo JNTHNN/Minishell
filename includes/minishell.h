@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/21 14:11:34 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:49:24 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # include "utils.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
-
 
 void	ft_show_env(char **env);
 int		ft_input(char *in);
@@ -65,7 +64,7 @@ void	ft_cmd_exec(char **cmd, char **env);
 char	*ft_strcat(char *dest, const char *src);
 
 /* Handle errors : error.c */
-void	ft_throw_error(t_data *data, int err_code, char *err_msg);
+void	ft_throw_error(t_data *data, int err_code);
 
 /* Lexer utils to handle t_tok_lst : lexer_utils.c */
 int		ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data);

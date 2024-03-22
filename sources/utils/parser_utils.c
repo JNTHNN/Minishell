@@ -6,11 +6,55 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/21 21:03:08 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/22 10:28:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	ft_cmd_lstsize(t_cmd *lst)
+{
+	int	size;
+
+	size = 0;
+	if (lst)
+	{
+		while (lst != NULL)
+		{
+			lst = lst->right;
+			size++;
+		}
+	}
+	return (size);
+}
+
+t_cmd	*ft_cmd_lstlast(t_cmd *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->right != NULL)
+		lst = lst->right;
+	return (lst);
+}
+
+void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
+{
+	t_cmd	*last;
+
+	if (!lst || !new)
+		return ;
+	if (ft_cmd_lstsize(*lst))
+	{
+		last = ft_cmd_lstlast(*lst);
+		last->right = new;
+		new->left = last;
+	}
+	else
+	{
+		*lst = new;
+		new->right = NULL;
+	}
+}
 
 t_cmd	*ft_create_new_cmd(char ***args)
 {
@@ -27,11 +71,13 @@ t_cmd	*ft_create_new_cmd(char ***args)
 	return (new_node);
 }
 
-t_tok_lst	*ft_tok_lstback(t_tok_lst *lst)
+int	ft_add_cmd_node(char **args, t_data *data)
 {
-	if (!lst)
-		return (NULL);
-	while (lst->prev != NULL || lst->prev->token[0] != PIPE)
-		lst = lst->prev;
-	return (lst);
+	t_cmd	*node;
+
+	node = ft_create_new_cmd(&args);
+	if (!node)
+		return (EXIT_FAILURE);
+	ft_cmd_lstadd_back(&data->cmd, node);
+	return (EXIT_SUCCESS);
 }
