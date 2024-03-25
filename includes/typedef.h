@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 16:24:28 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:42:12 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 typedef struct s_data		t_data;
 typedef struct s_cmd		t_cmd;
+typedef struct s_redir		t_redir_lst;
 typedef struct s_tok_lst	t_tok_lst;
 typedef int					(*t_builtin)(t_data *, t_cmd *);
 
@@ -39,6 +40,7 @@ struct	s_data
 	char		**env;
 	char		**env_cpy;
 	t_tok_lst	*tokens;
+	t_tok_lst	*redirections;
 	t_cmd		*cmd;
 };
 
@@ -52,6 +54,12 @@ struct s_tok_lst
 	struct s_tok_lst	*prev;
 };
 
+struct s_redir_lst
+{
+	t_redirect_type	r_type;
+	char			*filename;
+};
+
 typedef struct s_env
 {
 	char			*var;
@@ -61,7 +69,7 @@ typedef struct s_env
 struct s_cmd
 {
 	char				**args;
-	t_tok_lst			**redirections;
+	t_redir_lst			*redirections;
 	t_builtin			ft_builtin;
 	struct s_cmd		*left;
 	struct s_cmd		*right;

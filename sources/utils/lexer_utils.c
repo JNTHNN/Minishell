@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 09:30:54 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 16:20:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:43:13 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
 		return (NULL);
 	new_node->id = id;
 	new_node->token = str;
-	new_node->r_type = ft_find_redir_type(str);
+	new_node->r_type = ft_find_redir_type(str, type);
 	new_node->type = type;
 	new_node->next = NULL;
 	new_node->prev = NULL;

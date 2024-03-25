@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 17:09:37 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:43:20 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ int	ft_count_pipes(t_tok_lst *lst)
 int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
+	t_redir_lst	*redirections;
 
 	current = data->tokens;
+	redirections = data->redirections;
+	redirections = NULL;
 	while (current)
 	{
 		while (current && current->type == WORD)
@@ -48,7 +51,9 @@ int	ft_store_redirections(t_data *data)
 			return (ft_find_redir_type(current->next->token,
 					current->next->type));
 		if (current->type == OPERATOR)
-			// TODO: add node to data->cmd->redirections HERE
+		{
+			// TODO: add node to data->redirections HERE
+		}
 	}
 	return (EXIT_SUCCESS);
 }
