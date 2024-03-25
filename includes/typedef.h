@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/22 14:48:03 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:24:28 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ typedef enum e_tok_type
 	OPERATOR
 }	t_tok_type;
 
+typedef enum e_redirect_type
+{
+	R_PIPE = -5,
+	IN = -6,
+	HEREDOC = -7,
+	OUT = -8,
+	OUT_T = -9
+}	t_redirect_type;
+
 struct	s_data
 {
 	char		*input;
@@ -38,7 +47,7 @@ struct s_tok_lst
 	int					id;
 	char				*token;
 	t_tok_type			type;
-	int					arg_size;
+	t_redirect_type		r_type;
 	struct s_tok_lst	*next;
 	struct s_tok_lst	*prev;
 };

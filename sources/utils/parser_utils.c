@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/22 10:28:44 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 10:59:45 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ t_cmd	*ft_create_new_cmd(char ***args)
 	new_node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
-	new_node->args = *args;
+	new_node->args = ft_arrcpy(*args);
+	if (!new_node->args)
+		return (NULL);
+	free_arr(*args);
 	new_node->redirections = NULL;
 	new_node->ft_builtin = NULL;
 	new_node->left = NULL;
@@ -71,11 +74,11 @@ t_cmd	*ft_create_new_cmd(char ***args)
 	return (new_node);
 }
 
-int	ft_add_cmd_node(char **args, t_data *data)
+int	ft_add_cmd_node(char ***args, t_data *data)
 {
 	t_cmd	*node;
 
-	node = ft_create_new_cmd(&args);
+	node = ft_create_new_cmd(args);
 	if (!node)
 		return (EXIT_FAILURE);
 	ft_cmd_lstadd_back(&data->cmd, node);
