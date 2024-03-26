@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 20:43:20 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:23:29 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,26 @@ int	ft_count_pipes(t_tok_lst *lst)
 	return (i);
 }
 
+
+
 int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
-	t_redir_lst	*redirections;
+	t_redir_lst	**redirections;
+	int			cmd_nb;
+	int			i;
 
 	current = data->tokens;
 	redirections = data->redirections;
-	redirections = NULL;
+	cmd_nb = ft_count_pipes(current) + 1;
+	redirections = (t_redir_lst **)malloc(cmd_nb * sizeof(t_redir_lst *));
+	if (!redirections)
+		return (E_MEM);
+	i = -1;
+	while (++i < cmd_nb)
+		redirections[i] = NULL;
+
+	i = 0;
 	while (current)
 	{
 		while (current && current->type == WORD)
@@ -43,6 +55,7 @@ int	ft_store_redirections(t_data *data)
 		if (current->r_type == R_PIPE)
 		{
 			current = current->next;
+			i++;
 			continue ;
 		}
 		if (!current->next)
@@ -53,6 +66,7 @@ int	ft_store_redirections(t_data *data)
 		if (current->type == OPERATOR)
 		{
 			// TODO: add node to data->redirections HERE
+			ft_add_redir_node(redirections[i], current, i + 1);
 		}
 	}
 	return (EXIT_SUCCESS);

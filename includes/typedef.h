@@ -6,18 +6,18 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 20:42:12 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:13:17 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 
-typedef struct s_data		t_data;
-typedef struct s_cmd		t_cmd;
-typedef struct s_redir		t_redir_lst;
-typedef struct s_tok_lst	t_tok_lst;
-typedef int					(*t_builtin)(t_data *, t_cmd *);
+typedef struct s_data			t_data;
+typedef struct s_cmd			t_cmd;
+typedef struct s_redir_lst		t_redir_lst;
+typedef struct s_tok_lst		t_tok_lst;
+typedef int						(*t_builtin)(t_data *, t_cmd *);
 
 typedef enum e_tok_type
 {
@@ -40,7 +40,7 @@ struct	s_data
 	char		**env;
 	char		**env_cpy;
 	t_tok_lst	*tokens;
-	t_tok_lst	*redirections;
+	t_redir_lst	**redirections;
 	t_cmd		*cmd;
 };
 
@@ -58,6 +58,9 @@ struct s_redir_lst
 {
 	t_redirect_type	r_type;
 	char			*filename;
+	int				cmd_nb;
+	t_redir_lst		*next;
+	t_redir_lst		*prev;
 };
 
 typedef struct s_env

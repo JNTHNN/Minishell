@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:56:26 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 16:20:00 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:22:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_redirect_type	ft_find_redir_type(char *token, t_tok_type type)
 	if (type == OPERATOR)
 	{
 		size = ft_strlen(token);
-		if (token[0] == PIPE)
+		if (size == 1 && token[0] == PIPE)
 			return (R_PIPE);
 		else if (token[0] == REDIR_IN)
 		{
