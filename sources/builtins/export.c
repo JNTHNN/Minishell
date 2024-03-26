@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_export.c                                        :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/02/29 20:53:25 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:54:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 #include "../../includes/minishell.h"
 
-t_env *new_node(char *var)
+t_env *ft_new_node(char *var)
 {
     t_env	*node;
 	
@@ -38,7 +38,7 @@ t_env *new_node(char *var)
     return node;
 }
 
-t_env *setup_env(char **env)
+t_env *ft_setup_env(char **env)
 {
     t_env	*head;
     t_env	*current;
@@ -49,7 +49,7 @@ t_env *setup_env(char **env)
         return NULL;
     while (*env)
     {
-        t_env *node = new_node(*env);
+        t_env *node = ft_new_node(*env);
         if (!head)
         {
             head = node;
@@ -65,7 +65,7 @@ t_env *setup_env(char **env)
 
     return head;
 }
-void swap_nodes(t_env *a, t_env *b)
+void ft_swap_nodes(t_env *a, t_env *b)
 {
     char	*temp;
 	
@@ -74,7 +74,7 @@ void swap_nodes(t_env *a, t_env *b)
     b->var = temp;
 }
 
-void sort_env(t_env *head)
+void ft_sort_env(t_env *head)
 {
     int		swapped;
     t_env	*unsort;
@@ -94,7 +94,7 @@ void sort_env(t_env *head)
         {
             if (ft_strncmp(unsort->var, unsort->next->var, ft_strlen(unsort->var)) > 0)
             {
-                swap_nodes(unsort, unsort->next);
+                ft_swap_nodes(unsort, unsort->next);
                 swapped = 1;
             }
             unsort = unsort->next;
@@ -112,7 +112,7 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 	*lst = new;
 }
 
-void add_env(t_env **head, char *var)
+void ft_add_env(t_env **head, char *var)
 {
     t_env	*new_node;
 	
@@ -124,7 +124,7 @@ void add_env(t_env **head, char *var)
 	ft_envadd_back(head, new_node);
 }
 
-void modify_or_add_env(t_env **head, char *var)
+void ft_modify_or_add_env(t_env **head, char *var)
 {
     t_env *current;
     char *equal_sign;
@@ -147,14 +147,14 @@ void modify_or_add_env(t_env **head, char *var)
         }
         *equal_sign = '='; // Restore the original character
     }
-    add_env(head, var); // The variable does not exist, add it
+    ft_add_env(head, var); // The variable does not exist, add it
 }
 
-void print_env(t_env *head)
+void ft_print_env(t_env *head)
 {
 	char *equal_sign;
 
-    sort_env(head);
+    ft_sort_env(head);
     while (head)
     {
         equal_sign = ft_strchr(head->var, '=');
@@ -169,7 +169,7 @@ void print_env(t_env *head)
         head = head->next;
     }
 }
-void show_list(t_env *head)
+void ft_show_list(t_env *head)
 {
     while (head)
     {
@@ -178,22 +178,22 @@ void show_list(t_env *head)
     }
 }
 
-void	export_builtin(char **cmd, char **env)
+void	ft_export_builtin(char **cmd, char **env)
 {
 	t_env *head;
 
-	head = setup_env(env);
+	head = ft_setup_env(env);
 	if (!ft_strncmp(cmd[0], "export", 6))
 	{
 		if (cmd[1])
 		{
 			printf("test : %s\n", cmd[1]);
-			modify_or_add_env(&head, cmd[1]); // ajouter ou modifie la variable a la liste chainee
-			show_list(head); // print la liste chainee
+			ft_modify_or_add_env(&head, cmd[1]); // ajouter ou modifie la variable a la liste chainee
+			ft_show_list(head); // print la liste chainee
 		}
 		else
 		{
-			 print_env(head);// print la liste chainee
+			 ft_print_env(head);// print la liste chainee
 		}
 	}
 }
