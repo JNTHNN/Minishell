@@ -27,6 +27,7 @@
 # include "error.h"
 # include "lexer.h"
 # include "utils.h"
+# include <sys/wait.h>
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 

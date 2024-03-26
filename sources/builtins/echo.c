@@ -57,6 +57,13 @@ void	ft_echo_builtin(char **str)
 		option = 1;
 		i++;
 	}
+	if (!ft_strncmp(str[1], "$?", 2))
+	{
+		ft_putstr_fd("C'est good le $?", 1);
+		if (option == 0)
+			ft_putstr_fd("\n", 1);
+		return ;
+	}
 	while (str[i])
 	{
 		ft_putstr_fd(str[i], 1);

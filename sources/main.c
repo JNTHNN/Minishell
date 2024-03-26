@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	// free le **my_prompt
 	free_arr(my_prompt);
-	system("leaks minishell");
+	// system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 
