@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_exec.c                                          :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/02/01 18:37:28 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:52:41 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char **ft_pathiter(char **path, char *cmd)
 	return(path);
 }
 
-static char **path_abs(char **env, char *cmd)
+static char **ft_path_abs(char **env, char *cmd)
 {
 	char *path;
 	char **my_path;
@@ -48,14 +48,14 @@ static char **path_abs(char **env, char *cmd)
 	return(my_path);
 }
  
-int create_exec(char **argv, char **env)
+int ft_create_exec(char **argv, char **env)
 {
     char	**progpath;
     char	*test[]={"ls", (char*)0};
 	// le test doit contenir les flags/options si il y'en a
 	// ici ca prend en compte le [1]
 
-    progpath = path_abs(env, argv[0]);
+    progpath = ft_path_abs(env, argv[0]);
     if (!progpath)
     {
         perror("path");
@@ -96,7 +96,7 @@ int create_exec(char **argv, char **env)
 **	PUIS ON KILL LE PROCESSUS ENFANT
 **	ELSE (PID == 0) : LE PROCESSUS ENFANT EXECUTE LA COMMANDE*/
 
-void	cmd_exec(char **cmd, char **my_env)
+void	ft_cmd_exec(char **cmd, char **my_env)
 {
 	pid_t	pid;
 	int		status;
@@ -121,7 +121,7 @@ void	cmd_exec(char **cmd, char **my_env)
         }
         else
         {
-            if (create_exec(cmd, my_env) == EXIT_FAILURE)
+            if (ft_create_exec(cmd, my_env) == EXIT_FAILURE)
             {
                 perror("command not found");
                 exit(EXIT_FAILURE);

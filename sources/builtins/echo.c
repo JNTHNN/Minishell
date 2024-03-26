@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_echo.c                                          :+:      :+:    :+:   */
+/*   b_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/01/29 17:45:30 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:48:53 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **	echo ~+text = PWD + texte.
 */
 
-static int	check_option(char *option)
+static int	ft_check_option(char *option)
 {
 	int	i;
 
@@ -45,14 +45,14 @@ static int	check_option(char *option)
 // 	printf("15");
 // }
 
-void	echo_builtin(char **str)
+void	ft_echo_builtin(char **str)
 {
 	int	i;
 	int	option;
 
 	i = 1;
 	option = 0;
-	while (str[i] != NULL && check_option(str[i]) == 1)
+	while (str[i] != NULL && ft_check_option(str[i]) == 1)
 	{
 		option = 1;
 		i++;

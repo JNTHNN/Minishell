@@ -6,46 +6,46 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/04 15:04:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:59:16 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **envp)
 {
-	char	*prompt;
-	char	**my_env;
+	t_data	data;
 	char	**my_prompt;
-	// char	**path;
 
-	(void)argc;
-	(void)argv;
-	my_env = env;
-	// path = ft_split(getenv("PATH"), ':');
-	// execve(*path, &argv[2], env);
-	
-	av_init_signal();
-	while (19)
+	if (argc != 1 || argv[1])
+		ft_throw_error(0, ERR_ARG);
+	data.env = envp;
+	data.env_cpy = ft_arrcpy(envp);
+	ft_init_signal();
+	while (true)
 	{
-		prompt = readline("SHELLMINI$>");
-		if (prompt)
+		data.input = readline(PROMPT);
+		if (data.input)
 		{
-			my_prompt = ft_split(prompt, ' ');
-			add_history(prompt);
-			free(prompt);
+			ft_tokenize(&data);
+			my_prompt = ft_split(data.input, ' ');
+			add_history(data.input);
+			free(data.input);
 			if (!my_prompt || !*my_prompt)
 				continue ;
-			if (is_builtin(my_prompt) == false)
-				cmd_exec(my_prompt, my_env);
+			if (ft_is_builtin(my_prompt) == false)
+				ft_cmd_exec(my_prompt, data.env);
 			else
-				ft_builtin(my_prompt, my_env);
-		}
-		av_signal();
-	}
+				ft_builtin(my_prompt, data.env);
 		// free le **my_prompt
+			free_arr(my_prompt);
+		}
+		ft_signal();
+	}
+	// free le **my_prompt
+	free_arr(my_prompt);
 	system("leaks minishell");
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* pourquoi apres un exec, on sort du programme */

@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/12 15:07:29 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/03/19 17:01:34 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ NAME			:= minishell
 LIBFT_DIR 		:= ./libft/
 INC_DIR 		:= ./includes/
 SRC_DIR			:= ./sources/
-SUB_DIRS		:= builtins signals
 BUILD_DIR  		:= ./.build/
 
 # **************************************************************************** #
@@ -39,16 +38,22 @@ LIBFT 			:= libft.a
 SRC_FILES		:= main
 SIGNALS_SRC		:= signals
 BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
+LEXER_SRC		:= lexer
+UTILS_SRC		:= error utils lexer_utils lexer_utils2 lexer_utils3
+# PARSER_SRC		:=
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
-SRC 			+= $(addprefix $(SRC_DIR)signals/, $(addsuffix .c, $(SIGNALS_SRC)))
 SRC 			+= $(addprefix $(SRC_DIR)builtins/, $(addsuffix .c, $(BUILTINS_SRC)))
+SRC 			+= $(addprefix $(SRC_DIR)signals/, $(addsuffix .c, $(SIGNALS_SRC)))
+SRC 			+= $(addprefix $(SRC_DIR)lexer/, $(addsuffix .c, $(LEXER_SRC)))
+SRC 			+= $(addprefix $(SRC_DIR)utils/, $(addsuffix .c, $(UTILS_SRC)))
+# SRC 			+= $(addprefix $(SRC_DIR)parser/, $(addsuffix .c, $(PARSER_SRC)))
 
 # **************************************************************************** #
 # 							  	Object files								   #
 # **************************************************************************** #
 
-OBJS := $(SRC:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)	
+OBJS := $(SRC:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)
 DEPS        	:= $(OBJS:.o=.d)
 
 # **************************************************************************** #

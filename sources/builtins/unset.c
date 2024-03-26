@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JG_unset.c                                         :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/02/01 12:30:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:57:36 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #include <stdlib.h>
 
-void my_unset(char **args, char ***envp) 
+void ft_my_unset(char **args, char ***envp) 
 {
     int i = 0;
     
@@ -26,7 +26,7 @@ void my_unset(char **args, char ***envp)
         int j = 0;
         while ((*envp)[j]) 
         {
-            if (strncmp(args[i], (*envp)[j], strlen(args[i])) == 0) 
+            if (ft_strncmp(args[i], (*envp)[j], ft_strlen(args[i])) == 0) 
             {
                 free((*envp)[j]);
                 while ((*envp)[j]) 

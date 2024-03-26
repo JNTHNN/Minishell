@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:12 by gdelvign         ###   ########.fr       */
+/*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/18 20:23:24 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*	exit sans rien va quitter le processus en cours donc le minishell
-**	veuillez a bien free tout ce qui a pu etre allouer
-**
-*/
+#ifndef ERROR_H
+# define ERROR_H
 
-#include "../../includes/minishell.h"
+# define ERR_ARG "❌\033[0;31m  Minishell doesn't accept arguments \033[0m\n"
+# define ERR_QUOTES "❌\033[0;31m Unexpected token : unclosed quote \033[0m\n"
+# define ERR_MEM "❌\033[0;31m Something went wrong with memory allocation \033[0m\n"
 
-void	ft_exit_builtins(void)
-{
-	ft_putendl_fd("exit", 1);
-	system("leaks minishell");
-	exit(EXIT_SUCCESS);
-}
+/* Handle errors : error.c */
+void	ft_throw_error(int err_code, char *err_msg);
+
+#endif
