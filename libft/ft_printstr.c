@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_char.c                                   :+:      :+:    :+:   */
+/*   ft_printstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 14:44:59 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/11 12:06:23 by anvoets          ###   ########.fr       */
+/*   Created: 2023/11/03 11:00:55 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_printf_char(char c)
+size_t	ft_printstr(va_list lst, size_t *counter)
 {
-	return (write(1, &c, 1));
+	void		*value;
+
+	value = (char *)va_arg(lst, char *);
+	if (!value)
+		ft_putstr("(null)", counter);
+	else
+	{
+		if (ft_putstr(value, counter))
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

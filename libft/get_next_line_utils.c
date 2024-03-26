@@ -3,111 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 11:59:55 by anvoets           #+#    #+#             */
-/*   Updated: 2024/02/01 11:31:59 by jgasparo         ###   ########.fr       */
+/*   Created: 2023/11/06 12:17:13 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	av_check_nl(char *str)
+size_t	ft_find_endline(char *s)
 {
 	size_t	i;
 
 	i = 0;
-	if (!str)
-		return (NO);
-	while (str[i] != '\0')
+	if (s)
 	{
-		if (str[i] == '\n')
-			return (YES);
-		i++;
+		while (s[i])
+		{
+			if (s[i] == '\n')
+				return (1);
+			i++;
+		}
 	}
-	return (NO);
-}
-
-size_t	av_line_len(char *str, char c)
-{
-	size_t	cnt;
-
-	cnt = 0;
-	if (!str)
-		return (0);
-	while (str[cnt] != c && str[cnt] != '\0')
-		cnt++;
-	if (str[cnt] == '\n')
-		cnt++;
-	return (cnt);
-}
-
-char	*av_buff_move(char *buff)
-{
-	size_t	i;
-	size_t	t;
-	char	temp[BUFFER_SIZE + 1];
-
-	i = 0;
-	t = 0;
-	while (buff[i] != '\n' && buff[i])
-		i++;
-	if (buff[i])
-		i++;
-	while (buff[i])
-		temp[t++] = buff[i++];
-	temp[t] = '\0';
-	t = 0;
-	while (temp[t])
-	{
-		buff[t] = temp[t];
-		t++;
-	}
-	buff[t] = '\0';
 	return (0);
 }
 
-size_t	av_readnclear(int fd, char *buff)
+char	*ft_strjoin_gnl(char *bucket, char *buffer)
 {
-	size_t	check;
 	size_t	i;
+	size_t	j;
+	size_t	size;
+	char	*str;
 
-	check = 0;
+	size = ft_strlen(bucket) + ft_strlen(buffer);
+	if (!size)
+		return (free_elem(&bucket, NULL));
+	str = malloc(sizeof(char) * (size + 1));
+	if (!str)
+		return (free_elem(&bucket, NULL));
 	i = 0;
-	while (buff[i])
-	{
-		buff[i] = '\0';
-		i++;
-	}
-	check = read(fd, buff, BUFFER_SIZE);
-	return (check);
+	j = 0;
+	while (bucket[i] && j < size)
+		str[j++] = bucket[i++];
+	i = 0;
+	while (buffer[i] && j < size)
+		str[j++] = buffer[i++];
+	str[j] = '\0';
+	free(bucket);
+	return (str);
 }
 
-char	*av_line_join(char *s1, char *s2)
+char	*free_elem(char **elem1, char **elem2)
 {
-	size_t	len_s1;
-	size_t	len_s2;
-	size_t	i;
-	char	*res;
-
-	len_s1 = av_line_len(s1, '\0');
-	len_s2 = av_line_len(s2, '\n');
-	i = 0;
-	res = malloc(((len_s1 + len_s2) + 1) * sizeof(char));
-	if (!res)
+	if (elem1 && *elem1)
 	{
-		free(s1);
-		return (0);
+		free(*elem1);
+		*elem1 = NULL;
 	}
-	while (i < len_s1 + len_s2)
+	if (elem2 && *elem2)
 	{
-		if (i < len_s1)
-			res[i] = (unsigned char)s1[i];
-		else
-			res[i] = (unsigned char)s2[i - len_s1];
-		i++;
+		free(*elem2);
+		*elem2 = NULL;
 	}
-	free(s1);
-	res[i] = '\0';
-	return (res);
+	return (NULL);
 }

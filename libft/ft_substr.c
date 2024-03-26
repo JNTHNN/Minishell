@@ -3,43 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anvoets <anvoets@student.s19.be>           +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 14:27:45 by anvoets           #+#    #+#             */
-/*   Updated: 2023/10/11 12:05:36 by anvoets          ###   ########.fr       */
+/*   Created: 2023/10/12 13:35:27 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/01/16 10:23:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	av_minsize(size_t a, size_t b)
-{
-	if (a > b)
-		return (b);
-	return (a);
-}
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*substr;
-	size_t	len_s;
+	char		*substr;
+	size_t		i;
 
 	if (!s)
 		return (0);
-	len_s = ft_strlen(s);
-	if (len >= ft_strlen(s) - start && start < ft_strlen(s))
-		len = ft_strlen(s) - start;
-	if (start >= len_s)
-	{
-		substr = malloc(sizeof(char));
-		if (!substr)
-			return (0);
-		substr[0] = '\0';
-		return (substr);
-	}
-	substr = malloc((av_minsize(len_s, len) + 1) * sizeof(char));
+	if (start > ft_strlen(s))
+		substr = (char *) malloc(sizeof(char));
+	else if (ft_strlen(s) - start > len)
+		substr = (char *) malloc((len + 1) * sizeof(char));
+	else
+		substr = (char *) malloc((ft_strlen(s) - start + 1) * sizeof(char));
 	if (!substr)
 		return (0);
-	ft_strlcpy(substr, &s[start], av_minsize(len_s, len) + 1);
+	i = 0;
+	while (i < len && start < ft_strlen(s))
+		substr[i++] = s[start++];
+	substr[i] = '\0';
 	return (substr);
 }

@@ -1,40 +1,111 @@
-OBJCS		:=	sources/main.o \
-				sources/signals/AV_signals.o \
-				sources/builtins/JG_builtins.o \
-				sources/builtins/JG_env.o \
-				sources/builtins/JG_pwd.o \
-				sources/builtins/JG_echo.o \
-				sources/builtins/JG_cd.o \
-				sources/builtins/JG_exit.o \
-				sources/builtins/JG_export.o \
-				sources/builtins/JG_exec.o \
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
+#    Updated: 2024/03/12 15:07:29 by gdelvign         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-LIBFT_A		:=	libft/libft.a
-INCLUDES	:=	includes/minishell.h
-NAME		:=	minishell
+# **************************************************************************** #
+# 							Name of the executable							   #
+# **************************************************************************** #
 
-CFLAGS		:=	-Wall -Wextra -Werror
-READL		:=	-L/usr/local/lib -I/usr/local/include -lreadline -L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
+NAME			:= minishell
 
-all			:	libgen $(INCLUDES) $(NAME)
+# **************************************************************************** #
+# 								  File paths								   #
+# **************************************************************************** #
 
-$(NAME)		:	$(INCLUDES) $(OBJCS)
-	${CC} ${CFLAGS} $(OBJCS) $(LIBFT_A) $(READL) -o ${NAME}
+LIBFT_DIR 		:= ./libft/
+INC_DIR 		:= ./includes/
+SRC_DIR			:= ./sources/
+SUB_DIRS		:= builtins signals
+BUILD_DIR  		:= ./.build/
 
-%.o			:	%.c
-	$(CC) -c $(CFLAGS) -o $@ $^
+# **************************************************************************** #
+# 							  Librairies needed								   #
+# **************************************************************************** #
 
-libgen		:
-	@make -C libft
+LIBFT 			:= libft.a
 
-clean		:
-	@rm -f $(OBJCS)
-	@make clean -C libft
+# **************************************************************************** #
+# 							  	Source files								   #
+# **************************************************************************** #
 
-fclean		:	clean
-	@rm -f $(NAME)
-	@make fclean -C libft
+SRC_FILES		:= main
+SIGNALS_SRC		:= signals
+BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 
-re			:	fclean all
+SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
+SRC 			+= $(addprefix $(SRC_DIR)signals/, $(addsuffix .c, $(SIGNALS_SRC)))
+SRC 			+= $(addprefix $(SRC_DIR)builtins/, $(addsuffix .c, $(BUILTINS_SRC)))
 
-.PHONY		:	all clean fclean re libgen
+# **************************************************************************** #
+# 							  	Object files								   #
+# **************************************************************************** #
+
+OBJS := $(SRC:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)	
+DEPS        	:= $(OBJS:.o=.d)
+
+# **************************************************************************** #
+# 							  Compilation flags								   #
+# **************************************************************************** #
+
+CC 				:= cc
+CFLAGS 			:= -Wall -Wextra -Werror
+CPPFLAGS		:= -MMD -MP
+READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
+					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
+DEBUG			:= -O0 -g #-fsanitize=address
+
+# **************************************************************************** #
+# 							  	   Colors	    							   #
+# **************************************************************************** #
+
+GREEN 			= \033[0;32m
+CYAN 			= \033[36;1m
+YELLOW			= \033[33;1m
+WHITE 			= \033[0m
+
+# **************************************************************************** #
+# 							  	   Rules	    							   #
+# **************************************************************************** #
+
+
+all : $(NAME)
+
+-include $(DEPS)
+$(BUILD_DIR)%.o:$(SRC_DIR)%.c
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@ -I $(INC_DIR)
+
+$(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
+	@echo "${CYAN}Generating project executable.${WHITE}"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) $(DEBUG) -o $(NAME)
+	@echo "${GREEN}Compilation successful !${WHITE}"
+
+$(LIBFT_DIR)$(LIBFT):
+	@echo "\n$(CYAN)Generating Libft...$(WHITE)"
+	@make -C $(LIBFT_DIR)
+	@echo "$(GREEN)Libft created!$(WHITE)\n"
+
+clean :
+	@echo "\n${CYAN}Deleting object files...${WHITE}"
+	@$(RM) -r $(BUILD_DIR)
+	@make clean -C $(LIBFT_DIR)
+	@echo "$(GREEN)Object files were deleted.$(WHITE)\n"
+	
+fclean : clean
+	@echo "$(CYAN)Cleaning all...$(WHITE)\n"
+	@make fclean -C $(LIBFT_DIR)
+	@echo "$(GREEN)$(LIBFT) was deleted.$(WHITE)"
+	@$(RM) $(NAME)
+	@echo "$(GREEN)$(NAME) was deleted.$(WHITE)"
+
+re : fclean all
+
+.PHONY : all clean fclean re

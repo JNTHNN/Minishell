@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AV_signals.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:43:30 by anvoets           #+#    #+#             */
-/*   Updated: 2023/11/22 11:44:35 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/04 14:57:41 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	av_input(char *in)
 	return (EXIT_SUCCESS);
 }
 
-/* replace ctrl+D,\,C (/D,/C,/\) with empty space to not parse signal commands (i think)*/
+/* replace ctrl+D,\,C (/D,/C,/\) with empty space to not parse signal commands (i think) */
 int	av_init_signal(void)
 {
 	struct termios	term;
