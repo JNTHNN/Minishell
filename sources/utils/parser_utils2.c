@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 10:29:00 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 11:25:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:42:18 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 	return (new_node);
 }
 
-int	ft_add_redir_node(t_redir_lst *lst, t_tok_lst *token, int cmd_nb)
+int	ft_add_redir_node(t_redir_lst **lst, t_tok_lst *token, int cmd_nb)
 {
 	t_redir_lst	*node;
 
 	node = ft_create_new_redir(*token, cmd_nb);
+	printf("NODE REDIR = %i\n", node->r_type);
 	if (!node)
 		return (EXIT_FAILURE);
-	ft_redir_lstadd_back(&lst, node);
+	ft_redir_lstadd_back(lst, node);
 	return (EXIT_SUCCESS);
 }

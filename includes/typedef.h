@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 10:13:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:58:33 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ struct s_cmd
 	char				**args;
 	t_redir_lst			*redirections;
 	t_builtin			ft_builtin;
+	t_data				*data;
 	struct s_cmd		*left;
 	struct s_cmd		*right;
 };

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 11:23:29 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:51:25 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,45 @@ int	ft_count_pipes(t_tok_lst *lst)
 	return (i);
 }
 
+void	ft_remove_tok_nodes(t_tok_lst *node)
+{
+	t_tok_lst	*left;
+	t_tok_lst	*right;
 
+	if (node == NULL || node->next == NULL)
+		return ;
+	left = node->prev;
+	right = node->next->next;
+	if (left != NULL)
+		left->next = right;
+	if (right != NULL)
+		right->prev = left;
+	if (node->next != NULL)
+		free(node->next);
+	node->next = NULL;
+	free(node);
+	node = NULL;
+}
+
+void	ft_remove_redir(t_tok_lst *lst)
+{
+	t_tok_lst	*current;
+	t_tok_lst	*tmp;
+
+	current = lst;
+	while (current)
+	{
+		tmp = current->next;
+		if (current->type == OPERATOR && current->r_type != R_PIPE)
+		{
+			tmp = current->next->next;
+			ft_remove_tok_nodes(current);
+		}
+		current = tmp;
+		if (current)
+			printf("TOKEN = %s\n", current->token);
+	}
+}
 
 int	ft_store_redirections(t_data *data)
 {
@@ -36,11 +74,11 @@ int	ft_store_redirections(t_data *data)
 	int			i;
 
 	current = data->tokens;
-	redirections = data->redirections;
 	cmd_nb = ft_count_pipes(current) + 1;
 	redirections = (t_redir_lst **)malloc(cmd_nb * sizeof(t_redir_lst *));
 	if (!redirections)
 		return (E_MEM);
+	data->redirections = redirections;
 	i = -1;
 	while (++i < cmd_nb)
 		redirections[i] = NULL;
@@ -51,7 +89,7 @@ int	ft_store_redirections(t_data *data)
 		while (current && current->type == WORD)
 			current = current->next;
 		if (!current)
-			return (EXIT_SUCCESS);
+			break ;
 		if (current->r_type == R_PIPE)
 		{
 			current = current->next;
@@ -64,10 +102,26 @@ int	ft_store_redirections(t_data *data)
 			return (ft_find_redir_type(current->next->token,
 					current->next->type));
 		if (current->type == OPERATOR)
+			ft_add_redir_node(&redirections[i], current, i + 1);
+		if (current)
+			current = current->next;
+	}
+
+	// REMOVE REDIRECTIONS from token list
+	ft_remove_redir(data->tokens);
+
+	// PRINT redirections 
+	i = 0;
+	while (i < cmd_nb)
+	{
+		printf("tu es la\n");
+		t_redir_lst *node = redirections[i];
+		while (node != NULL)
 		{
-			// TODO: add node to data->redirections HERE
-			ft_add_redir_node(redirections[i], current, i + 1);
+			printf("node type = %i, %s\n", node->r_type, node->filename);
+			node = node->next;
 		}
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -79,11 +133,13 @@ int	ft_parse(t_data *data)
 	char		**cmd_args;
 	int			arg_count;
 	int			i;
+	int			ret;
 
 	// Store redirections and remove them from tokens list
 	data->cmd = NULL;
 	// TODO: store function HERE
-
+	ret = ft_store_redirections(data);
+	printf("ret = %i\n", ret);
 
 	// Create all commands
 	current = data->tokens;
