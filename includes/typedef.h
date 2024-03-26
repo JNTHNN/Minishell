@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 14:58:33 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:54:15 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_env
 
 struct s_cmd
 {
+	int					id;
 	char				**args;
 	t_redir_lst			*redirections;
 	t_builtin			ft_builtin;

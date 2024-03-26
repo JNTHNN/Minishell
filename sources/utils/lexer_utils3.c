@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:56:26 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 10:22:46 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:37:13 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ bool	ft_check_pipes(t_tok_lst *lst)
 	t_tok_lst	*last;
 
 	last = ft_tok_lstlast(lst);
-	if ((lst->type == OPERATOR && lst->token[0] == PIPE)
-		|| (last->type == OPERATOR && last->token[0] == PIPE))
+	if (lst->r_type == R_PIPE || last->r_type == R_PIPE)
 		return (true);
 	return (false);
 }
@@ -42,7 +41,7 @@ t_redirect_type	ft_find_redir_type(char *token, t_tok_type type)
 {
 	size_t	size;
 
-	if (type == OPERATOR)
+	if (token[0] && type == OPERATOR)
 	{
 		size = ft_strlen(token);
 		if (size == 1 && token[0] == PIPE)

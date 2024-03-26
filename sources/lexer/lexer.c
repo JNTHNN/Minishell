@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 11:45:51 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:40:21 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ int	ft_tokenize(t_data *data)
 	data->tokens = NULL;
 	if (ft_check_quotes(data->input))
 		return (E_QUOTES);
-	if (ft_trim_input(&data->input))
-		return (E_MEM);
 	if (ft_get_tokens(data))
 		return (E_MEM);
 	if (ft_check_pipes(data->tokens))

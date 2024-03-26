@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 15:00:20 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:54:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,14 @@ void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 	}
 }
 
-t_cmd	*ft_create_new_cmd(char ***args, t_data *data)
+t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 {
 	t_cmd	*new_node;
 
 	new_node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
+	new_node->id = id;
 	new_node->args = ft_arrcpy(*args);
 	if (!new_node->args)
 		return (NULL);
@@ -75,11 +76,11 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data)
 	return (new_node);
 }
 
-int	ft_add_cmd_node(char ***args, t_data *data)
+int	ft_add_cmd_node(char ***args, t_data *data, int id)
 {
 	t_cmd	*node;
 
-	node = ft_create_new_cmd(args, data);
+	node = ft_create_new_cmd(args, data, id);
 	if (!node)
 		return (EXIT_FAILURE);
 	ft_cmd_lstadd_back(&data->cmd, node);

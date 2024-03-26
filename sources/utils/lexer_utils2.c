@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:07:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/20 12:00:16 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:17:03 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_trim_input(char **input)
 	char	*trimmed;
 
 	trimmed = ft_strtrim(*input, " ");
-	if (trimmed)
+	if (trimmed != NULL)
 	{
 		free(*input);
 		*input = trimmed;

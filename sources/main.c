@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/25 11:06:02 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:40:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int	main(int argc, char **argv, char **envp)
 	while (true)
 	{
 		data.input = readline(PROMPT);
-		if (data.input)
+		if (ft_trim_input(&data.input))
+			return (E_MEM);
+		if (data.input && data.input[0])
 		{
 			add_history(data.input);
 			ret = ft_tokenize(&data);
