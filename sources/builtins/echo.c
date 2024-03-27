@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_echo.c                                           :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/12 15:48:53 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:50:34 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	ft_check_option(char *option)
 // 	printf("15");
 // }
 
-void	ft_echo_builtin(char **str)
+void	ft_echo(char **str)
 {
 	int	i;
 	int	option;

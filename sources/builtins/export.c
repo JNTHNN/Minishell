@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:54:44 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:51:31 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void ft_show_list(t_env *head)
     }
 }
 
-void	ft_export_builtin(char **cmd, char **env)
+void	ft_export(char **cmd, char **env)
 {
 	t_env *head;
 

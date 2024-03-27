@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 09:30:54 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 22:37:06 by gdelvign         ###   ########.fr       */
+/*   Created: 2024/03/26 10:29:00 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/27 10:04:10 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_tok_lstsize(t_tok_lst *lst)
+int	ft_redir_lstsize(t_redir_lst *lst)
 {
 	int	size;
 
@@ -28,7 +28,7 @@ int	ft_tok_lstsize(t_tok_lst *lst)
 	return (size);
 }
 
-t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst)
+t_redir_lst	*ft_redir_lstlast(t_redir_lst *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -37,15 +37,15 @@ t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst)
 	return (lst);
 }
 
-void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
+void	ft_redir_lstadd_back(t_redir_lst **lst, t_redir_lst *new)
 {
-	t_tok_lst	*last;
+	t_redir_lst	*last;
 
 	if (!lst || !new)
 		return ;
-	if (ft_tok_lstsize(*lst))
+	if (ft_redir_lstsize(*lst))
 	{
-		last = ft_tok_lstlast(*lst);
+		last = ft_redir_lstlast(*lst);
 		last->next = new;
 		new->prev = last;
 	}
@@ -56,29 +56,28 @@ void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
 	}
 }
 
-t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
+t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 {
-	t_tok_lst	*new_node;
+	t_redir_lst	*new_node;
 
-	new_node = (t_tok_lst *)malloc(sizeof(t_tok_lst));
+	new_node = (t_redir_lst *)malloc(sizeof(t_redir_lst));
 	if (!new_node)
 		return (NULL);
-	new_node->id = id;
-	new_node->token = str;
-	new_node->r_type = ft_find_redir_type(str, type);
-	new_node->type = type;
+	new_node->r_type = token.r_type;
+	new_node->filename = ft_strdup(token.next->token);
+	new_node->cmd_nb = cmd_nb;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);
 }
 
-int	ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data)
+int	ft_add_redir_node(t_redir_lst **lst, t_tok_lst *token, int cmd_nb)
 {
-	t_tok_lst	*node;
+	t_redir_lst	*node;
 
-	node = ft_create_new_tok(str, id, type);
+	node = ft_create_new_redir(*token, cmd_nb);
 	if (!node)
 		return (EXIT_FAILURE);
-	ft_tok_lstadd_back(&data->tokens, node);
+	ft_redir_lstadd_back(lst, node);
 	return (EXIT_SUCCESS);
 }

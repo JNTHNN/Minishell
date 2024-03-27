@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:51:10 by gdelvign         ###   ########.fr       */
+/*   Created: 2024/03/20 08:42:22 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/03/27 12:33:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*	exit sans rien va quitter le processus en cours donc le minishell
-**	veuillez a bien free tout ce qui a pu etre allouer
-**
-*/
+#ifndef PARSER_H
+# define PARSER_H
 
-#include "../../includes/minishell.h"
+int		ft_parse(t_data *data);
+t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id);
+int		ft_add_cmd_node(char ***args, t_data *data, int id);
+int		ft_add_redir_node(t_redir_lst **lst, t_tok_lst *token, int cmd_nb);
 
-void	ft_exit(void)
-{
-	ft_putendl_fd("exit", 1);
-	//system("leaks minishell");
-	exit(EXIT_SUCCESS);
-}
+#endif

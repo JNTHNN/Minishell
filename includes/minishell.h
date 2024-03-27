@@ -6,90 +6,68 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/19 15:52:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:00:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
 # include <errno.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <termios.h>
 # include <unistd.h>
-# include <stdbool.h> // type bool
+# include <stdbool.h>
+# include <termios.h>
+# include <signal.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <sys/syslimits.h> // PATH_MAX
+# include "../libft/libft.h"
+# include "typedef.h"
 # include "error.h"
 # include "lexer.h"
+# include "parser.h"
 # include "utils.h"
 # include <sys/wait.h>
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
-typedef enum e_cmd_type
-{
-	CMD_SIMPLE,
-	CMD_BUILTIN,
-	CMD_PIPE,
-	CMD_REDIRECT
-}	t_cmd_type;
-
-typedef struct s_data
-{
-	char		*input;
-	char		**env;
-	char		**env_cpy;
-	t_tok_lst	*tokens;
-}	t_data;
-
-typedef struct s_ast_node
-{
-	t_cmd_type			type;
-	char				**args;
-	struct t_ast_node	*left;
-	struct t_ast_node	*right;
-}	t_ast_node;
-
-typedef struct s_env
-{
-	char			*var;
-	struct s_env	*next;
-}	t_env;
-
-void		ft_show_env(char **env);
-int			ft_input(char *in);
+void	ft_show_env(char **env);
+int		ft_input(char *in);
 
 /* Handle tokenization : t_tokenizer.c */
-t_tok_lst	*ft_tokenize(t_data *data);
+int		ft_tokenize(t_data *data);
 
 /* Handle signals : s_signals.c	*/
-void		ft_signal(void);
-void		ft_sigint(int sig);
-int			ft_init_signal(void);
-void		rl_replace_line(const char *text, int clear_undo);
+void	ft_signal(void);
+void	ft_sigint(int sig);
+int		ft_init_signal(void);
+void	rl_replace_line(const char *text, int clear_undo);
 
 /* Handle all builtins : builtins.c	*/
-bool		ft_is_builtin(char **cmd);
-void		ft_builtin(char **prompt, char **my_env);
+bool	ft_is_builtin(char *name);
+void	ft_builtin(char **prompt, char **my_env);
 
-void		ft_show_env(char **env);
-void		ft_cd_builtin(char **path);
-void		ft_echo_builtin(char **str);
-void		ft_exit_builtins(void);
-void		ft_pwd_builtin(void);
-void		ft_export_builtin(char **cmd, char **my_env);
+void	ft_env(char **env);
+void	ft_cd(char **path);
+void	ft_echo(char **str);
+void	ft_exit(void);
+void	ft_pwd(void);
+void	ft_export(char **cmd, char **my_env);
 
 /*		JG_exec			*/
-int			ft_create_exec(char **argv, char **env);
-void		ft_cmd_exec(char **cmd, char **env);
+int		ft_create_exec(char **argv, char **env);
+void	ft_cmd_exec(char **cmd, char **env);
 
 /*		UTILS		*/
 
-char		*ft_strcat(char *dest, const char *src);
+char	*ft_strcat(char *dest, const char *src);
+
+/* Handle errors : error.c */
+void	ft_throw_error(t_data *data, int err_code);
+
+/* Lexer utils to handle t_tok_lst : lexer_utils.c */
+int		ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data);
 
 #endif
