@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/30 11:30:32 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:30:58 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,34 @@ int	ft_init_redir(t_redir_lst ***redirections, t_data **data, int *cmd_nb)
 	return (EXIT_SUCCESS);
 }
 
+int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
+{
+	while (*current)
+	{
+		while (*current && (*current)->type == WORD)
+			*current = (*current)->next;
+		if (!*current)
+			break ;
+		if ((*current)->r_type == R_PIPE)
+		{
+			*current = (*current)->next;
+			(*i)++;
+			continue ;
+		}
+		if (!(*current)->next)
+			return (E_REDIR);
+		if ((*current)->next->type == OPERATOR)
+			return (ft_find_redir_type((*current)->next->token,
+					(*current)->next->type));
+		if ((*current)->type == OPERATOR)
+			if (ft_add_redir_node(&(*redirections)[*i], *current, *i + 1))
+				return (E_MEM);
+		if (*current)
+			*current = (*current)->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
@@ -80,36 +108,18 @@ int	ft_store_redirections(t_data *data)
 	int			cmd_nb;
 	int			ret;
 	int			i;
+	int			ret;
+	int			i;
 
 	cmd_nb = 0;
+	i = 0;
 	current = data->tokens;
 	if (ft_init_redir(&redirections, &data, &cmd_nb))
 	if (ft_init_redir(&redirections, &data, &cmd_nb))
 		return (E_MEM);
-	i = 0;
-	while (current)
-	{
-		while (current && current->type == WORD)
-			current = current->next;
-		if (!current)
-			break ;
-		if (current->r_type == R_PIPE)
-		{
-			current = current->next;
-			i++;
-			continue ;
-		}
-		if (!current->next)
-			return (E_REDIR);
-		if (current->next->type == OPERATOR)
-			return (ft_find_redir_type(current->next->token,
-					current->next->type));
-		if (current->type == OPERATOR)
-			if (ft_add_redir_node(&redirections[i], current, i + 1))
-				return (E_MEM);
-		if (current)
-			current = current->next;
-	}
+	ret = ft_redir_loop(&current, &redirections, &i);
+	if (ret)
+		return (ret);
 	ft_remove_redir(data->tokens);
 	return (EXIT_SUCCESS);
 }
