@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 15:25:40 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:07:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,34 +71,34 @@ bool	ft_is_builtin(char *name)
 	return (false);
 }
 
-void	ft_builtin(char **new_prompt, char **my_env)
+void	ft_builtin(char **arg, char **my_env)
 {
-	if (new_prompt)
-		add_history(*new_prompt);
-	if (!ft_strncmp(new_prompt[0], "echo", 4))
-		ft_echo(new_prompt);
-	if (!ft_strncmp(new_prompt[0], "cd", 2))
+	if (arg && *arg)
+		add_history(*arg);
+	if (!ft_strncmp(arg[0], "echo", 4))
+		ft_echo(arg);
+	if (!ft_strncmp(arg[0], "cd", 2))
 		// cd_builtins(prompt + 3, my_env);
-		ft_cd(new_prompt);
-	if (!ft_strncmp(new_prompt[0], "pwd", 3))
+		ft_cd(arg);
+	if (!ft_strncmp(arg[0], "pwd", 3))
 		ft_pwd();
-	if (!ft_strncmp(new_prompt[0], "export", 6))
-		ft_export(new_prompt, my_env);
-	if (!ft_strncmp(new_prompt[0], "unset", 5))
+	if (!ft_strncmp(arg[0], "export", 6))
+		ft_export(arg, my_env);
+	if (!ft_strncmp(arg[0], "unset", 5))
 		return ;
-	if (!ft_strncmp(new_prompt[0], "env", 3))
+	if (!ft_strncmp(arg[0], "env", 3))
 		ft_env(my_env);
-	if (!ft_strncmp(new_prompt[0], "exit", 4))
+	if (!ft_strncmp(arg[0], "exit", 4))
 		ft_exit();
-	if (!ft_strncmp(new_prompt[0], "system", 6))
+	if (!ft_strncmp(arg[0], "system", 6))
 		system("leaks minishell");
-	if (!ft_strncmp(new_prompt[0], "xxx", 3))
+	if (!ft_strncmp(arg[0], "xxx", 3))
 	{
-		while (*new_prompt)
-			printf("%s\n", *new_prompt++);
+		while (*arg)
+			printf("%s\n", *arg++);
 	}
 	// else
-	// 	create_exec(new_prompt, my_env);
+	// 	create_exec(arg, my_env);
 
 	// create_exec(&prompt, my_env);
 		// test_exec(prompt, my_env);

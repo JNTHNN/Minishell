@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:02:12 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/27 20:46:11 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:26:00 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,19 @@
 	/* end of printing results */
 	/*	DANS FT_PARSE	*/
 
-static const char	*redirect_type_to_string(t_redirect_type type) {
+static const char	*redirect_type_to_string(t_redirect_type type)
+{
 	switch (type) {
 		case R_PIPE:
-			return "R_PIPE";
+			return "R_PIPE / |";
 		case IN:
-			return "IN";
+			return "IN / <";
 		case HEREDOC:
-			return "HEREDOC";
+			return "HEREDOC / <<";
 		case OUT:
-			return "OUT";
+			return "OUT / >";
 		case OUT_T:
-			return "OUT_T";
+			return "OUT_T / >>";
 		default:
 			return "UNKNOWN";
 	}
@@ -82,7 +83,8 @@ void	print_parse(t_cmd *cmd)
 		}
 		while (cmd->args[++i])
 		{	
-			printf("ARG [%d] = %s\n", i, cmd->args[i]);
+	
+			printf("ARG [%d] [%zu] = %s\n", i, ft_strlen(cmd->args[i]), cmd->args[i]);
 		}
 		printf("IS BUILTIN = ");
 		if (cmd->is_builtin == 1)

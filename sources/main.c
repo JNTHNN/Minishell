@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/27 15:37:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:44:51 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 	int		ret;
-	char	**my_prompt;
 
 	if (argc != 1 || argv[1])
 	{
@@ -40,7 +39,6 @@ int	main(int argc, char **argv, char **envp)
 				ft_throw_error(&data, ret);
 				continue ;
 			}
-			my_prompt = ft_split(data.input, ' ');
 			free(data.input);
 			ret = ft_parse(&data);
 			if (ret)
@@ -48,22 +46,20 @@ int	main(int argc, char **argv, char **envp)
 				ft_throw_error(&data, ret);
 				continue ;
 			}
-			if (!my_prompt || !*my_prompt)
-				continue ;
-			if (ft_is_builtin(my_prompt[0]) == false)
-				ft_cmd_exec(my_prompt, data.env);
+			if (ft_is_builtin(data.cmd->args[0]) == false)
+				ft_cmd_exec(data.cmd->args, data.env);
 			else
-				ft_builtin(my_prompt, data.env);
-		// free le **my_prompt
-			free_arr(my_prompt);
+				ft_builtin(data.cmd->args, data.env);
+		// free le data
 		}
 		ft_signal();
 	}
-	// free le **my_prompt
-	free_arr(my_prompt);
-	// //system("leaks minishell");
+	// system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
+
+/*	SEGFAULT QUAND ECHO SEUL	*/
+
 
 /* pourquoi apres un exec, on sort du programme */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:51:10 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:43:16 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 void	ft_exit(void)
 {
 	ft_putendl_fd("exit", 1);
-	//system("leaks minishell");
+	// system("leaks minishell");
 	exit(EXIT_SUCCESS);
 }

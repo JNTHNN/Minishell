@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:50:34 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:23:51 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_echo(char **str)
 
 	i = 1;
 	option = 0;
-	while (str[i] != NULL && ft_check_option(str[i]) == 1)
+	while (str && str[i] != NULL && ft_check_option(str[i]) == 1)
 	{
 		option = 1;
 		i++;
