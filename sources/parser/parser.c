@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/27 10:18:08 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:08:01 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ int	ft_parse(t_data *data)
 		{
 			if (current->token)
 				arg_count++;
-			printf("%i\n", arg_count);
 			current = current->next;
 		}
 		cmd_args = (char **)malloc((arg_count + 1) * sizeof(char *));
@@ -176,12 +175,15 @@ int	ft_parse(t_data *data)
 	while (cmd != NULL)
 	{
 		printf("CMD ID = %i\n", cmd->id);
+		if (cmd->redirections)
+			printf("Belongs to %i\n", cmd->redirections->cmd_nb);
 		i = 0;
 		while (cmd->args[i])
 		{
 			printf("ARGS %i = %s\n", i, cmd->args[i]);
 			i++;
 		}
+		printf("IS_BUILTIN = %i\n", cmd->is_builtin);
 		cmd = cmd->right;
 	}
 	/* end of printing results */	

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:19:45 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:54:59 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:51:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 // 	printf("%s\n", getcwd(where, 0));
 // }
 
-void	ft_pwd_builtin(void)
+void	ft_pwd(void)
 {
 	char	cwd[PATH_MAX];
 	

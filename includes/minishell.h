@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/22 13:49:24 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:00:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ int		ft_init_signal(void);
 void	rl_replace_line(const char *text, int clear_undo);
 
 /* Handle all builtins : builtins.c	*/
-bool	ft_is_builtin(char **cmd);
+bool	ft_is_builtin(char *name);
 void	ft_builtin(char **prompt, char **my_env);
 
-void	ft_show_env(char **env);
-void	ft_cd_builtin(char **path);
-void	ft_echo_builtin(char **str);
-void	ft_exit_builtins(void);
-void	ft_pwd_builtin(void);
-void	ft_export_builtin(char **cmd, char **my_env);
+void	ft_env(char **env);
+void	ft_cd(char **path);
+void	ft_echo(char **str);
+void	ft_exit(void);
+void	ft_pwd(void);
+void	ft_export(char **cmd, char **my_env);
 
 /*		JG_exec			*/
 int		ft_create_exec(char **argv, char **env);

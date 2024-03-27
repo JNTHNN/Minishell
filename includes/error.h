@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 16:23:31 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:12:32 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define ERR_ARG "❌\033[0;31m  Minishell doesn't accept arguments \033[0m\n"
 # define ERR_QUOTES "❌\033[0;31m Unexpected token : unclosed quote \033[0m\n"
 # define ERR_PIPE "❌\033[0;31m Syntax error near unexpected token `|' \033[0m\n"
-# define ERR_REDIR "❌\033[0;31m Syntax error near unexpected token \033[0m"
+# define ERR_REDIR "❌\033[0;31m Syntax error near unexpected token "
 # define ERR_MEM "❌\033[0;31m Something went wrong with memory allocation \
 \033[0m\n"
 

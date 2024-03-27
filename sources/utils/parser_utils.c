@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 22:54:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:24:23 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 	if (!new_node)
 		return (NULL);
 	new_node->id = id;
+	new_node->is_builtin = ft_is_builtin(*args[0]);
 	new_node->args = ft_arrcpy(*args);
 	if (!new_node->args)
 		return (NULL);
 	free_arr(*args);
-	new_node->redirections = NULL;
-	new_node->ft_builtin = NULL;
+	new_node->redirections = data->redirections[id - 1];
 	new_node->data = data;
 	new_node->left = NULL;
 	new_node->right = NULL;

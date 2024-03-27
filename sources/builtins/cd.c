@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:49:59 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:50:25 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 // }
 
 /* besoin de */
-void	ft_cd_builtin(char **path)
+void	ft_cd(char **path)
 {
 	if (chdir(path[1]) == -1)
 		perror("chdir()");

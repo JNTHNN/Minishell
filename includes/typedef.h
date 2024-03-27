@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 22:54:15 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:57:29 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ typedef struct s_data			t_data;
 typedef struct s_cmd			t_cmd;
 typedef struct s_redir_lst		t_redir_lst;
 typedef struct s_tok_lst		t_tok_lst;
-typedef int						(*t_builtin)(t_data *, t_cmd *);
 
 typedef enum e_tok_type
 {
@@ -74,7 +73,7 @@ struct s_cmd
 	int					id;
 	char				**args;
 	t_redir_lst			*redirections;
-	t_builtin			ft_builtin;
+	bool				is_builtin;
 	t_data				*data;
 	struct s_cmd		*left;
 	struct s_cmd		*right;
