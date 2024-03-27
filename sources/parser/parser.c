@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 23:03:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:18:08 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,21 @@ int	ft_count_pipes(t_tok_lst *lst)
 	return (i);
 }
 
-void	ft_remove_tok_nodes(t_tok_lst *node)
+void	ft_nullify_tok_nodes(t_tok_lst *node)
 {
-	t_tok_lst	*left;
-	t_tok_lst	*right;
+	t_tok_lst	*next;
 
-	if (node == NULL || node->next == NULL)
-		return ;
-	left = node->prev;
-	right = node->next->next;
-	if (left != NULL)
-		left->next = right;
-	if (right != NULL)
-		right->prev = left;
-	if (node->next != NULL)
-		free(node->next);
-	node->next = NULL;
-	free(node);
-	node = NULL;
+	next = node->next;
+	if (next && next->token)
+	{
+		free(next->token);
+		next->token = NULL;
+	}
+	if (node && node->token)
+	{
+		free(node->token);
+		node->token = NULL;
+	}
 }
 
 void	ft_remove_redir(t_tok_lst *lst)
@@ -58,7 +55,7 @@ void	ft_remove_redir(t_tok_lst *lst)
 		if (current->type == OPERATOR && current->r_type != R_PIPE)
 		{
 			tmp = current->next->next;
-			ft_remove_tok_nodes(current);
+			ft_nullify_tok_nodes(current);
 		}
 		current = tmp;
 	}
@@ -111,7 +108,6 @@ int	ft_store_redirections(t_data *data)
 	i = 0;
 	while (i < cmd_nb)
 	{
-		printf("tu es la\n");
 		t_redir_lst *node = redirections[i];
 		while (node != NULL)
 		{
@@ -147,7 +143,9 @@ int	ft_parse(t_data *data)
 		arg_count = 0;
 		while (current && current->r_type != R_PIPE)
 		{
-			arg_count++;
+			if (current->token)
+				arg_count++;
+			printf("%i\n", arg_count);
 			current = current->next;
 		}
 		cmd_args = (char **)malloc((arg_count + 1) * sizeof(char *));
@@ -156,6 +154,8 @@ int	ft_parse(t_data *data)
 		i = 0;
 		while (i < arg_count)
 		{
+			while (!start->token)
+				start = start->next;
 			cmd_args[i] = start->token;
 			start = start->next;
 			i++;
@@ -184,7 +184,6 @@ int	ft_parse(t_data *data)
 		}
 		cmd = cmd->right;
 	}
-	//printf("CMD ID = %i\n", cmd->id);
 	/* end of printing results */	
 	return (EXIT_SUCCESS);
 }

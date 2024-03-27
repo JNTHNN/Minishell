@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 10:29:00 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 14:42:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:04:10 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 	if (!new_node)
 		return (NULL);
 	new_node->r_type = token.r_type;
-	new_node->filename = token.next->token;
+	new_node->filename = ft_strdup(token.next->token);
 	new_node->cmd_nb = cmd_nb;
 	new_node->next = NULL;
 	new_node->prev = NULL;
@@ -76,7 +76,6 @@ int	ft_add_redir_node(t_redir_lst **lst, t_tok_lst *token, int cmd_nb)
 	t_redir_lst	*node;
 
 	node = ft_create_new_redir(*token, cmd_nb);
-	printf("NODE REDIR = %i\n", node->r_type);
 	if (!node)
 		return (EXIT_FAILURE);
 	ft_redir_lstadd_back(lst, node);
