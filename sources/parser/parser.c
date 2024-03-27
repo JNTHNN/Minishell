@@ -119,6 +119,37 @@ int	ft_store_redirections(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+static void	print_parse(t_cmd *cmd)
+{
+	int	i;
+	while (cmd != NULL)
+	{
+		i = -1;
+		printf("-------------------------\n");
+		printf("COMMAND ID [%d]\n", cmd->id);
+		printf("/\\/\\/\\/\\/\\\n");
+		if (cmd->args[0] == NULL)
+			printf("NO ARG\n");
+		if (cmd->redirections)
+			printf("REDIRECTION [%d] IN [%s]\n", cmd->redirections->r_type, cmd->redirections->filename);
+		while (cmd->args[++i])
+		{	
+			printf("ARG [%d] = %s\n", i, cmd->args[i]);
+		}
+		printf("IS BUILTIN = ");
+		if (cmd->is_builtin == 1)
+			printf("YES\n");
+		else
+			printf("NO\n");
+		printf("\\/\\/\\/\\/\\/\n");
+		cmd = cmd->right;
+		printf("-------------------------\n");
+			
+		
+	}
+
+}
+
 int	ft_parse(t_data *data)
 {
 	t_tok_lst	*current;
@@ -169,23 +200,24 @@ int	ft_parse(t_data *data)
 			start = current;
 		}
 	}
-	// PRINT CMD NODE ARGS
-	t_cmd	*cmd;
-	cmd = data->cmd;
-	while (cmd != NULL)
-	{
-		printf("CMD ID = %i\n", cmd->id);
-		if (cmd->redirections)
-			printf("Belongs to %i\n", cmd->redirections->cmd_nb);
-		i = 0;
-		while (cmd->args[i])
-		{
-			printf("ARGS %i = %s\n", i, cmd->args[i]);
-			i++;
-		}
-		printf("IS_BUILTIN = %i\n", cmd->is_builtin);
-		cmd = cmd->right;
-	}
-	/* end of printing results */	
+	// // PRINT CMD NODE ARGS
+	// t_cmd	*cmd;
+	// cmd = data->cmd;
+	// while (cmd != NULL)
+	// {
+	// 	printf("CMD ID = %i\n", cmd->id);
+	// 	if (cmd->redirections)
+	// 		printf("Belongs to %i\n", cmd->redirections->cmd_nb);
+	// 	i = 0;
+	// 	while (cmd->args[i])
+	// 	{
+	// 		printf("ARGS %i = %s\n", i, cmd->args[i]);
+	// 		i++;
+	// 	}
+	// 	printf("IS_BUILTIN = %i\n", cmd->is_builtin);
+	// 	cmd = cmd->right;
+	// }
+	// /* end of printing results */
+	print_parse(data->cmd);
 	return (EXIT_SUCCESS);
 }
