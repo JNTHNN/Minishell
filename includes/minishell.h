@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/27 15:00:06 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:36:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,10 @@ void	ft_throw_error(t_data *data, int err_code);
 
 /* Lexer utils to handle t_tok_lst : lexer_utils.c */
 int		ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data);
+
+/*	temp	*/
+void	print_parse(t_cmd *cmd); // printf_TEMP.c
+
+
 
 #endif

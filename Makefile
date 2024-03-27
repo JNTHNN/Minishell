@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
+#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/26 11:26:24 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/03/27 19:58:34 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ LIBFT 			:= libft.a
 # 							  	Source files								   #
 # **************************************************************************** #
 
-SRC_FILES		:= main
+SRC_FILES		:= main printf_TEMP
 SIGNALS_SRC		:= signals
 BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 LEXER_SRC		:= lexer

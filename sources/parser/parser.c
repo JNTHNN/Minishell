@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/27 15:08:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:33:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,36 +119,7 @@ int	ft_store_redirections(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static void	print_parse(t_cmd *cmd)
-{
-	int	i;
-	while (cmd != NULL)
-	{
-		i = -1;
-		printf("-------------------------\n");
-		printf("COMMAND ID [%d]\n", cmd->id);
-		printf("/\\/\\/\\/\\/\\\n");
-		if (cmd->args[0] == NULL)
-			printf("NO ARG\n");
-		if (cmd->redirections)
-			printf("REDIRECTION [%d] IN [%s]\n", cmd->redirections->r_type, cmd->redirections->filename);
-		while (cmd->args[++i])
-		{	
-			printf("ARG [%d] = %s\n", i, cmd->args[i]);
-		}
-		printf("IS BUILTIN = ");
-		if (cmd->is_builtin == 1)
-			printf("YES\n");
-		else
-			printf("NO\n");
-		printf("\\/\\/\\/\\/\\/\n");
-		cmd = cmd->right;
-		printf("-------------------------\n");
-			
-		
-	}
 
-}
 
 int	ft_parse(t_data *data)
 {
