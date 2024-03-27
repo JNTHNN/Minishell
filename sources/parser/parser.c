@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/27 15:08:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:27:54 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,21 @@ void	ft_remove_redir(t_tok_lst *lst)
 	}
 }
 
+int	ft_init_redir(t_redir_lst ***redirections, t_data **data, int *cmd_nb)
+{
+	int	i;
+
+	*cmd_nb = ft_count_pipes((*data)->tokens) + 1;
+	*redirections = (t_redir_lst **)malloc(*cmd_nb * sizeof(t_redir_lst *));
+	if (!*redirections)
+		return (E_MEM);
+	(*data)->redirections = *redirections;
+	i = -1;
+	while (++i < *cmd_nb)
+		(*redirections)[i] = NULL;
+	return (EXIT_SUCCESS);
+}
+
 int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
@@ -68,15 +83,10 @@ int	ft_store_redirections(t_data *data)
 	int			i;
 	int			cmd_nb;
 
+	cmd_nb = 0;
 	current = data->tokens;
-	cmd_nb = ft_count_pipes(current) + 1;
-	redirections = (t_redir_lst **)malloc(cmd_nb * sizeof(t_redir_lst *));
-	if (!redirections)
+	if (ft_init_redir(&redirections, &data, &cmd_nb))
 		return (E_MEM);
-	data->redirections = redirections;
-	i = -1;
-	while (++i < cmd_nb)
-		redirections[i] = NULL;
 	i = 0;
 	while (current)
 	{
@@ -96,26 +106,12 @@ int	ft_store_redirections(t_data *data)
 			return (ft_find_redir_type(current->next->token,
 					current->next->type));
 		if (current->type == OPERATOR)
-			ft_add_redir_node(&redirections[i], current, i + 1);
+			if (ft_add_redir_node(&redirections[i], current, i + 1))
+				return (E_MEM);
 		if (current)
 			current = current->next;
 	}
-
-	// REMOVE REDIRECTIONS from token list
 	ft_remove_redir(data->tokens);
-
-	// PRINT redirections 
-	i = 0;
-	while (i < cmd_nb)
-	{
-		t_redir_lst *node = redirections[i];
-		while (node != NULL)
-		{
-			printf("node type = %i, %s\n", node->r_type, node->filename);
-			node = node->next;
-		}
-		i++;
-	}
 	return (EXIT_SUCCESS);
 }
 
@@ -169,23 +165,5 @@ int	ft_parse(t_data *data)
 			start = current;
 		}
 	}
-	// PRINT CMD NODE ARGS
-	t_cmd	*cmd;
-	cmd = data->cmd;
-	while (cmd != NULL)
-	{
-		printf("CMD ID = %i\n", cmd->id);
-		if (cmd->redirections)
-			printf("Belongs to %i\n", cmd->redirections->cmd_nb);
-		i = 0;
-		while (cmd->args[i])
-		{
-			printf("ARGS %i = %s\n", i, cmd->args[i]);
-			i++;
-		}
-		printf("IS_BUILTIN = %i\n", cmd->is_builtin);
-		cmd = cmd->right;
-	}
-	/* end of printing results */	
 	return (EXIT_SUCCESS);
 }

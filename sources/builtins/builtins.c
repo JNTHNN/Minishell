@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 15:25:40 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:02:00 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,14 @@ bool	ft_is_builtin(char *name)
 	"env", "exit", NULL};
 
 	i = 0;
-	while (builtin_tab[i])
+	if (name)
 	{
-		if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
-			return (true);
-		i++;
+		while (builtin_tab[i])
+		{
+			if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
+				return (true);
+			i++;
+		}
 	}
 	return (false);
 }
