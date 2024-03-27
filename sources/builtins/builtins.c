@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/29 16:18:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:30:26 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ bool	ft_is_builtin(char *name)
 	"env", "exit", NULL};
 
 	i = 0;
+	if (name)
+	{
+		while (builtin_tab[i])
+		{
+			if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
+				return (true);
+			i++;
+		}
 	if (name)
 	{
 		while (builtin_tab[i])
