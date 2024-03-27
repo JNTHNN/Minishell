@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/16 22:26:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:14:45 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ void	*free_arr(char **arr)
 
 	i = -1;
 	while (arr[++i])
+	{
 		free(arr[i]);
+		arr[i] = NULL;
+	}
 	free(arr);
+	arr = NULL;
 	return (NULL);
 }
 

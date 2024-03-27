@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:39:02 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/19 17:11:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:26:31 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,19 @@ enum e_redirect_op
 	PIPE = '|'
 };
 
-typedef enum e_tok_type
-{
-	WORD,
-	OPERATOR
-}	t_tok_type;
-
-typedef struct s_tok_lst
-{
-	int					id;
-	char				*token;
-	t_tok_type			type;
-	struct s_tok_lst	*next;
-	struct s_tok_lst	*prev;
-}	t_tok_lst;
-
-/* Lexer utils to handle t_tok_lst : lexer_utils.c */
-int		ft_add_tok_node(char *str, int id, t_tok_type type, t_tok_lst **lst);
+/* Lexer utils to handle the storing of tokens : lexer_utils.c */
+t_tok_lst		*ft_tok_lstlast(t_tok_lst *lst);
 
 /* Lexer utils to handle the storing of tokens : lexer_utils2.c */
-bool	ft_is_quote(char c);
-bool	ft_is_space(int c);
-bool	ft_is_operator(char c);
-int		ft_skip_whitespaces(char *str);
-void	ft_trim_input(char **input);
+bool			ft_is_quote(char c);
+bool			ft_is_space(int c);
+bool			ft_is_operator(char c);
+int				ft_skip_whitespaces(char *str);
+int				ft_trim_input(char **input);
 
 /* Lexer utils to handle the storing of tokens : lexer_utils3.c */
-void	ft_handle_quoted_word(char **str, char *quote_c);
+void			ft_handle_quoted_word(char **str, char *quote_c);
+bool			ft_check_pipes(t_tok_lst *lst);
+t_redirect_type	ft_find_redir_type(char *token, t_tok_type type);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/19 15:50:30 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:25:40 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,16 @@
 // 	exit(EXIT_FAILURE);
 // }
 
-bool	ft_is_builtin(char **cmd)
+bool	ft_is_builtin(char *name)
 {
-	const char	*built_in[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", "system", (char *)0};
-	int	i;
+	int			i;
+	static char	*builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
+	"env", "exit", NULL};
 
 	i = 0;
-	while (built_in[i])
+	while (builtin_tab[i])
 	{
-		if (!ft_strncmp(cmd[0], built_in[i], ft_strlen(*cmd)))
+		if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
 			return (true);
 		i++;
 	}
@@ -72,24 +73,23 @@ bool	ft_is_builtin(char **cmd)
 
 void	ft_builtin(char **new_prompt, char **my_env)
 {
-	
 	if (new_prompt)
 		add_history(*new_prompt);
 	if (!ft_strncmp(new_prompt[0], "echo", 4))
-		ft_echo_builtin(new_prompt);
+		ft_echo(new_prompt);
 	if (!ft_strncmp(new_prompt[0], "cd", 2))
 		// cd_builtins(prompt + 3, my_env);
-		ft_cd_builtin(new_prompt);
+		ft_cd(new_prompt);
 	if (!ft_strncmp(new_prompt[0], "pwd", 3))
-		ft_pwd_builtin();
+		ft_pwd();
 	if (!ft_strncmp(new_prompt[0], "export", 6))
-		ft_export_builtin(new_prompt, my_env);
+		ft_export(new_prompt, my_env);
 	if (!ft_strncmp(new_prompt[0], "unset", 5))
 		return ;
 	if (!ft_strncmp(new_prompt[0], "env", 3))
-		ft_show_env(my_env);
+		ft_env(my_env);
 	if (!ft_strncmp(new_prompt[0], "exit", 4))
-		ft_exit_builtins();
+		ft_exit();
 	if (!ft_strncmp(new_prompt[0], "system", 6))
 		system("leaks minishell");
 	if (!ft_strncmp(new_prompt[0], "xxx", 3))
