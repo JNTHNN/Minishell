@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/26 11:26:24 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/03/28 10:25:55 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ SRC_FILES		:= main
 SIGNALS_SRC		:= signals
 BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 LEXER_SRC		:= lexer
-UTILS_SRC		:= error utils lexer_utils lexer_utils2 lexer_utils3 parser_utils parser_utils2
+UTILS_SRC		:= error utils lexer_utils lexer_utils2 lexer_utils3 parser_utils \
+parser_utils2 parser_utils3
 PARSER_SRC		:= parser
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
@@ -65,7 +66,7 @@ CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
-DEBUG			:= -O0 -g #-fsanitize=address
+DEBUG			:= -O0 -g -fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #

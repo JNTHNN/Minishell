@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/25 11:14:45 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:16:42 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,3 @@ char	**ft_arrcpy(char **arr)
 	cpy[i] = NULL;
 	return (cpy);
 }
-
