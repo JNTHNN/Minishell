@@ -6,11 +6,23 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 15:02:12 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/30 11:30:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:33:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// PRINT redirections 
+/* print token linked list nodes to check results while coding in ft_tokenize */
+	// t_tok_lst	*current;
+	// current = data->tokens;
+	// while (current != NULL)
+	// {
+	// 	printf("Token %i = %s\n", current->id, current->token);
+	// 	current = current->next;
+	// }
+	/* end of printing results */
+	
+
+
+// PRINT redirections in ft_store_redirections
 	i = 0;
 	while (i < cmd_nb)
 	{
@@ -24,7 +36,7 @@
 	}
 // END
 
-// PRINT CMD NODE ARGS
+// PRINT CMD NODE ARGS in ft_paser
 	t_cmd	*cmd;
 	cmd = data->cmd;
 	while (cmd != NULL)
