@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 22:07:33 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:47:11 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,43 @@
 // 	exit(EXIT_FAILURE);
 // }
 
-bool	ft_is_builtin(char *name)
-{
-	int			i;
-	static char	*builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
-	"env", "exit", NULL};
+// bool	ft_is_builtin(char *name)
+// {
+// 	int			i;
+// 	static char	*builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
+// 	"env", "exit", NULL};
 
-	i = 0;
-	while (builtin_tab[i])
-	{
-		if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
-			return (true);
-		i++;
-	}
-	return (false);
+// 	i = 0;
+// 	while (builtin_tab[i])
+// 	{
+// 		if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
+// 			return (true);
+// 		i++;
+// 	}
+// 	return (false);
+// }
+
+bool    ft_is_builtin(char *name)
+{
+    int         i;
+    static char *builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
+    "env", "exit", NULL};
+
+    i = 0;
+    if (name)
+    {
+        while (builtin_tab[i])
+        {
+            if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
+                return (true);
+            i++;
+        }
+    }
+    return (false);
 }
 
 void	ft_builtin(char **arg, char **my_env)
 {
-	if (arg && *arg)
-		add_history(*arg);
 	if (!ft_strncmp(arg[0], "echo", 4))
 		ft_echo(arg);
 	if (!ft_strncmp(arg[0], "cd", 2))

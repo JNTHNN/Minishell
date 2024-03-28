@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 22:23:51 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/28 18:25:47 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_echo(char **str)
 		option = 1;
 		i++;
 	}
-	if (!ft_strncmp(str[1], "$?", 2))
+	if (str[1] && !ft_strncmp(str[1], "$?", 2))
 	{
 		ft_putstr_fd("C'est good le $?", 1);
 		if (option == 0)
