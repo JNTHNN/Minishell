@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/30 11:32:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:32:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,27 @@ int	ft_store_redirections(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
+{
+	int	i;
+
+	i = -1;
+	while (++i < count)
+	{
+		while (!(*start)->token)
+			*start = (*start)->next;
+		(*args)[i] = (*start)->token;
+		*start = (*start)->next;
+	}
+	(*args)[count] = NULL;
+}
+
 int ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 {
-	t_tok_lst	*current;
-	char		**cmd_args;
-	int			ret;
+	t_tok_lst	*start;
+	int			arg_count;
+	int			cmd_id;
 
-	current = data->tokens;
-	ret = ft_store_redirections(data);
-	if (ret)
-		return (ret);
-
-	// Create all commands
 	cmd_id = 0;
 	while (*current)
 	{
@@ -122,15 +131,7 @@ int ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 		*args = (char **)malloc((arg_count + 1) * sizeof(char *));
 		if (!*args)
 			return (E_MEM);
-		i = -1;
-		while (++i < arg_count)
-		{
-			while (!start->token)
-				start = start->next;
-			(*args)[i] = start->token;
-			start = start->next;
-		}
-		(*args)[arg_count] = NULL;
+		ft_fill_cmd_args(arg_count, &(*args), &start);
 		cmd_id++;
 		if (ft_add_cmd_node(&(*args), data, cmd_id))
 			return (E_MEM);
