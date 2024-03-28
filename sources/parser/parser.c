@@ -6,42 +6,11 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/29 14:30:12 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:31:08 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	ft_count_pipes(t_tok_lst *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst != NULL)
-	{
-		if (lst->type == OPERATOR && lst->r_type == R_PIPE)
-			i++;
-		lst = lst->next;
-	}
-	return (i);
-}
-
-void	ft_nullify_tok_nodes(t_tok_lst *node)
-{
-	t_tok_lst	*next;
-
-	next = node->next;
-	if (next && next->token)
-	{
-		free(next->token);
-		next->token = NULL;
-	}
-	if (node && node->token)
-	{
-		free(node->token);
-		node->token = NULL;
-	}
-}
 
 void	ft_remove_redir(t_tok_lst *lst)
 {
@@ -157,14 +126,13 @@ int	ft_parse(t_data *data)
 		cmd_args = (char **)malloc((arg_count + 1) * sizeof(char *));
 		if (!cmd_args)
 			return (E_MEM);
-		i = 0;
-		while (i < arg_count)
+		i = -1;
+		while (++i < arg_count)
 		{
 			while (!start->token)
 				start = start->next;
 			cmd_args[i] = start->token;
 			start = start->next;
-			i++;
 		}
 		cmd_args[arg_count] = NULL;
 		cmd_id++;
