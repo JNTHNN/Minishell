@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/29 14:31:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:32:20 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,75 +93,78 @@ int	ft_store_redirections(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-
-
-int	ft_parse(t_data *data)
+int ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 {
-	t_tok_lst	*current;
 	t_tok_lst	*start;
-	char		**cmd_args;
 	int			arg_count;
 	int			i;
-	int			ret;
 	int			cmd_id;
-
-	data->cmd = NULL;
-	current = data->tokens;
-	start = current;
-	ret = ft_store_redirections(data);
-	if (ret)
-		return (ret);
-
-	// Create all commands
+	
 	cmd_id = 0;
-	while (current)
+	while (*current)
 	{
+		start = *current;
 		arg_count = 0;
-		while (current && current->r_type != R_PIPE)
+		while (*current && (*current)->r_type != R_PIPE)
 		{
-			if (current->token)
+			if ((*current)->token)
 				arg_count++;
-			current = current->next;
+			*current = (*current)->next;
 		}
-		cmd_args = (char **)malloc((arg_count + 1) * sizeof(char *));
-		if (!cmd_args)
+		*args = (char **)malloc((arg_count + 1) * sizeof(char *));
+		if (!*args)
 			return (E_MEM);
 		i = -1;
 		while (++i < arg_count)
 		{
 			while (!start->token)
 				start = start->next;
-			cmd_args[i] = start->token;
+			(*args)[i] = start->token;
 			start = start->next;
 		}
-		cmd_args[arg_count] = NULL;
+		(*args)[arg_count] = NULL;
 		cmd_id++;
-		if (ft_add_cmd_node(&cmd_args, data, cmd_id))
+		if (ft_add_cmd_node(&(*args), data, cmd_id))
 			return (E_MEM);
-		if (current)
-		{
-			current = current->next;
-			start = current;
-		}
+		if (*current)
+			*current = (*current)->next;
 	}
-	// // PRINT CMD NODE ARGS
-	// t_cmd	*cmd;
-	// cmd = data->cmd;
-	// while (cmd != NULL)
-	// {
-	// 	printf("CMD ID = %i\n", cmd->id);
-	// 	if (cmd->redirections)
-	// 		printf("Belongs to %i\n", cmd->redirections->cmd_nb);
-	// 	i = 0;
-	// 	while (cmd->args[i])
-	// 	{
-	// 		printf("ARGS %i = %s\n", i, cmd->args[i]);
-	// 		i++;
-	// 	}
-	// 	printf("IS_BUILTIN = %i\n", cmd->is_builtin);
-	// 	cmd = cmd->right;
-	// }
-	// /* end of printing results */
-	print_parse(data->cmd);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_parse(t_data *data)
+{
+	t_tok_lst	*current;
+	char		**cmd_args;
+	int			ret;
+
+	current = data->tokens;
+	ret = ft_store_redirections(data);
+	if (ret)
+		return (ret);
+	ret = ft_parse_loop(&current, &cmd_args, data);
+	if (ret)
+		return (ret);
+
+	// PRINT CMD NODE ARGS
+	t_cmd	*cmd;
+	cmd = data->cmd;
+	while (cmd != NULL)
+	{
+		printf("CMD ID = %i\n", cmd->id);
+		if (cmd->redirections)
+			printf("Belongs to %i\n", cmd->redirections->cmd_nb);
+		int i;
+		i = 0;
+		while (cmd->args[i])
+		{
+			printf("ARGS %i = %s\n", i, cmd->args[i]);
+			i++;
+		}
+		printf("IS_BUILTIN = %i\n", cmd->is_builtin);
+		cmd = cmd->right;
+	}
+	/* end of printing results */	
+	
 	return (EXIT_SUCCESS);
 }

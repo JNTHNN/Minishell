@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/27 21:44:51 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:31:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	data.env = envp;
 	data.env_cpy = ft_arrcpy(envp);
+	data.cmd = NULL;
 	ft_init_signal();
 	while (true)
 	{
