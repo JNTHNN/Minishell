@@ -6,44 +6,11 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/29 14:32:54 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:33:55 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	ft_remove_redir(t_tok_lst *lst)
-{
-	t_tok_lst	*current;
-	t_tok_lst	*tmp;
-
-	current = lst;
-	while (current)
-	{
-		tmp = current->next;
-		if (current->type == OPERATOR && current->r_type != R_PIPE)
-		{
-			tmp = current->next->next;
-			ft_nullify_tok_nodes(current);
-		}
-		current = tmp;
-	}
-}
-
-int	ft_init_redir(t_redir_lst ***redirections, t_data **data, int *cmd_nb)
-{
-	int	i;
-
-	*cmd_nb = ft_count_pipes((*data)->tokens) + 1;
-	*redirections = (t_redir_lst **)malloc(*cmd_nb * sizeof(t_redir_lst *));
-	if (!*redirections)
-		return (E_MEM);
-	(*data)->redirections = *redirections;
-	i = -1;
-	while (++i < *cmd_nb)
-		(*redirections)[i] = NULL;
-	return (EXIT_SUCCESS);
-}
 
 int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
 {
@@ -108,7 +75,7 @@ void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 	(*args)[count] = NULL;
 }
 
-int ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
+int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 {
 	t_tok_lst	*start;
 	int			arg_count;
@@ -118,13 +85,7 @@ int ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 	while (*current)
 	{
 		start = *current;
-		arg_count = 0;
-		while (*current && (*current)->r_type != R_PIPE)
-		{
-			if ((*current)->token)
-				arg_count++;
-			*current = (*current)->next;
-		}
+		arg_count = ft_count_cmd_args(current);
 		*args = (char **)malloc((arg_count + 1) * sizeof(char *));
 		if (!*args)
 			return (E_MEM);
@@ -151,26 +112,5 @@ int	ft_parse(t_data *data)
 	ret = ft_parse_loop(&current, &cmd_args, data);
 	if (ret)
 		return (ret);
-
-	// PRINT CMD NODE ARGS
-	t_cmd	*cmd;
-	cmd = data->cmd;
-	while (cmd != NULL)
-	{
-		printf("CMD ID = %i\n", cmd->id);
-		if (cmd->redirections)
-			printf("Belongs to %i\n", cmd->redirections->cmd_nb);
-		int i;
-		i = 0;
-		while (cmd->args[i])
-		{
-			printf("ARGS %i = %s\n", i, cmd->args[i]);
-			i++;
-		}
-		printf("IS_BUILTIN = %i\n", cmd->is_builtin);
-		cmd = cmd->right;
-	}
-	/* end of printing results */	
-	
 	return (EXIT_SUCCESS);
 }
