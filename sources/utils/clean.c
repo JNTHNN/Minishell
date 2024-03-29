@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:21:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/29 19:52:32 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/29 22:27:50 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_free_tokens(t_tok_lst **tokens)
 	while (*tokens)
 	{
 		current = (*tokens)->next;
-		(*tokens)->token = NULL;
 		free(*tokens);
 		*tokens = current;
 	}

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/29 16:34:56 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/29 22:19:36 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "error.h"
 # include "lexer.h"
 # include "parser.h"
+# include "expand.h" 
 # include "utils.h"
 # include "clean.h"
 
