@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/28 15:47:11 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/28 19:35:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@
 // 	return (false);
 // }
 
+# define BUILTIN_TAB {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL}
+
 bool    ft_is_builtin(char *name)
 {
     int         i;
-    static char *builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
-    "env", "exit", NULL};
+    static char *builtin_tab[8] = BUILTIN_TAB;
 
     i = 0;
     if (name)
