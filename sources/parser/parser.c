@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/30 11:34:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:35:05 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,6 @@ int	ft_parse(t_data *data)
 	ret = ft_parse_loop(&current, &cmd_args, data);
 	if (ret)
 		return (ret);
+	ft_free_tokens(&data->tokens);
 	return (EXIT_SUCCESS);
 }
