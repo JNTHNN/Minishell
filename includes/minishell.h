@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/27 15:00:06 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:34:56 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@
 # include <signal.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <sys/syslimits.h> // PATH_MAX
+# include <sys/syslimits.h>
 # include "../libft/libft.h"
 # include "typedef.h"
 # include "error.h"
 # include "lexer.h"
 # include "parser.h"
 # include "utils.h"
+# include "clean.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
