@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/28 12:17:54 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:41:38 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int	ft_parse(t_data *data)
 	ret = ft_parse_loop(&current, &cmd_args, data);
 	if (ret)
 		return (ret);
+	ft_free_tokens(&data->tokens);
 	return (EXIT_SUCCESS);
 }
