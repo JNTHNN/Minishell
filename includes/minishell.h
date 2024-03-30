@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/29 16:34:56 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/30 20:08:50 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,25 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
-void	ft_builtin(char **prompt, char **my_env);
+void	ft_builtin(t_data *data);
 
-void	ft_env(char **env);
-void	ft_cd(char **path);
-void	ft_echo(char **str);
-void	ft_exit(void);
-void	ft_pwd(void);
-void	ft_export(char **cmd, char **my_env);
+void	ft_echo(t_data *data);
+void	ft_cd(t_data *data);
+void	ft_pwd(t_data *data);
+void	ft_export(t_data *data);
+void	ft_env(t_data *data);
+void	ft_exit(t_data *data);
+
+/*  utils for export : export_utils.c   */
+t_env	*ft_setup_env(char **env);
+void	ft_modify_or_add_env(t_env **head, char *var);
+
+/* prints for export : export_utils2.c  */
+void	ft_print_env(t_env *head);
+void	ft_show_list(t_env *head);
 
 /*		JG_exec			*/
-int		ft_create_exec(char **argv, char **env);
-void	ft_cmd_exec(char **cmd, char **env);
+void	ft_cmd_exec(t_data *data);
 
 /*		UTILS		*/
 
@@ -69,5 +76,8 @@ void	ft_throw_error(t_data *data, int err_code);
 
 /* Lexer utils to handle t_tok_lst : lexer_utils.c */
 int		ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data);
+
+/*	temp	*/
+void	print_parse(t_cmd *cmd); // printf_TEMP.c
 
 #endif

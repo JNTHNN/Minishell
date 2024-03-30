@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:50:34 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/30 12:40:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,23 @@ static int	ft_check_option(char *option)
 	return (1);
 }
 
-/*	VA PRINT LA VALEUR RETOUR DE PROCESS (EXIT)	*/
-
-// static void	return_value(void)
-// {
-// 	printf("15");
-// }
-
-void	ft_echo(char **str)
+void	ft_echo(t_data *data)
 {
 	int	i;
 	int	option;
 
 	i = 1;
 	option = 0;
-	while (str[i] != NULL && ft_check_option(str[i]) == 1)
+	while (data->cmd->args && data->cmd->args[i] != NULL
+		&& ft_check_option(data->cmd->args[i]) == 1)
 	{
 		option = 1;
 		i++;
 	}
-	while (str[i])
+	while (data->cmd->args[i])
 	{
-		ft_putstr_fd(str[i], 1);
-		if (str[i + 1])
+		ft_putstr_fd(data->cmd->args[i], 1);
+		if (data->cmd->args[i + 1])
 			ft_putstr_fd(" ", 1);
 		i++;
 	}

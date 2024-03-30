@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:19:45 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:51:44 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/30 19:36:28 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,13 @@
 **	travail courant dans la chaîne pointée par buf, qui est de longueur size.
 */
 
-// void	builtin_pwd(void)
-// {
-// 	// printf("%s\n", getenv("PWD"));
-// 	/* voir si cwd n'est pas mieux */
-// 	char	*where;
-	
-// 	where = NULL;
-// 	printf("%s\n", getcwd(where, 0));
-// }
+/*	(void)data for the moment	*/
 
-void	ft_pwd(void)
+void	ft_pwd(t_data *data)
 {
-	char	cwd[PATH_MAX];
-	
+	static char	cwd[PATH_MAX];
+
+	(void)data;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else

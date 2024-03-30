@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:50:25 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/30 12:24:05 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 // 	char	*here = NULL;
 // 	char	*final = NULL;
 // 	(void)env;
-	
 // 	pos = getenv("PWD");
 // 	if (!chdir(str))
 // 	{
@@ -32,12 +31,11 @@
 // 	printf("on est ici -> %s\n", getcwd(here, 0));
 // 	final = ft_strjoin(pos, str);
 // 	printf("final pos -> %s\n", final);
-	
 // }
 
 /* besoin de */
-void	ft_cd(char **path)
+void	ft_cd(t_data *data)
 {
-	if (chdir(path[1]) == -1)
+	if (chdir(data->cmd->args[1]) == -1)
 		perror("chdir()");
 }
