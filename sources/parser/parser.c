@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/30 11:35:05 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:44:41 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,10 @@ int	ft_store_redirections(t_data *data)
 	int			cmd_nb;
 	int			ret;
 	int			i;
-	int			ret;
-	int			i;
 
 	cmd_nb = 0;
 	i = 0;
 	current = data->tokens;
-	if (ft_init_redir(&redirections, &data, &cmd_nb))
 	if (ft_init_redir(&redirections, &data, &cmd_nb))
 		return (E_MEM);
 	ret = ft_redir_loop(&current, &redirections, &i);

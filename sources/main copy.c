@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/29 16:19:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 11:35:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 	int		ret;
-	int		i;
-	t_cmd	*cmd;
 
 	if (argc != 1 || argv[1])
 	{
@@ -49,31 +47,15 @@ int	main(int argc, char **argv, char **envp)
 				ft_throw_error(&data, ret);
 				continue ;
 			}
-			cmd = data.cmd;
-			while (cmd != NULL)
-			{
-				printf("CMD ID = %i\n", cmd->id);
-				if (cmd->redirections)
-					printf("Belongs to %i\n", cmd->redirections->cmd_nb);
-				i = 0;
-				while (cmd->args[i])
-				{
-					printf("ARGS %i = %s\n", i, cmd->args[i]);
-					i++;
-				}
-				printf("IS_BUILTIN = %i\n", cmd->is_builtin);
-				cmd = cmd->right;
-			}
-			if (data.cmd->is_builtin == false)
+			if (ft_is_builtin(data.cmd->args[0]) == false)
 				ft_cmd_exec(data.cmd->args, data.env);
 			else
 				ft_builtin(data.cmd->args, data.env);
-		// free le data
-		// free_arr(data.cmd->args);
+		ft_reset_data(&data);
 		}
 		ft_signal();
 	}
-	// system("leaks minishell");
+	//system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 

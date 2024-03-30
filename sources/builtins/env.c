@@ -3,22 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:20:22 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/27 12:50:41 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/30 16:28:30 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_env(char **env)
+void	ft_env(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	if (!env[i])
-		return ;
-	while (env[i])
-		printf("%s\n", env[i++]);
+	if (data->env)
+	{
+		if (!data->env[i])
+			return ;
+		while (data->env[i])
+			printf("%s\n", data->env[i++]);
+	}
 }
