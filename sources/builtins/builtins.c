@@ -6,89 +6,32 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/29 14:27:10 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:18:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <string.h>
 
-/*
-**	Envoyez l'option pour echo;
-**	Envoyez le chemin relatif ou absolu pour cd
-**	si env est suivi arg ou autre -> retourner message erreur
-**	REMOVE SYSTEM
-**	./minishell = creation d'un processus enfant SHLVL + 1
-*/
+// # define BUILTIN_TAB {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL}
 
-
-// doit faire en sorte que je checke tout les possibilités des chemin
-// du path 
-
-// static char *path_cmd(char *cmd)
-// {
-// 	char *path = getenv("PATH");
-// 	char **path_split;
-
-// 	// printf("%s", path);
-// 	path_split = ft_split(path, ':');
-// 	char *dest = malloc(sizeof(char) + ft_strlen(cmd) + 1);
-// 	strcat(dest, path_split[3]);
-// 	strcat(dest, "/");
-// 	strcat(dest, cmd);
-// 	printf(" result : %s\n", dest);
-	
-// 	return (dest);
-
-// }
-
-// static void create_exec(char **argv, char **env)
-// {
-// 	char	*progpath;
-// 	char	*test[]={"Test", "test_execve.c",(char*)0};
-// 	// le test doit contenir les flags/options si il y'en a
-// 	// ici ca prend en compte le [1]
-
-// 	progpath = path_cmd(argv[0]);
-// 	if (execve(progpath, test, env) == -1)
-// 		perror("shell");
-// 	exit(EXIT_FAILURE);
-// }
-
-// bool	ft_is_builtin(char *name)
-// {
-// 	int			i;
-// 	static char	*builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
-// 	"env", "exit", NULL};
-
-// 	i = 0;
-// 	while (builtin_tab[i])
-// 	{
-// 		if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
-// 			return (true);
-// 		i++;
-// 	}
-// 	return (false);
-// }
-
-# define BUILTIN_TAB {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL}
-
-bool    ft_is_builtin(char *name)
+bool	ft_is_builtin(char *name)
 {
-    int         i;
-    static char *builtin_tab[8] = BUILTIN_TAB;
+	int			i;
+	static char	*builtin_tab[8] = {"echo", "cd", "pwd", "export", "unset", \
+	"env", "exit", NULL};
 
-    i = 0;
-    if (name)
-    {
-        while (builtin_tab[i])
-        {
-            if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
-                return (true);
-            i++;
-        }
-    }
-    return (false);
+	i = 0;
+	if (name)
+	{
+		while (builtin_tab[i])
+		{
+			if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
+				return (true);
+			i++;
+		}
+	}
+	return (false);
 }
 
 void	ft_builtin(char **arg, char **my_env)
