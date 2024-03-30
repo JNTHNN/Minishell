@@ -6,23 +6,32 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/27 14:57:29 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:53:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 
-typedef struct s_data			t_data;
-typedef struct s_cmd			t_cmd;
-typedef struct s_redir_lst		t_redir_lst;
-typedef struct s_tok_lst		t_tok_lst;
+typedef struct s_data		t_data;
+typedef struct s_cmd		t_cmd;
+typedef struct s_redir_lst	t_redir_lst;
+typedef struct s_tok_lst	t_tok_lst;
+typedef struct s_env		t_env;
+typedef struct s_expand		t_expand;
 
 typedef enum e_tok_type
 {
 	WORD,
 	OPERATOR
 }	t_tok_type;
+
+typedef enum e_expand_char
+{
+	DBL_Q = 34,
+	SGL_Q = 39,
+	DOLLAR = 36
+}	t_expand_char;
 
 typedef enum e_redirect_type
 {
@@ -62,11 +71,11 @@ struct s_redir_lst
 	t_redir_lst		*prev;
 };
 
-typedef struct s_env
+struct s_env
 {
 	char			*var;
 	struct s_env	*next;
-}	t_env;
+};
 
 struct s_cmd
 {
@@ -77,6 +86,13 @@ struct s_cmd
 	t_data				*data;
 	struct s_cmd		*left;
 	struct s_cmd		*right;
+};
+
+struct	s_expand
+{
+	int				id;
+	int				position;
+	t_expand_char	char_type;
 };
 
 #endif
