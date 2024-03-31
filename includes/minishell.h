@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/30 20:16:38 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:43:08 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	ft_exit(t_data *data);
 /*  utils for export : export_utils.c   */
 t_env   *ft_setup_env(char **env);
 void    ft_modify_or_add_env(t_env **head, char *var);
+char	*ft_var(char *s);
+char	*ft_data(char *s);
 
 /* prints for export : export_utils2.c  */
 void	ft_print_env(t_env *head);

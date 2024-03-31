@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/31 01:18:50 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/31 16:25:30 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	ft_envadd_back(t_env **lst, t_env *new)
 	*lst = new;
 }
 
-static void	ft_add_env(t_env **head, char *var)
+static void	ft_add_env(t_env **head, char *var, char *data)
 {
 	t_env	*new_node;
 
@@ -33,6 +33,7 @@ static void	ft_add_env(t_env **head, char *var)
 	if (!new_node)
 		return ;
 	new_node->var = var;
+	new_node->data = data;
 	new_node->next = NULL;
 	ft_envadd_back(head, new_node);
 }
@@ -52,7 +53,7 @@ char	*ft_strndup(char *s1, int size)
 	dst[i] = '\0';
 	return (dst);
 }
-static char	*ft_var(char *s)
+char	*ft_var(char *s)
 {
 	char *equal_sign;
 	int	size;
@@ -82,7 +83,7 @@ static char	*ft_var(char *s)
 // 	return (s);
 // }
 
-static char	*ft_data(char *s)
+char	*ft_data(char *s)
 {
 	char *equal_sign;
 	char *data;
@@ -148,45 +149,77 @@ t_env	*ft_setup_env(char **env)
 **	or just add
 */
 
+// void	ft_modify_or_add_env(t_env **head, char *var)
+// {
+// 	t_env	*current;
+// 	// char	*equal_sign;
+// 	char	*deb;
+// 	char	*fin;
+// 	// char	*zeub;
+	
+// 	deb = ft_var(var);
+// 	fin = ft_data(var);
+// 	// zeub = ft_strtrim(fin, "\"");
+	
+// 	printf("TEST DEB[%s]\n", deb);
+// 	printf("TEST FIN[%s]\n", fin);
+// 	// printf("TEST ZEUB[%s]\n", zeub);
 
+// 	current = *head;
+// 	// printf("TEST VAR[%s]\n", var);
+// 	// equal_sign = ft_strchr(var, '=');
+// 	// printf("TEST DATA[%s]\n", equal_sign);
+// 	if (fin)
+// 	{
+// 		// *equal_sign = '\0';
+// 		// printf("TEST 2 VAR[%s]\n", var);
+// 		// printf("TEST 2 DATA[%c]\n", *equal_sign);
+// 		while (current)
+// 		{
+// 			if (!ft_strncmp(current->var, var, ft_strlen(var)))
+// 			{
+// 				free(current->var);
+// 				current->var = ft_strdup(var);
+// 				// *equal_sign = '=';
+// 				return ;
+// 			}
+// 			current = current->next;
+// 		}
+// 		// *equal_sign = '=';
+// 	}
+// 	ft_add_env(head, var);
+// }
 
 void	ft_modify_or_add_env(t_env **head, char *var)
 {
 	t_env	*current;
-	char	*equal_sign;
 	char	*deb;
 	char	*fin;
-	char	*zeub;
+	// char	*zeub;
 	
 	deb = ft_var(var);
 	fin = ft_data(var);
-	zeub = ft_strtrim(fin, "\"");
+	// zeub = ft_strtrim(fin, "\"");
 	
 	printf("TEST DEB[%s]\n", deb);
 	printf("TEST FIN[%s]\n", fin);
-	printf("TEST ZEUB[%s]\n", zeub);
+	// printf("TEST ZEUB[%s]\n", zeub);
 
 	current = *head;
-	printf("TEST VAR[%s]\n", var);
-	equal_sign = ft_strchr(var, '=');
-	printf("TEST DATA[%s]\n", equal_sign);
-	if (equal_sign)
+	if (fin)
 	{
-		// *equal_sign = '\0';
-		printf("TEST 2 VAR[%s]\n", var);
-		printf("TEST 2 DATA[%c]\n", *equal_sign);
 		while (current)
 		{
-			if (!ft_strncmp(current->var, var, ft_strlen(var)))
+			if (!ft_strncmp(current->var, deb, ft_strlen(deb)))
 			{
-				free(current->var);
-				current->var = ft_strdup(var);
-				*equal_sign = '=';
+				free(current->data);
+				current->data = ft_strdup(fin);
 				return ;
 			}
 			current = current->next;
 		}
-		*equal_sign = '=';
 	}
-	ft_add_env(head, var);
+	ft_add_env(head, deb, fin);
 }
+
+

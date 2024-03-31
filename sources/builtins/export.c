@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 22:14:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/31 16:22:46 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,21 @@
 void	ft_export(t_data *data)
 {
 	t_env	*head;
+	// char	*deb;
+	// char	*fin;
 
 	head = ft_setup_env(data->env);	//creation de la liste chainee a base du tab env
+	// ft_show_list(head);
 	if (data->cmd->args)
 	{
 		if (!ft_strncmp(data->cmd->args[0], "export", 6)) // on recheck si c'est "export"
 		{
 			if (data->cmd->args[1]) // si c'est "export var=data"
 			{
+					// deb = ft_var(data->cmd->args[1]);
+					// fin = ft_data(data->cmd->args[1]);
+					// printf("TEST DEB[%s]\n", deb);
+					// printf("TEST FIN[%s]\n", fin);
 				ft_modify_or_add_env(&head, // modifie ou ajoute
 					data->cmd->args[1]);
 				ft_show_list(head); // print de la liste chainee
