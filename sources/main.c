@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/30 16:41:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:48:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 				ft_cmd_exec(&data);
 			else
 				ft_builtin(&data);
-		ft_reset_data(&data);
+			ft_reset_data(&data);
 		}
 		ft_signal();
 	}

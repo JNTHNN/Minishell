@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/30 18:02:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 20:16:38 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void    ft_show_list(t_env *head);
 void	ft_cmd_exec(t_data *data);
 
 /*		UTILS		*/
-
 char	*ft_strcat(char *dest, const char *src);
 
 /* Handle errors : error.c */
