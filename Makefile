@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/03/29 22:10:49 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/01 21:05:29 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,12 +63,12 @@ DEPS        	:= $(OBJS:.o=.d)
 # 							  Compilation flags								   #
 # **************************************************************************** #
 
-CC 				:= cc
+CC 				:= cc -g
 CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
-DEBUG			:= -O0 -g -fsanitize=address
+DEBUG			:= -O0 -fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #
@@ -95,6 +95,7 @@ $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	@echo "${CYAN}Generating project executable.${WHITE}"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) $(DEBUG) -o $(NAME)
 	@echo "${GREEN}Compilation successful !${WHITE}"
+	@./$(NAME)
 
 $(LIBFT_DIR)$(LIBFT):
 	@echo "\n$(CYAN)Generating Libft...$(WHITE)"
