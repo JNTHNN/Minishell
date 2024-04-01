@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:53:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:43:51 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_builtin(t_data *data)
 	if (!ft_strncmp(data->cmd->args[0], "export", 6))
 		ft_export(data);
 	if (!ft_strncmp(data->cmd->args[0], "unset", 5))
-		return ;
+		ft_unset(data) ;
 	if (!ft_strncmp(data->cmd->args[0], "env", 3))
 		ft_env(data);
 	if (!ft_strncmp(data->cmd->args[0], "exit", 4))

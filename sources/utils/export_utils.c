@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/01 13:52:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:16:39 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,29 @@ t_env	*ft_setup_env(char **env)
 **	or just add
 */
 
+int ft_valid(int c)
+{
+	return (ft_isalnum(c) || c == 95 || c == 61);
+}
+
+int	ft_valid_id(char *var)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(var[0]))
+		return (0);
+	while (var[i])
+	{
+		if (!ft_valid(var[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+			// printf("export: `%s': not a valid identifier\n", var);
+
 void	ft_modify_or_add_env(t_env **head, char *var)
 {
 	t_env	*current;
@@ -173,6 +196,8 @@ void	ft_modify_or_add_env(t_env **head, char *var)
 	// char	*zeub;
 	
 	deb = ft_var(var);
+	if (ft_valid_id(deb) == 0)
+		printf("export: `%s': not a valid identifier\n", var);
 	fin = ft_data(var);
 	// zeub = ft_strtrim(fin, "\"");
 	

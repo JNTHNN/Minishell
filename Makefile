@@ -6,7 +6,7 @@
 #    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/01 13:51:15 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/04/02 01:04:52 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LIBFT 			:= libft.a
 
 SRC_FILES		:= main printf_TEMP
 SIGNALS_SRC		:= signals
-BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
+BUILTINS_SRC	:= builtins env pwd echo cd exit export exec unset
 LEXER_SRC		:= lexer
 UTILS_SRC		:= error utils lexer_utils lexer_utils2 lexer_utils3 parser_utils \
 parser_utils2 parser_utils3 clean export_utils export_utils2

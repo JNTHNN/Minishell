@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/01 14:09:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:24:42 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,7 @@ void	ft_update_env(t_env *head, t_data *data)
 }
 
 void	ft_export(t_data *data)
-{
-	// GERER "EXPORT VAR"
-	// GERER CARACTERES NON VALIDE
-	
+{	
 	t_env	*head;
 	int		i;
 
@@ -133,32 +130,5 @@ void	ft_export(t_data *data)
 		// en char ** -> donc free l'ancien et le remplacer par le nouveau
 		// free au passage la liste chainee aussi
 
-
-
-// void	ft_export(t_data *data)
-// {
-// 	// GERER PLUSIEURS ARGS "EXPORT VAR=DATA VAR=DATA"
-// 	t_env	*head;
-
-// 	head = ft_setup_env(data->env);	//creation de la liste chainee a base du tab env
-// 	if (data->cmd->args)
-// 	{
-// 		if (!ft_strncmp(data->cmd->args[0], "export", 6)) // on recheck si c'est "export"
-// 		{
-// 			if (data->cmd->args[1]) // si c'est "export var=data"
-// 			{
-// 				ft_modify_or_add_env(&head, // modifie ou ajoute
-// 					data->cmd->args[1]);
-// 				ft_show_list(head); // print de la liste chainee
-// 			}
-// 			else // sinon cest juste "export"
-// 			{
-// 				ft_print_env(head);
-// 			}
-// 		}
-// 		ft_update_env(head, data);
-// 		// maintenant que les modifs ont été faites, je dois retourner la liste chainee 
-// 		// en char ** -> donc free l'ancien et le remplacer par le nouveau
-// 		// free au passage la liste chainee aussi
-// 	}
-// }
+//	GERER NOM DE VAR : ALPHANUM MAIS PEUT PAS COMMENCER PAR UN CHIFFRE + UNDERSCORE
+// ERROR : export: `%ddd': not a valid identifier
