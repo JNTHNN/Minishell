@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/31 15:43:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/31 17:52:01 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ int		ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data);
 
 /*	temp	*/
 void	print_parse(t_cmd *cmd); // printf_TEMP.c
+
+/*  lexer.c */
+int     ft_check_quotes(char *input);
 
 
 

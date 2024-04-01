@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/31 16:25:30 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:52:46 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	ft_add_env(t_env **head, char *var, char *data)
 	new_node->var = var;
 	new_node->data = data;
 	new_node->next = NULL;
+	printf("ADD_ENV VAR [%s] DATA [%s]\n", new_node->var, new_node->data);
 	ft_envadd_back(head, new_node);
 }
 
@@ -65,23 +66,38 @@ char	*ft_var(char *s)
 	{
 		size = equal_sign - s + 1;
 		var = ft_strndup(s, size);
+		return (var);
 	}
-	return (var);
+	return (ft_strdup(s));
 }
 
-// static char	*ft_data(char *s)
-// {
-// 	int	i;
+char	*ft_if_quotes(char *s)
+{
+	size_t	len;
 
-// 	i = 0;
-// 	while (s && s[i])
-// 	{
-// 		if (s[i] == '=')
-// 			return (&s[i + 1]);
-// 		i++;
-// 	}
-// 	return (s);
-// }
+	len = ft_strlen(s);
+	if (ft_is_quote(s[0]) && ft_is_quote(s[len - 1]))
+	{
+		if (s[0] == SGL_Q)
+			return ("\'");
+		if (s[0] == DBL_Q)
+			return ("\"");
+	}
+	return (NULL);
+}
+
+void	ft_trim_quotes(char **s)
+{
+	// je dois checker si y'a des quotes
+	// si oui quelles quotes
+	// les trimmer
+	// bye
+	if (s && *s)
+	{
+		if (ft_if_quotes(*s))
+			*s = ft_strtrim(*s, ft_if_quotes(*s));
+	}
+}
 
 char	*ft_data(char *s)
 {
@@ -96,6 +112,7 @@ char	*ft_data(char *s)
 		start = equal_sign - s + 1;
 		data = ft_strdup(s + start);
 	}
+	ft_trim_quotes(&data);
 	return (data);
 }
 
@@ -114,7 +131,6 @@ static t_env	*ft_new_node(char *var)
 	}
 	return (node);
 }
-
 
 t_env	*ft_setup_env(char **env)
 {
@@ -149,47 +165,6 @@ t_env	*ft_setup_env(char **env)
 **	or just add
 */
 
-// void	ft_modify_or_add_env(t_env **head, char *var)
-// {
-// 	t_env	*current;
-// 	// char	*equal_sign;
-// 	char	*deb;
-// 	char	*fin;
-// 	// char	*zeub;
-	
-// 	deb = ft_var(var);
-// 	fin = ft_data(var);
-// 	// zeub = ft_strtrim(fin, "\"");
-	
-// 	printf("TEST DEB[%s]\n", deb);
-// 	printf("TEST FIN[%s]\n", fin);
-// 	// printf("TEST ZEUB[%s]\n", zeub);
-
-// 	current = *head;
-// 	// printf("TEST VAR[%s]\n", var);
-// 	// equal_sign = ft_strchr(var, '=');
-// 	// printf("TEST DATA[%s]\n", equal_sign);
-// 	if (fin)
-// 	{
-// 		// *equal_sign = '\0';
-// 		// printf("TEST 2 VAR[%s]\n", var);
-// 		// printf("TEST 2 DATA[%c]\n", *equal_sign);
-// 		while (current)
-// 		{
-// 			if (!ft_strncmp(current->var, var, ft_strlen(var)))
-// 			{
-// 				free(current->var);
-// 				current->var = ft_strdup(var);
-// 				// *equal_sign = '=';
-// 				return ;
-// 			}
-// 			current = current->next;
-// 		}
-// 		// *equal_sign = '=';
-// 	}
-// 	ft_add_env(head, var);
-// }
-
 void	ft_modify_or_add_env(t_env **head, char *var)
 {
 	t_env	*current;
@@ -221,5 +196,3 @@ void	ft_modify_or_add_env(t_env **head, char *var)
 	}
 	ft_add_env(head, deb, fin);
 }
-
-

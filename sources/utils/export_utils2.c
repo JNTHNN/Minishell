@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:27:48 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/31 16:11:27 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/01 15:24:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,52 +53,39 @@ static void	ft_sort_env(t_env *head)
 			}
 			unsort = unsort->next;
 		}
-		sorted = unsort;
 	}
+	sorted = unsort;
 }
 
 void	ft_print_env(t_env *head)
 {
+	t_env *node;
+
 	ft_sort_env(head);
-	while (head)
+	node = head;
+	while (node)
 	{
-		if (head->data)
-			printf("declare -x %s=\"%s\"\n", head->var, head->data);
-		else
-			printf("declare -x %s\n", head->var);
-		head = head->next;
+		if (node->var && node->data)
+			printf("declare -x %s\"%s\"\n", node->var, node->data);
+		node = node->next;
 	}
-		
+	node = head;
+	while (node)
+	{
+		if (node->var && !node->data)
+			printf("declare -x %s\n", node->var);
+		node = node->next;
+	}
 }
-
-// void	ft_print_env(t_env *head)
-// {
-// 	char	*equal_sign;
-
-// 	ft_sort_env(head);
-// 	while (head)
-// 	{
-// 		equal_sign = ft_strchr(head->var, '=');
-// 		if (equal_sign)
-// 		{
-// 			*equal_sign = '\0';
-// 			printf("declare -x %s=\"%s\"\n", head->var, equal_sign + 1);
-// 			*equal_sign = '=';
-// 		}
-// 		else
-// 			printf("declare -x %s\n", head->var);
-// 		head = head->next;
-// 	}
-// }
 
 void	ft_show_list(t_env *head)
 {
-	while (head && (head->var || head->data))
+	while (head)
 	{
 		if (head->var && head->data)
 			printf("%s%s\n", head->var, head->data);
-		else
-			printf("%s\n", head->data);
+		else if (head->var && !head->data)
+			printf("%s\n", head->var);
 
 		head = head->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/31 16:22:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:09:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,103 @@
 
 #include "../../includes/minishell.h"
 
+void	ft_free_array(char **env)
+{
+	int	i;
+
+	i = 0;
+	while(env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env);
+}
+
+void	ft_free_lst(t_env *head)
+{
+	t_env *next_node;
+
+	while (head)
+	{
+		next_node = head->next;
+		if (head->var)
+			free(head->var);
+		else if (head->data)
+			free(head->data);
+		head = next_node;
+	}
+	head = NULL;
+}
+
+char	**ft_ltoa(t_env *head)
+{
+	t_env	*temp;
+	int		i;
+	int		count;
+	char	**new_env;
+
+	i = 0;
+	temp = head;
+	count = 0;
+	while (temp)
+	{
+		count++;
+		temp = temp->next;
+	}
+	new_env = malloc(sizeof(char *) * (count + 1));
+	if (!new_env)
+		return (NULL);
+	temp = head;
+	while (i < count)
+	{
+		if (temp->data)
+			new_env[i] = ft_strjoin(temp->var, temp->data);
+		else
+			new_env[i] = ft_strdup(temp->var);
+		temp = temp->next;
+		i++;
+	}
+	new_env[i] = NULL;
+	ft_free_lst(temp);
+	return (new_env);
+
+}
+
+void	ft_update_env(t_env *head, t_data *data)
+{
+	// ft_free_array(data->env);
+	data->env = ft_ltoa(head);
+	ft_free_lst(head);
+	// ft_env(data);
+}
+
 void	ft_export(t_data *data)
 {
+	// GERER "EXPORT VAR"
+	// GERER CARACTERES NON VALIDE
+	
 	t_env	*head;
-	// char	*deb;
-	// char	*fin;
+	int		i;
 
 	head = ft_setup_env(data->env);	//creation de la liste chainee a base du tab env
-	// ft_show_list(head);
+	i = 1;
 	if (data->cmd->args)
 	{
 		if (!ft_strncmp(data->cmd->args[0], "export", 6)) // on recheck si c'est "export"
 		{
-			if (data->cmd->args[1]) // si c'est "export var=data"
+			if (data->cmd->args[i])
 			{
-					// deb = ft_var(data->cmd->args[1]);
-					// fin = ft_data(data->cmd->args[1]);
-					// printf("TEST DEB[%s]\n", deb);
-					// printf("TEST FIN[%s]\n", fin);
-				ft_modify_or_add_env(&head, // modifie ou ajoute
-					data->cmd->args[1]);
-				ft_show_list(head); // print de la liste chainee
+				while (data->cmd->args[i])
+				{
+					if (data->cmd->args[i]) // si c'est "export var=data"
+					{
+						ft_modify_or_add_env(&head, // modifie ou ajoute
+							data->cmd->args[i]);
+						// ft_show_list(head); // print de la liste chainee
+					}
+				i++;
+				}
 			}
 			else // sinon cest juste "export"
 			{
@@ -51,48 +127,38 @@ void	ft_export(t_data *data)
 			}
 		}
 	}
+	ft_update_env(head, data);
 }
-// void free_array(char **array)
+		// maintenant que les modifs ont été faites, je dois retourner la liste chainee 
+		// en char ** -> donc free l'ancien et le remplacer par le nouveau
+		// free au passage la liste chainee aussi
+
+
+
+// void	ft_export(t_data *data)
 // {
-// 	int i = 0;
-// 	while (array[i])
+// 	// GERER PLUSIEURS ARGS "EXPORT VAR=DATA VAR=DATA"
+// 	t_env	*head;
+
+// 	head = ft_setup_env(data->env);	//creation de la liste chainee a base du tab env
+// 	if (data->cmd->args)
 // 	{
-// 		free(array[i]);
-// 		i++;
+// 		if (!ft_strncmp(data->cmd->args[0], "export", 6)) // on recheck si c'est "export"
+// 		{
+// 			if (data->cmd->args[1]) // si c'est "export var=data"
+// 			{
+// 				ft_modify_or_add_env(&head, // modifie ou ajoute
+// 					data->cmd->args[1]);
+// 				ft_show_list(head); // print de la liste chainee
+// 			}
+// 			else // sinon cest juste "export"
+// 			{
+// 				ft_print_env(head);
+// 			}
+// 		}
+// 		ft_update_env(head, data);
+// 		// maintenant que les modifs ont été faites, je dois retourner la liste chainee 
+// 		// en char ** -> donc free l'ancien et le remplacer par le nouveau
+// 		// free au passage la liste chainee aussi
 // 	}
-// 	free(array);
-// }
-
-// void update_env(t_data *data, t_env *head)
-// {
-// 	// Libérer l'ancien tableau
-// 	free_array(data->env);
-
-// 	// Convertir la liste chaînée en un nouveau tableau
-// 	data->env = list_to_array(head);
-// }
-
-// char **list_to_array(t_env *head)
-// {
-// 	t_env *tmp = head;
-// 	int count = 0;
-// 	while (tmp)
-// 	{
-// 		count++;
-// 		tmp = tmp->next;
-// 	}
-
-// 	char **array = malloc((count + 1) * sizeof(char *));
-// 	if (!array)
-// 		return NULL;
-
-// 	tmp = head;
-// 	for (int i = 0; i < count; i++)
-// 	{
-// 		array[i] = strdup(tmp->var); // Assurez-vous que tmp->var est une chaîne de caractères
-// 		tmp = tmp->next;
-// 	}
-// 	array[count] = NULL;
-
-// 	return array;
 // }
