@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/02 00:24:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/02 02:42:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,3 +132,5 @@ void	ft_export(t_data *data)
 
 //	GERER NOM DE VAR : ALPHANUM MAIS PEUT PAS COMMENCER PAR UN CHIFFRE + UNDERSCORE
 // ERROR : export: `%ddd': not a valid identifier
+
+// DOIT s'arreter au 1er = et prendre les autres en data

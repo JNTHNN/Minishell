@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/28 12:16:42 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:55:28 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,15 @@ char	**ft_arrcpy(char **arr)
 	int		i;
 	char	**cpy;
 
-	if (!arr && !arr[0])
-		return (NULL);
+	if (!arr || !arr[0])
+	{
+		printf("OK\n");
+		cpy = malloc((2 + 1) * sizeof(char *));
+		cpy[0] = ft_strdup("TEST=OUI");
+		cpy[1] = ft_strdup("TEST2=COOL");
+		cpy[2] = NULL;
+		return (cpy);
+	}
 	i = 0;
 	while (arr[i])
 		i++;

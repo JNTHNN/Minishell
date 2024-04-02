@@ -6,12 +6,28 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/30 22:48:57 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:55:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+
+// char **ft_test(char **envp)
+// {
+// 	char **cpy =NULL;
+	
+// 	if (!envp || !*envp)
+// 	{
+// 		printf("OK\n");
+// 		cpy = malloc((2 + 1) * sizeof(char *));
+// 		cpy[0] = ft_strdup("TEST=OUI");
+// 		cpy[1] = ft_strdup("TEST2=COOL");
+// 		cpy[2] = NULL;
+// 		return (cpy);
+// 	}
+// 	return (cpy);
+// }
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -22,8 +38,10 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(0);
 	}
-	data.env = envp;
-	data.env_cpy = ft_arrcpy(envp);
+	// data.env = envp;
+	data.env = ft_arrcpy(envp);
+	// data.env = ft_test(envp);
+	// data.env_cpy = ft_arrcpy(envp);
 	data.cmd = NULL;
 	ft_init_signal();
 	while (true)
