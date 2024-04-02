@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/01 20:46:09 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:12:10 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ struct	s_data
 {
 	char		*input;
 	char		**env;
-	char		**env_cpy;
 	t_tok_lst	*tokens;
 	t_redir_lst	**redirections;
 	t_cmd		*cmd;

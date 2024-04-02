@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/01 21:05:29 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/02 15:37:54 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,12 +63,12 @@ DEPS        	:= $(OBJS:.o=.d)
 # 							  Compilation flags								   #
 # **************************************************************************** #
 
-CC 				:= cc -g
+CC 				:= cc
 CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
-DEBUG			:= -O0 -fsanitize=address
+DEBUG			:= -O0 -g -fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #
