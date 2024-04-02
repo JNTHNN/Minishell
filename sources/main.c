@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/02 15:28:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:51:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(0);
 	}
-	data.env = envp;
+	data.env = ft_envcpy(envp);
 	data.cmd = NULL;
 	ft_init_signal();
 	while (true)
