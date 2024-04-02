@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/02 12:19:45 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:01:18 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ int	ft_count_dollars(char *str)
 // 	(*cmd)->expanded_char[id] = arr_idx;
 // 	return (EXIT_SUCCESS);
 // }
+
+/* TODO: code a function to check if token has  simple quotes around (before double) */
 
 
 int	ft_handle_expansion(char ***args, int idx, char **env)
