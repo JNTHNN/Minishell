@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 12:40:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/02 17:45:13 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 **	echo ~ = print le HOME
 **	echo ~+ = print le PWD
 **	echo ~+text = PWD + texte.
+**	echo ~- = print le OLD_PWD
 */
 
 static int	ft_check_option(char *option)

@@ -6,59 +6,129 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/02 15:46:30 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/03 21:08:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <dirent.h>
 
-/*
-**	devoir changer la var PWD avec la nouvelle dest
-*/
+// GERER TOUT LES RACCOURCIS
+// CD SANS ARGS -> $HOME
+// CD - -> OLD_PWD
+// CD ~ -> $HOME
+// CD .. -> REPERTOIRE PARENT
+// CD / -> RACINE SYSTEME
+// CD . -> RIEN REPERTOIRE ACTUEL
+// CD ~user -> REPERTOIRE PERSO DE L'USER SPECIFIE
+// UNSET PWD NE FAIT RIEN MAIS EN CREE UN APRES L'ACTION DE CD
 
-// void	cd_builtins(char *str, char **env)
-// {
-// 	char	*pos;
-// 	char	*here = NULL;
-// 	char	*final = NULL;
-// 	(void)env;
-// 	pos = getenv("PWD");
-// 	if (!chdir(str))
-// 	{
-// 		opendir(str);
-// 	}
-// 	printf("on est ici -> %s\n", getcwd(here, 0));
-// 	final = ft_strjoin(pos, str);
-// 	printf("final pos -> %s\n", final);
-// }
+// doit faire l'expand de ..
 
-/* besoin de */
-void	ft_cd(t_data *data)
+// tab de tab + recursive strrchr + memset
+
+#include <stdlib.h>
+#include <string.h>
+
+char **add_to_env(char **env, char *new_var)
 {
-	char *pos;
-	char *old_pos;
+    int i = 0;
+	int	j = 0;
+    char **new_env;
 
-	pos = getenv("PWD");
-	old_pos = getenv("OLD_PWD");
-	printf("PWD [%s] | OLD_PWD [%s]\n", pos, old_pos);
-	if (chdir(data->cmd->args[1]) == -1)
-		perror("chdir()");
-	printf("CD EXECUTE WITH DIRECTORY [%s] ---\n", data->cmd->args[1]);
-	pos = getenv("PWD");
-	old_pos = getenv("OLD_PWD");
-	printf("PWD [%s] | OLD_PWD [%s]\n", pos, old_pos);
+    // Compter le nombre de lignes dans env
+    while (env[i])
+        i++;
+    // Allouer un nouveau tableau avec une ligne supplémentaire
+    new_env = malloc((i + 2) * sizeof(char *));
+    if (!new_env)
+        return (NULL);
+    // Copier les lignes existantes
+	printf("I [%d]\n", i);
+  	while (j < i)
+	{
+        new_env[j] = ft_strdup(env[j]);
+		j++;
+	}
+    // Ajouter la nouvelle variable
+    new_env[i] = ft_strdup(new_var);
+    // Terminer le tableau avec NULL
+    new_env[i + 1] = NULL;
+    // Libérer l'ancien tableau
+	ft_free_array(env);
+    return (new_env);
 }
 
-// Lorsque vous exécutez un programme, celui-ci est lancé dans un nouveau processus.
-// Ce nouveau processus a son propre environnement, qui est une copie de l'environnement
-// du processus parent (dans ce cas, votre shell).
-// Lorsque vous changez de répertoire à l'intérieur de ce nouveau processus
-// (par exemple, en utilisant la fonction chdir() dans votre programme), 
-// cela n'affecte pas le répertoire de travail du processus parent. 
-// C'est pourquoi, après l'exécution de votre programme, vous vous retrouvez toujours dans le même répertoire dans votre shell.
-//
-// Si vous voulez changer le répertoire de travail de votre shell, vous devez utiliser la commande cd directement dans le shell,
-// et non dans un programme exécuté à partir du shell. Dans le contexte de votre shell personnalisé,
-// vous devrez implémenter la commande cd comme une fonction intégrée (ou "builtin") de votre shell, 
-// plutôt que comme une commande externe.
+void	ft_change_pwd(t_data *data)
+{
+	char	*pwd;
+	char	*new_pwd;
+	int		i;
+
+	i = 0;
+	pwd = getenv("PWD");
+	if (!pwd)
+		ft_putstr_fd("No PWD, No party\n", STDERR_FILENO);
+	if (!data->cmd->args[1])
+	{
+		// je dois aller au chemin de HOME et mettre ma pos actuelle dans OLD_PWD
+		new_pwd = getenv("HOME");
+		// je dois acceder a la var PWD dans l'env
+		while (data->env[i])
+		{
+			if (!ft_strncmp(data->env[i], "PWD=", 4))
+				data->env[i] = ft_strjoin("PWD=", new_pwd);
+			i++;
+		}
+	}
+	i = 0;
+	while (data->env[i])
+	{
+		if (!ft_strncmp(data->env[i], "OLD_PWD=", 8))
+		{
+			free(data->env[i]);
+			data->env[i] = ft_strjoin("OLD_PWD=", pwd);;
+		}
+		i++;
+	}
+	printf("OLD_PWD [%s]\n", pwd);
+	data->env = add_to_env(data->env, ft_strjoin("OLD_PWD=", pwd));
+
+}
+
+// void	ft_change_old_pwd(t_data *data)
+// {
+	
+// }
+
+int	ft_check_dir(t_data *data)
+{
+	// je dois recuperer la var $HOME
+	// puis rediriger labas en modifiant PWD et OLD_PWD
+	char *home;
+
+	home = getenv("HOME");
+	if (data->cmd->args[1])
+	{
+		if (!data->cmd->args[1] && chdir(home) == -1)
+		{
+			perror("cd home");
+			return (0);
+		}
+		else if (chdir(data->cmd->args[1]) == -1)
+		{
+			perror("cd direction");
+			return (0);
+		}
+	}
+	return (1);
+}
+
+void	ft_cd(t_data *data)
+{
+	// j'ai besoin de PWD / OLD_PWD / HOME
+	if (ft_check_dir(data))
+	{
+		ft_change_pwd(data);
+		// ft_change_old_pwd(data);
+	}
+}

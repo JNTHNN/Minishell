@@ -21,6 +21,7 @@ int main (int a, char **b, char **c)
 {
     char *pos;
     char *old_pos;
+    char    *zeub;
     char cwd[1024];
 
     pos = getenv("PWD");
@@ -37,5 +38,6 @@ int main (int a, char **b, char **c)
     printf("CD EXECUTE WITH DIRECTORY [%s] ---\n", b[1]);
     pos = getenv("PWD");
     old_pos = getenv("OLD_PWD");
-    printf("PWD [%s] | OLD_PWD [%s]\n", pos, old_pos);
+    zeub = ft_memset(ft_strrchr(cwd, '/'), '\0', 6);
+    printf("PWD [%s] | TEST [%s] | TEST2 [%s] | OLD_PWD [%s]\n", pos, zeub, cwd, old_pos);
 }
