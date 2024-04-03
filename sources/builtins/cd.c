@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/03 21:08:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/04 00:42:25 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	ft_change_pwd(t_data *data)
 	char	*pwd;
 	char	*new_pwd;
 	int		i;
+	char	**temp_path;
+	char	**temp_pwd;
+	int		j;
 
 	i = 0;
 	pwd = getenv("PWD");
@@ -80,6 +83,62 @@ void	ft_change_pwd(t_data *data)
 			i++;
 		}
 	}
+	else if (data->cmd->args[1][0] == '/')
+	{
+		// path absolu
+		while (data->env[i])
+		{
+			if (!ft_strncmp(data->env[i], "PWD=", 4))
+				data->env[i] = ft_strjoin("PWD=", data->cmd->args[1]);
+			i++;
+		}
+	}
+	else
+	{
+		temp_path = ft_split(data->cmd->args[1], '/');
+		temp_pwd = ft_split(pwd, '/');
+		i = 0;
+		while (temp_path[i])
+		{
+			if (!ft_strncmp(temp_path[i], "..", 2))
+			{
+				j = 0;
+				while (temp_pwd[j])
+					j++;
+				ft_memset(temp_pwd[j - 1], 0, ft_strlen(temp_pwd[j - 1]));
+				j = 0;
+				while (temp_pwd[j])
+					printf("ALORS [%s]\n", temp_pwd[j++]);
+			}
+			i++;
+		}
+		ft_free_array(temp_path);
+		// passer le **tempwd en *temp_pwd
+		j = 0;
+		new_pwd = ft_strdup("");
+		while (temp_pwd[j])
+		{
+			// if (temp_pwd[0])
+			// 	new_pwd = ft_strjoin(temp_pwd[j], "/");
+			new_pwd = ft_strjoin(new_pwd, "/");
+			new_pwd = ft_strjoin(new_pwd, temp_pwd[j]);
+			j++;
+		}
+		ft_free_array(temp_pwd);
+		printf("NEW_PWD [%s]\n", new_pwd);
+		i = 0;
+		while (data->env[i])
+		{
+			if (!ft_strncmp(data->env[i], "PWD=", 4))
+			{
+				free(data->env[i]);
+				data->env[i] = ft_strjoin("PWD=", new_pwd);
+				printf("DATA_ENV [%s]\n", data->env[i]);
+			}
+			i++;
+		}
+		printf("GETENV PWD [%s]\n", getenv("PWD"));
+	}
 	i = 0;
 	while (data->env[i])
 	{
@@ -94,11 +153,6 @@ void	ft_change_pwd(t_data *data)
 	data->env = add_to_env(data->env, ft_strjoin("OLD_PWD=", pwd));
 
 }
-
-// void	ft_change_old_pwd(t_data *data)
-// {
-	
-// }
 
 int	ft_check_dir(t_data *data)
 {
@@ -129,6 +183,5 @@ void	ft_cd(t_data *data)
 	if (ft_check_dir(data))
 	{
 		ft_change_pwd(data);
-		// ft_change_old_pwd(data);
 	}
 }
