@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/03 09:17:16 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/03 09:36:16 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 				ft_throw_error(&data, ret);
 				continue ;
 			}
-			if (ft_is_builtin(data.cmd->args[0]) == false)
+			if (data.cmd->is_builtin == false)
 				ft_cmd_exec(&data);
 			else
 				ft_builtin(&data);
