@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/02 14:12:10 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/03 09:25:04 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ struct s_redir_lst
 struct s_env
 {
 	char			*var;
+	char			*data;
 	struct s_env	*next;
 };
 
