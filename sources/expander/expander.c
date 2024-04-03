@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/02 16:01:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:31:10 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	ft_is_expand_char(char c)
 	return (false);
 }
 
-int	ft_count_quotes(char *str)
+int	ft_count_sgl_quotes(char *str)
 {
 	int	i;
 
@@ -50,7 +50,23 @@ int	ft_count_quotes(char *str)
 	i = 0;
 	while (*str)
 	{
-		if (*str == DBL_Q || *str == SGL_Q)
+		if (*str == SGL_Q)
+			i++;
+		str++;
+	}
+	return (i);
+}
+
+int	ft_count_dbl_quotes(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (*str)
+	{
+		if (*str == DBL_Q)
 			i++;
 		str++;
 	}
@@ -71,6 +87,13 @@ int	ft_count_dollars(char *str)
 		str++;
 	}
 	return (i);
+}
+
+bool	ft_is_valid_variable_char(char c)
+{
+	if (ft_isalpha(c) || c == UNDERSCORE)
+		return (true);
+	return (false);
 }
 
 // bool	ft_dollar_in_sgl_q(char *str)
@@ -136,42 +159,131 @@ int	ft_count_dollars(char *str)
 
 /* TODO: code a function to check if token has  simple quotes around (before double) */
 
+// bool ft_sould_expand_dollar(char *d_str)
+// {
+// 	char	*single_q;
+// 	char	*double_q;
+// 	char 	*next_doll;
+	
+// 	single_q = ft_strchr(d_str, SGL_Q);
+// 	double_q = ft_strchr(d_str, DBL_Q);
+// 	next_doll = ft_strchr(d_str, DOLLAR);
+
+// 	if (!single_q && !double_q)
+// 		return (true);
+// 	while (*d_str)
+// 	{
+		
+// 	}
+	
+// 	return (false);
+// }
+
 
 int	ft_handle_expansion(char ***args, int idx, char **env)
 {
 	char	*str;
-	int		nb_to_del;
+	int		nb_of_q;
 	int		str_size;
 	int		nb_of_doll;
 	int		i;
 	int		j;
-	char	*var;
 	bool	is_single;
+	bool	keep_sgl_q;
+	bool	keep_dbl_q;
+	bool	expand_dol;
+	char	*single_q;
+	char	*double_q;
+	char 	next_char;
+	char 	*new_str;
+	int		doll_idx;
+	char 	*start;
+	char	*var;
 
+	(void)env;
 	str = (*args)[idx];
-	nb_to_del = ft_count_quotes(str);
+	nb_of_q = ft_count_sgl_quotes(str) + ft_count_dbl_quotes(str);
 	str_size = (int)ft_strlen(str);
 	nb_of_doll = ft_count_dollars(str);
 	is_single = false;
-	printf("NB OF QUOTES = %d \n", nb_to_del);
+	keep_sgl_q = false;
+	keep_dbl_q = false;
+	expand_dol = false;
+	printf("NB OF QUOTES = %d \n", nb_of_q);
 	printf("NB OF DOLLARS = %d \n", nb_of_doll);
 	printf("STR SIZE = %d \n", str_size);
+	if (nb_of_q && !nb_of_doll)
+	{
+		single_q = ft_strchr(str, SGL_Q);
+		double_q = ft_strchr(str, DBL_Q);
+		if (single_q && !double_q)
+			is_single = true;
+		if ((single_q && double_q) && (double_q - single_q > 0))
+			keep_dbl_q = true;
+		if ((single_q && double_q) && (single_q - double_q > 0))
+			keep_sgl_q = true;
+		if (double_q && !keep_dbl_q)
+			str_size -= ft_count_dbl_quotes(str);
+		if (single_q && !keep_sgl_q)
+			str_size -= ft_count_sgl_quotes(str);	
+		new_str = (char *)malloc((str_size + 1) * sizeof(char));
+		if (!new_str)
+			return (E_MEM);
+		i = 0;
+		j = 0;
+		while (str[i])
+		{
+			if (str[i] == DBL_Q && !keep_dbl_q)
+				i++;
+			else if (str[i] == SGL_Q && !keep_sgl_q)
+				i++;
+			else
+			{
+				new_str[j] = str[i];
+				j++;
+				i++;
+			}
+		}
+		new_str[j] = '\0';
+		free((*args)[idx]);
+		(*args)[idx] = new_str;
+	}
 	if (nb_of_doll)
 	{
+
+
+		
 		i = 0;
 		char	*dollar = str;
-		while (i < nb_of_doll)
+		while (true)
 		{
 			dollar = ft_strchr(dollar, DOLLAR);
-			if (ft_strchr(dollar, SGL_Q))
-				is_single = true;
-			if ((dollar + 1))
+			if (dollar == NULL)
+				break;
+			start = str;
+			doll_idx = dollar - start;
+			printf("DOLLAR INDEX = %d\n", doll_idx);
+			printf("%s\n", dollar);	
+			if (nb_of_q)
+			{
+				//
+			}
+			
+			next_char = *(dollar + 1);
+			if (next_char == '\0' || ft_is_space(next_char) || !ft_is_valid_variable_char(next_char))
+			{
 				dollar++;
-			char *start = dollar;
-			while(*dollar && (!ft_is_space(*dollar) && !ft_is_quote(*dollar)))
+				continue;
+			}
+			dollar++;
+			
+			//if (single_q || ((single_q && double_q) && (double_q - single_q > 0)));
+
+			start = dollar;
+			while(*dollar && (!ft_is_space(*dollar) && !ft_is_quote(*dollar) && *dollar != DOLLAR))
 					dollar++;
 			var = ft_substr(start, 0, dollar - start);
-			printf("IS_SINGLE = %d\n", is_single);
+			printf("IS_SINGLE = %d, KEEP_SGL = %d, KEEP_DBL = %d, EXPAND_DOL = %d\n", is_single, keep_sgl_q, keep_dbl_q, expand_dol);
 			printf("%s\n", var);
 			if (!is_single && env)
 			{
@@ -180,7 +292,7 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 				{
 					j++;
 				}
-				printf("ENV : %s\n", env[0]);
+				//printf("ENV : %s\n", env[0]);
 			}
 
 			
@@ -188,7 +300,7 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 			i++;
 		}
 	}
-	
+	printf("=================================================================================================================\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -198,6 +310,7 @@ int	ft_expand(t_data *data)
 	t_cmd	*current;
 	char 	**args;
 	int		i;
+	int		ret;
 
 	current = data->cmd;
 	while (current)
@@ -206,7 +319,9 @@ int	ft_expand(t_data *data)
 		i = 0;
 		while (args[i])
 		{
-			ft_handle_expansion(&args, i, data->env);
+			ret = ft_handle_expansion(&args, i, data->env);
+			if (ret)
+				return (ret);
 			i++;
 		}
 		current = current->right;

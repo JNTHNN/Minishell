@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/03 09:25:04 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:09:01 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef enum e_expand_char
 {
 	DBL_Q = 34,
 	SGL_Q = 39,
-	DOLLAR = 36
+	DOLLAR = 36,
+	UNDERSCORE = 95
 }	t_expand_char;
 
 typedef enum e_redirect_type
