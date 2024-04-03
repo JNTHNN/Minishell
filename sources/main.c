@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/30 16:41:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/03 09:15:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(0);
 	}
-	data.env = envp;
-	data.env_cpy = ft_arrcpy(envp);
+	data.env = ft_envcpy(envp);
 	data.cmd = NULL;
 	ft_init_signal();
 	while (true)
@@ -47,11 +46,17 @@ int	main(int argc, char **argv, char **envp)
 				ft_throw_error(&data, ret);
 				continue ;
 			}
-			if (data.cmd->is_builtin == false)
-				ft_cmd_exec(&data);
+			ret = ft_expand(&data);
+			if (ret)
+			{
+				ft_throw_error(&data, ret);
+				continue ;
+			}
+			if (ft_is_builtin(data.cmd->args[0]) == false)
+				ft_cmd_exec(data.cmd->args, data.env);
 			else
-				ft_builtin(&data);
-		ft_reset_data(&data);
+				ft_builtin(data.cmd->args, data.env);
+			ft_reset_data(&data);
 		}
 		ft_signal();
 	}
