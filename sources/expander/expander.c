@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/03 20:41:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:48:07 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 	char 	*start;
 	char	*var;
 	
-
-	(void)env;
 	str = (*args)[idx];
 	nb_of_q = ft_count_sgl_quotes(str) + ft_count_dbl_quotes(str);
 	str_size = (int)ft_strlen(str);
@@ -165,9 +163,6 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 	}
 	if (nb_of_doll)
 	{
-
-
-		
 		i = 0;
 		dollar = str;
 		prev_dollar = str;
@@ -190,7 +185,6 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 						in_dbl_q = !in_dbl_q;
 					temp++;
 				}
-				
 			}
 			next_char = *(dollar + 1);
 			if (next_char == '\0' || ft_is_space(next_char))
@@ -268,64 +262,3 @@ int	ft_expand(t_data *data)
 	}
 	return (EXIT_SUCCESS);
 }
-
-
-
-
-// int	ft_expand(t_data *data)
-// {
-// 	t_cmd	*current;
-// 	int		i;
-// 	int		arg_size;
-
-// 	current = data->cmd;
-// 	while (current)
-// 	{
-// 		arg_size = 0;
-// 		while (current->args[arg_size])
-// 			arg_size++;
-// 		current->expanded_char = (t_expand **)malloc(arg_size * sizeof(t_expand *));
-// 		if (!current->expanded_char)
-// 			return (E_MEM);
-// 		i = -1;
-// 		while (++i < arg_size)
-// 			current->expanded_char[i] = NULL;
-// 		i = 0;
-// 		while (current->args[i])
-// 		{
-// 			ft_find_quotes_idx(current->args[i], &current, i);
-// 			i++;
-// 		}
-// 		current = current->right;
-// 	}
-
-// 		// PRINT RESULTS FOR TESTING
-// 	current = data->cmd;
-// 	while (current)
-// 	{
-// 		printf("CMD %i\n", current->id);
-// 		arg_size = 0;
-// 		while (current->args[arg_size])
-// 			arg_size++;
-// 		i = 0;
-// 		while (i < arg_size)
-// 		{
-// 			if (current->expanded_char[i] != NULL)
-// 			{
-// 				int j = 0;
-// 				while (current->expanded_char[i][j].id != -1)
-// 				{
-// 					printf("Arg %d, expand char %d, position: %d and char_type %c\n", i, j, current->expanded_char[i][j].position, current->expanded_char[i][j].char_type);
-// 					if (current->expanded_char[i][j].char_type == DOLLAR && (current->expanded_char[i][j - 1].id != -1 && current->expanded_char[i][j - 1].char_type == DBL_Q))
-// 						printf("DOLLAR is in DLB QUOTES\n");
-// 					j++;
-// 				}
-// 			}
-// 			i++;
-// 		}
-// 		current = current->right;
-// 	}
-// 	// END OF PRINTING
-	
-// 	return (EXIT_SUCCESS);
-// }
