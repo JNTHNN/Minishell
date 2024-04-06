@@ -1,0 +1,74 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
+/*   Updated: 2024/04/06 21:17:34 by jgasparo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+void	ft_seek_replace(t_data *data, char *search, char *pwd)
+{
+	int	i;
+	int	found;
+
+	i = 0;
+	found = 0;
+	while (data->env[i])
+	{
+		if (!ft_strncmp(data->env[i], search, ft_strlen(search)))
+		{
+			data->env[i] = ft_strjoin(search, pwd);
+			found = 1;
+		}
+		i++;
+	}
+	if (!found)
+		data->env = ft_add_to_env(data->env, ft_strjoin(search, pwd));
+}
+
+void	ft_cd_home(t_data *data, char *pwd)
+{
+	char	*new_pwd;
+
+	new_pwd = ft_getenv(data, "HOME=");
+	ft_seek_replace(data, "PWD=", new_pwd + 5);
+	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+}
+
+void	ft_cd_absolute(t_data *data, char *pwd)
+{
+	char	*new_pwd;
+
+	new_pwd = data->cmd->args[1];
+	if (!(ft_strlen(new_pwd) == 1) && new_pwd[ft_strlen(new_pwd) - 1] == '/')
+		ft_memset(new_pwd + (ft_strlen(new_pwd) - 1), 0, 1);
+	ft_seek_replace(data, "PWD=", data->cmd->args[1]);
+	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+}
+
+void	ft_cd_relative(t_data *data, char *pwd)
+{
+	char	**temp_path;
+	char	**temp_pwd;
+	int		i;
+
+	temp_path = ft_split(data->cmd->args[1], '/');
+	temp_pwd = ft_split(pwd, '/');
+	i = 0;
+	while (temp_path[i])
+	{
+		if (!ft_strncmp(temp_path[i], "..", 2))
+			temp_pwd = ft_sup_pwd(temp_pwd);
+		else if (ft_strncmp(temp_path[i], ".", 2) != 0)
+			temp_pwd = ft_append_pwd(temp_pwd, temp_path[i]);
+		i++;
+	}
+	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd + 1));
+	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+}
