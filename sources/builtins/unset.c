@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:39:18 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/06 22:51:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,26 @@
 **	peut unset plusieurs var a la fois
 */
 
-#include <stdlib.h>
+#include "../../includes/minishell.h"
 
-void	ft_my_unset(char **args, char ***envp)
+void	ft_unset(t_data *data)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	while (args[i])
+	i = 1;
+	while (data->cmd->args[i])
 	{
 		j = 0;
-		while ((*envp)[j])
+		while (data->env[j])
 		{
-			if (ft_strncmp(args[i], (*envp)[j], ft_strlen(args[i])) == 0)
+			if (ft_strncmp(data->cmd->args[i], data->env[j],
+					ft_strlen(data->cmd->args[i])) == 0)
 			{
-				free((*envp)[j]);
-				while ((*envp)[j])
+				free(data->env[j]);
+				while (data->env[j])
 				{
-					(*envp)[j] = (*envp)[j + 1];
+					data->env[j] = data->env[j + 1];
 					j++;
 				}
 				break ;

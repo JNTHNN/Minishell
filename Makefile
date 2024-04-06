@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
+#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/03 09:18:36 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/06 22:38:24 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,11 @@ LIBFT 			:= libft.a
 
 SRC_FILES		:= main printf_TEMP
 SIGNALS_SRC		:= signals
-BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
+BUILTINS_SRC	:= builtins env pwd echo cd exit export exec unset
 LEXER_SRC		:= lexer
-UTILS_SRC		:= error utils lexer_utils lexer_utils2 lexer_utils3 parser_utils \
-parser_utils2 parser_utils3 clean export_utils export_utils2
+UTILS_SRC		:= error utils utils2 lexer_utils lexer_utils2 lexer_utils3 \
+parser_utils parser_utils2 parser_utils3 clean export_utils export_utils2 \
+cd_utils cd_utils2
 PARSER_SRC		:= parser
 EXPAND_SRC		:= expander
 
@@ -63,12 +64,12 @@ DEPS        	:= $(OBJS:.o=.d)
 # 							  Compilation flags								   #
 # **************************************************************************** #
 
-CC 				:= cc
+CC 				:= cc -g
 CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
-DEBUG			:= -O0 -g -fsanitize=address
+DEBUG			:= -O0 -fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #
@@ -95,7 +96,7 @@ $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	@echo "${CYAN}Generating project executable.${WHITE}"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) $(DEBUG) -o $(NAME)
 	@echo "${GREEN}Compilation successful !${WHITE}"
-	@./$(NAME)
+	@./$(NAME) # penser a l'enlever
 
 $(LIBFT_DIR)$(LIBFT):
 	@echo "\n$(CYAN)Generating Libft...$(WHITE)"
