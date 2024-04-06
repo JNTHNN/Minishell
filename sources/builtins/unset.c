@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/02 01:26:53 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/04 03:05:26 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@
 **	peut unset plusieurs var a la fois
 */
 
-// PROBLEME QUAND ON UNSET DES LE LANCEMENT CAR ENV N'EST PAS MALLOC
-
 #include "../../includes/minishell.h"
-#include <stdlib.h>
 
 void	ft_unset(t_data *data)
 {
@@ -33,7 +30,8 @@ void	ft_unset(t_data *data)
 		j = 0;
 		while (data->env[j])
 		{
-			if (ft_strncmp(data->cmd->args[i], data->env[j], ft_strlen(data->cmd->args[i])) == 0)
+			if (ft_strncmp(data->cmd->args[i], data->env[j],
+				ft_strlen(data->cmd->args[i])) == 0)
 			{
 				free(data->env[j]);
 				while (data->env[j])

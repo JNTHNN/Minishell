@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:53:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:46:24 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	**ft_path_abs(t_data *data)
 	char	*path;
 	char	**my_path;
 
-	path = getenv("PATH");
+	path = getenv("PATH"); // a changer par ft_getenv
 	my_path = ft_split(path, ':');
 	ft_pathiter(my_path, data);
 	return (my_path);

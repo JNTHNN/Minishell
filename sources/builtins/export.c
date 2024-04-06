@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/02 02:42:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/04 03:15:55 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	ft_export(t_data *data)
 			{
 				while (data->cmd->args[i])
 				{
-					if (data->cmd->args[i]) // si c'est "export var=data"
+					if (data->cmd->args[i]) // si c'est "export var=data" 
 					{
 						ft_modify_or_add_env(&head, // modifie ou ajoute
 							data->cmd->args[i]);
