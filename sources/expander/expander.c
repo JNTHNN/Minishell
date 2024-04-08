@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/08 14:35:44 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:02:52 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,11 @@ void	ft_adjust_length_for_quotes(char *str, int *length)
 	}
 }
 
+void	ft_skip_quote()
+{
+	
+}
+
 bool	ft_should_expand_var(char *str, char *chr)
 {
 	bool	in_dbl_q;
@@ -180,26 +185,72 @@ int	ft_calculate_new_length(char *str, char **env)
 	return (len);
 }
 
+void	ft_create_new_str(char *old, char *new, char **env, size_t buffsize)
+{
+	int			i;
+	char		*var_name;
+	char		*var_value;
+	bool		in_dbl_q;
+	bool		in_sgl_q;
+	size_t		space_left;
+	char 		*cursor;
 
+	cursor = new;
+	in_sgl_q = false;
+	in_dbl_q = false;
+	i = 0;
+	while (old[i])
+	{
+		if (old[i] == DOLLAR && ft_should_expand_var(old, &old[i]))
+		{
+			var_name = ft_get_var_name(&old[i + 1]);
+			var_value = ft_get_env_value(env, var_name);
+			space_left = buffsize - (cursor - new) - 1;
+			ft_strlcpy(cursor, var_value, space_left);
+			cursor += ft_strlen(var_value);
+			i += ft_strlen(var_name) + 1;
+			free(var_name);
+		}
+		else if (old[i] == SGL_Q && !in_dbl_q)
+		{
+				in_sgl_q = !in_sgl_q;
+				i++; 
+		}
+		else if (old[i] == DBL_Q && !in_sgl_q)
+		{
+				in_dbl_q = !in_dbl_q;
+				i++; 
+		}
+		else
+		{
+			*cursor++ = old[i];
+			i++;
+		}
+	}
+	*cursor = '\0';
+}
 
 int	ft_handle_expansion(char ***args, int idx, char **env)
 {
 	char	*str;
-	//char 	*new_str;
-	//char	*cursor;
+	char 	*new_str;
+	char	*cursor;
 	int		new_length;
 
 	str = (*args)[idx];
-	printf("LENGTH = %zu\n", ft_strlen(str));
-	new_length = ft_calculate_new_length(str, env);
-	printf("NEW LENGTH = %d\n", new_length);
-
-
-
+	if (ft_count_all_quotes(str) || ft_count_dollars(str))
+	{
+		new_length = ft_calculate_new_length(str, env);
+		new_str = (char *)malloc(new_length + 1);
+		if (!new_str)
+			return (E_MEM);
+		cursor = new_str;
+		ft_create_new_str(str, cursor, env, (new_length + 2));
+		free((*args)[idx]);
+		(*args)[idx] = new_str;
+	}
 	return (EXIT_SUCCESS);
 }
-
-
 
 int	ft_expand(t_data *data)
 {
