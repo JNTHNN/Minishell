@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/03 09:18:36 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/08 22:29:35 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ LIBFT 			:= libft.a
 # 							  	Source files								   #
 # **************************************************************************** #
 
-SRC_FILES		:= main printf_TEMP
+SRC_FILES		:= main
 SIGNALS_SRC		:= signals
 BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 LEXER_SRC		:= lexer

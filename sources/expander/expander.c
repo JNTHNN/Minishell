@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/08 22:01:35 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/08 22:58:09 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,34 +179,29 @@ size_t	ft_space_left(size_t buffsize, char *cursor, char *start)
 
 void	ft_create_new_str(char *old, char *new, char **env, size_t buffsize)
 {
-	int			i;
-	char		*var_name;
-	char		*var_value;
-	bool		in_dbl_q;
-	bool		in_sgl_q;
-	char 		*cursor;
+	char			*cursor;
+	static bool		state[2] = {false, false};
+	char			*var[2];
 
 	cursor = new;
-	in_sgl_q = false;
-	in_dbl_q = false;
-	i = -1;
-	while (old[++i])
+	while (*old)
 	{
-		if (old[i] == DOLLAR && ft_should_expand_var(old, &old[i]))
+		if (*old == DOLLAR && !state[IN_SGL_Q])
 		{
-			var_name = ft_get_var_name(&old[i + 1]);
-			var_value = ft_get_env_value(env, var_name);
-			ft_strlcpy(cursor, var_value, ft_space_left(buffsize, cursor, new));
-			cursor += ft_strlen(var_value);
-			i += ft_strlen(var_name);
-			free(var_name);
+			var[NAME] = ft_get_var_name(old + 1);
+			var[VAL] = ft_get_env_value(env, var[NAME]);
+			ft_strlcpy(cursor, var[VAL], ft_space_left(buffsize, cursor, new));
+			cursor += ft_strlen(var[VAL]);
+			old += ft_strlen(var[NAME]);
+			free(var[NAME]);
 		}
-		else if (old[i] == SGL_Q && !in_dbl_q)
-			in_sgl_q = !in_sgl_q;
-		else if (old[i] == DBL_Q && !in_sgl_q)
-			in_dbl_q = !in_dbl_q;
+		else if (*old == SGL_Q && !state[IN_DBL_Q])
+			state[IN_SGL_Q] = !state[IN_SGL_Q];
+		else if (*old == DBL_Q && !state[IN_SGL_Q])
+			state[IN_DBL_Q] = !state[IN_DBL_Q];
 		else
-			*cursor++ = old[i];
+			*cursor++ = *old;
+		old++;
 	}
 	*cursor = '\0';
 }
