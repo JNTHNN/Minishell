@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.h                                           :+:      :+:    :+:   */
+/*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/08 22:25:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/08 23:11:48 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPAND_H
-# define EXPAND_H
+#ifndef EXPANDER_H
+# define EXPANDER_H
 
 enum e_state
 {
@@ -25,6 +25,20 @@ enum e_var
 	VAL = 1
 };
 
-int	ft_expand(t_data *data);
+/* expander.c */
+int		ft_expand(t_data *data);
+
+/* expander_utils.c */
+int		ft_count_sgl_quotes(char *str);
+int		ft_count_dbl_quotes(char *str);
+int		ft_count_dollars(char *str);
+int		ft_count_all_quotes(char *str);
+bool	ft_is_valid_variable_char(char c);
+
+/* expander_utils2.c */
+char	*ft_get_env_value(char **env, char *var_name);
+char	*ft_get_var_name(char *str);
+void	ft_adjust_length_for_quotes(char *str, int *length);
+bool	ft_should_expand_var(char *str, char *chr);
 
 #endif
