@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   expander_TEMP.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/01 22:12:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:48:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,130 +34,145 @@
 	array of struct with quote index and type ???
 */
 
-bool	ft_is_expand_char(char c)
+int	ft_handle_expansion(char ***args, int idx, char **env)
 {
-	if (c == DBL_Q || c == SGL_Q || c == DOLLAR)
-		return (true);
-	return (false);
-}
-
-int	ft_count_expand_char(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while (*str)
-	{
-		if (*str == DBL_Q || *str == SGL_Q || *str == DOLLAR)
-			i++;
-		str++;
-	}
-	return (i);
-}
-
-
-// char	ft_define_quotes_type(char *str)
-// {
-// 	if (ft_strchr(str, DBL_Q))
-	
-// }
-
-int	ft_find_quotes_idx(char *str, t_cmd **cmd, int id)
-{
-	t_expand	*arr_idx;
-	int			exp_char_nb;
-	int			i;
-	char		*start;
-
-	start = str;
-	exp_char_nb = ft_count_expand_char(str);
-	if (exp_char_nb == 0)
-		return (0);
-	arr_idx = (t_expand *)malloc((exp_char_nb + 1) * sizeof(t_expand));
-	if (!arr_idx)
-		return (E_MEM);
-	i = -1;
-	while (++i < exp_char_nb)
-		arr_idx[i].id = -1;
-	arr_idx[exp_char_nb].id = -1;
-	i = 0;
-	while (*str)
-	{
-		if (ft_is_expand_char(*str))
-		{
-			if (*str == DBL_Q)
-				arr_idx[i].char_type = DBL_Q;
-			else if (*str == SGL_Q)
-				arr_idx[i].char_type = SGL_Q;
-			else if (*str == DOLLAR)
-				arr_idx[i].char_type = DOLLAR;
-			arr_idx[i].position = str - start;
-			arr_idx[i].id = i;
-			i++;
-		}
-		str++;
-	}
-	if (arr_idx[0].id == -1)
-		return (-1);
-	(*cmd)->expanded_char[id] = arr_idx;
-	return (EXIT_SUCCESS);
-}
-
-
-int	ft_expand(t_data *data)
-{
-	t_cmd	*current;
+	char	*str;
+	int		nb_of_q;
+	int		str_size;
+	int		nb_of_doll;
 	int		i;
-	int		arg_size;
-
-	current = data->cmd;
-	while (current)
+	int		j;
+	bool	keep_sgl_q;
+	bool	keep_dbl_q;
+	char	*single_q;
+	char	*double_q;
+	char	*dollar;
+	char	*prev_dollar;
+	char 	next_char;
+	char 	*new_str;
+	bool 	in_sgl_q;
+	bool 	in_dbl_q;
+	char 	*temp;
+	char 	*start;
+	char	*var;
+	
+	str = (*args)[idx];
+	nb_of_q = ft_count_sgl_quotes(str) + ft_count_dbl_quotes(str);
+	str_size = (int)ft_strlen(str);
+	nb_of_doll = ft_count_dollars(str);
+	keep_sgl_q = false;
+	keep_dbl_q = false;
+	printf("NB OF QUOTES = %d \n", nb_of_q);
+	printf("NB OF DOLLARS = %d \n", nb_of_doll);
+	printf("STR SIZE = %d \n", str_size);
+	if (nb_of_q && !nb_of_doll)
 	{
-		arg_size = 0;
-		while (current->args[arg_size])
-			arg_size++;
-		current->expanded_char = (t_expand **)malloc(arg_size * sizeof(t_expand *));
-		if (!current->expanded_char)
+		single_q = ft_strchr(str, SGL_Q);
+		double_q = ft_strchr(str, DBL_Q);
+		if ((single_q && double_q) && (double_q - single_q > 0))
+			keep_dbl_q = true;
+		if ((single_q && double_q) && (single_q - double_q > 0))
+			keep_sgl_q = true;
+		if (double_q && !keep_dbl_q)
+			str_size -= ft_count_dbl_quotes(str);
+		if (single_q && !keep_sgl_q)
+			str_size -= ft_count_sgl_quotes(str);	
+		new_str = (char *)malloc((str_size + 1) * sizeof(char));
+		if (!new_str)
 			return (E_MEM);
-		i = -1;
-		while (++i < arg_size)
-			current->expanded_char[i] = NULL;
 		i = 0;
-		while (current->args[i])
+		j = 0;
+		while (str[i])
 		{
-			ft_find_quotes_idx(current->args[i], &current, i);
-			i++;
-		}
-		current = current->right;
-	}
-
-		// PRINT RESULTS FOR TESTING
-	current = data->cmd;
-	while (current)
-	{
-		printf("CMD %i\n", current->id);
-		arg_size = 0;
-		while (current->args[arg_size])
-			arg_size++;
-		i = 0;
-		while (i < arg_size)
-		{
-			if (current->expanded_char[i] != NULL)
+			if (str[i] == DBL_Q && !keep_dbl_q)
+				i++;
+			else if (str[i] == SGL_Q && !keep_sgl_q)
+				i++;
+			else
 			{
-				int j = 0;
-				while (current->expanded_char[i][j].id != -1)
+				new_str[j] = str[i];
+				j++;
+				i++;
+			}
+		}
+		new_str[j] = '\0';
+		free((*args)[idx]);
+		(*args)[idx] = new_str;
+		printf("ARG : %s\n", (*args)[idx]);
+	}
+	if (nb_of_doll)
+	{
+		i = 0;
+		dollar = str;
+		prev_dollar = str;
+		while (true)
+		{
+			dollar = ft_strchr(dollar, DOLLAR);
+			if (dollar == NULL)
+				break;
+			printf("%s\n", dollar);	
+			if (nb_of_q)
+			{
+				in_sgl_q = false;
+				in_dbl_q = false;
+				temp = prev_dollar;
+				while (temp < dollar)
 				{
-					printf("Arg %d, expand char %d, position: %d and char_type %c\n", i, j, current->expanded_char[i][j].position, current->expanded_char[i][j].char_type);
-					j++;
+					if (*temp == SGL_Q && !in_dbl_q)
+						in_sgl_q = !in_sgl_q;
+					else if (*temp == DBL_Q && !in_sgl_q)
+						in_dbl_q = !in_dbl_q;
+					temp++;
 				}
 			}
+			next_char = *(dollar + 1);
+			if (next_char == '\0' || ft_is_space(next_char))
+			{
+				dollar++;
+				continue;
+			}
+			if (!ft_is_valid_variable_char(next_char))
+			{
+				free((*args)[idx]);
+				(*args)[idx] = ft_strdup("\0");
+				dollar++;
+				continue;
+			}
+			dollar++;
+			start = dollar;
+			while (*dollar && (!ft_is_space(*dollar) && !ft_is_quote(*dollar) && *dollar != DOLLAR))
+					dollar++;
+			var = ft_substr(start, 0, dollar - start);
+			temp = ft_strjoin(var, "=");
+			free(var);
+			var = NULL;
+			printf("%s\n", temp);
+			if (!in_sgl_q && env)
+			{
+				j = 0;
+				while (env[j])
+				{
+					if (!ft_strncmp(env[j], temp, ft_strlen(temp)))
+					{
+						var = ft_substr(env[j], ft_strlen(temp), ft_strlen(env[j]) - ft_strlen(temp));
+						if (!var)
+							return (E_MEM);
+						free((*args)[idx]);
+						(*args)[idx] = var;
+					}
+					j++;
+				}
+				//printf("%s\n", var);
+			}
+			if (!var)
+			{
+				free((*args)[idx]);
+				(*args)[idx] = ft_strdup("\0");
+			}
+			printf("ARG : %s\n", (*args)[idx]);
 			i++;
 		}
-		current = current->right;
 	}
-	// END OF PRINTING
-	
+	printf("=================================================================================================================\n");
 	return (EXIT_SUCCESS);
 }

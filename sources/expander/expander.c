@@ -6,40 +6,11 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/03 20:48:07 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:35:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/*
-	# check each arg from (the array of) cmd node
-	# check if there are quotes and which type
-	# check if there is a $ (inside of quotes or not)
-	# expand the variable if it is in double quotes or not in quotes,
-	which means replace it by its value taken from the env or the global variable
-	# remove all quotes
-*/
-
-/*
-	count quotes
-	if quotes, get indexes
-	check for $ and get index (several possible...)
-	check quote types
-	are they between double quotes ? => expand
-	remove all quotes 
-*/
-
-/*
-	array of struct with quote index and type ???
-*/
-
-bool	ft_is_expand_char(char c)
-{
-	if (c == DBL_Q || c == SGL_Q || c == DOLLAR)
-		return (true);
-	return (false);
-}
 
 int	ft_count_sgl_quotes(char *str)
 {
@@ -89,6 +60,13 @@ int	ft_count_dollars(char *str)
 	return (i);
 }
 
+int	ft_count_all_quotes(char *str)
+{
+	if (!str)
+		return (0);
+	return (ft_count_dbl_quotes(str) + ft_count_sgl_quotes(str));
+}
+
 bool	ft_is_valid_variable_char(char c)
 {
 	if (ft_isalpha(c) || c == UNDERSCORE)
@@ -96,147 +74,131 @@ bool	ft_is_valid_variable_char(char c)
 	return (false);
 }
 
+char	*ft_get_env_value(char **env, char *var_name) 
+{
+    int 	i;
+	char	*var_value;
+
+	var_value = NULL;
+	i = 0;
+	while (env[i])
+	{
+		if (!ft_strncmp(env[i], var_name, ft_strlen(var_name)))
+			var_value = ft_strchr(env[i], '=') + 1;
+		i++;
+	}
+	return (var_value);
+}
+
+char	*ft_get_var_name(char *str)
+{
+	char	*start;
+	
+	start = str;
+	if (*str == '\0' || ft_is_space(*str) || !ft_is_valid_variable_char(*str))
+		return (NULL);
+	while (*str && (!ft_is_space(*str) 
+			&& !ft_is_quote(*str) && *str != DOLLAR))
+		str++;
+	return (ft_substr(start, 0, str - start));
+}
+
+void	ft_adjust_length_for_quotes(char *str, int *length)
+{
+	bool	in_dbl_q;
+	bool	in_sgl_q;
+	
+	in_sgl_q = false;
+	in_dbl_q = false;
+	while (*str)
+	{
+		if (*str == SGL_Q)
+			in_sgl_q = !in_sgl_q;
+		if (*str == DBL_Q)
+			in_dbl_q = !in_dbl_q;
+		if (*str == SGL_Q && !in_dbl_q)
+			(*length)--;
+		if (*str == DBL_Q && !in_sgl_q)
+			(*length)--;	
+		str++;
+	}
+}
+
+bool	ft_should_expand_var(char *str, char *chr)
+{
+	bool	in_dbl_q;
+	bool	in_sgl_q;
+	char	*last_sgl;
+	char	*last_dbl;
+
+	in_dbl_q = false;
+	in_sgl_q = false;
+	while (*str != *chr)
+	{
+		if (*str == DBL_Q)
+		{
+			in_dbl_q = !in_dbl_q;
+			last_dbl = str;
+		}
+		if (*str == SGL_Q)
+		{
+			in_sgl_q = !in_sgl_q;
+			last_sgl = str;
+		}
+		str++;
+	}
+	if ((!ft_count_all_quotes(str) || !ft_count_sgl_quotes(str) 
+		|| ((in_dbl_q && in_sgl_q) && (last_sgl > last_dbl))))
+		return (true);
+	return (false);
+}
+
+int	ft_calculate_new_length(char *str, char **env)
+{
+	int		i;
+	int		len;
+	char	*var_name;
+	
+	len = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == DOLLAR && ft_should_expand_var(str, &str[i]))
+		{
+			var_name = ft_get_var_name(&str[i + 1]);
+			len += ft_strlen(ft_get_env_value(env, var_name));
+			while (str[i + 1] && (!ft_is_space(str[i + 1]) 
+					&& !ft_is_quote(str[i + 1]) && str[i + 1] != DOLLAR))
+				i++;
+			free(var_name);
+		}
+		else
+			len++;
+		i++;
+	}
+	ft_adjust_length_for_quotes(str, &len);
+	return (len);
+}
+
+
+
 int	ft_handle_expansion(char ***args, int idx, char **env)
 {
 	char	*str;
-	int		nb_of_q;
-	int		str_size;
-	int		nb_of_doll;
-	int		i;
-	int		j;
-	bool	keep_sgl_q;
-	bool	keep_dbl_q;
-	char	*single_q;
-	char	*double_q;
-	char	*dollar;
-	char	*prev_dollar;
-	char 	next_char;
-	char 	*new_str;
-	bool 	in_sgl_q;
-	bool 	in_dbl_q;
-	char 	*temp;
-	char 	*start;
-	char	*var;
-	
+	//char 	*new_str;
+	//char	*cursor;
+	int		new_length;
+
 	str = (*args)[idx];
-	nb_of_q = ft_count_sgl_quotes(str) + ft_count_dbl_quotes(str);
-	str_size = (int)ft_strlen(str);
-	nb_of_doll = ft_count_dollars(str);
-	keep_sgl_q = false;
-	keep_dbl_q = false;
-	printf("NB OF QUOTES = %d \n", nb_of_q);
-	printf("NB OF DOLLARS = %d \n", nb_of_doll);
-	printf("STR SIZE = %d \n", str_size);
-	if (nb_of_q && !nb_of_doll)
-	{
-		single_q = ft_strchr(str, SGL_Q);
-		double_q = ft_strchr(str, DBL_Q);
-		if ((single_q && double_q) && (double_q - single_q > 0))
-			keep_dbl_q = true;
-		if ((single_q && double_q) && (single_q - double_q > 0))
-			keep_sgl_q = true;
-		if (double_q && !keep_dbl_q)
-			str_size -= ft_count_dbl_quotes(str);
-		if (single_q && !keep_sgl_q)
-			str_size -= ft_count_sgl_quotes(str);	
-		new_str = (char *)malloc((str_size + 1) * sizeof(char));
-		if (!new_str)
-			return (E_MEM);
-		i = 0;
-		j = 0;
-		while (str[i])
-		{
-			if (str[i] == DBL_Q && !keep_dbl_q)
-				i++;
-			else if (str[i] == SGL_Q && !keep_sgl_q)
-				i++;
-			else
-			{
-				new_str[j] = str[i];
-				j++;
-				i++;
-			}
-		}
-		new_str[j] = '\0';
-		free((*args)[idx]);
-		(*args)[idx] = new_str;
-	}
-	if (nb_of_doll)
-	{
-		i = 0;
-		dollar = str;
-		prev_dollar = str;
-		while (true)
-		{
-			dollar = ft_strchr(dollar, DOLLAR);
-			if (dollar == NULL)
-				break;
-			printf("%s\n", dollar);	
-			if (nb_of_q)
-			{
-				in_sgl_q = false;
-				in_dbl_q = false;
-				temp = prev_dollar;
-				while (temp < dollar)
-				{
-					if (*temp == SGL_Q && !in_dbl_q)
-						in_sgl_q = !in_sgl_q;
-					else if (*temp == DBL_Q && !in_sgl_q)
-						in_dbl_q = !in_dbl_q;
-					temp++;
-				}
-			}
-			next_char = *(dollar + 1);
-			if (next_char == '\0' || ft_is_space(next_char))
-			{
-				dollar++;
-				continue;
-			}
-			if (!ft_is_valid_variable_char(next_char))
-			{
-				free((*args)[idx]);
-				(*args)[idx] = ft_strdup("\0");
-				dollar++;
-				continue;
-			}
-			dollar++;
-			start = dollar;
-			while (*dollar && (!ft_is_space(*dollar) && !ft_is_quote(*dollar) && *dollar != DOLLAR))
-					dollar++;
-			var = ft_substr(start, 0, dollar - start);
-			temp = ft_strjoin(var, "=");
-			free(var);
-			var = NULL;
-			printf("%s\n", temp);
-			if (!in_sgl_q && env)
-			{
-				j = 0;
-				while (env[j])
-				{
-					if (!ft_strncmp(env[j], temp, ft_strlen(temp)))
-					{
-						var = ft_substr(env[j], ft_strlen(temp) + 1, ft_strlen(env[j]) - (ft_strlen(temp) + 1));
-						if (!var)
-							return (E_MEM);
-						free((*args)[idx]);
-						(*args)[idx] = var;
-					}
-					j++;
-				}
-				//printf("%s\n", var);
-			}
-			if (!var)
-			{
-				free((*args)[idx]);
-				(*args)[idx] = ft_strdup("\0");
-			}
-			printf("ARG : %s\n", (*args)[idx]);
-			i++;
-		}
-	}
-	printf("=================================================================================================================\n");
+	printf("LENGTH = %zu\n", ft_strlen(str));
+	new_length = ft_calculate_new_length(str, env);
+	printf("NEW LENGTH = %d\n", new_length);
+
+
+
 	return (EXIT_SUCCESS);
 }
+
 
 
 int	ft_expand(t_data *data)
