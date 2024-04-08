@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/08 17:02:52 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/08 22:01:35 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ bool	ft_is_valid_variable_char(char c)
 	return (false);
 }
 
-char	*ft_get_env_value(char **env, char *var_name) 
+char	*ft_get_env_value(char **env, char *var_name)
 {
-    int 	i;
+	int		i;
 	char	*var_value;
 
 	var_value = NULL;
@@ -93,11 +93,11 @@ char	*ft_get_env_value(char **env, char *var_name)
 char	*ft_get_var_name(char *str)
 {
 	char	*start;
-	
+
 	start = str;
 	if (*str == '\0' || ft_is_space(*str) || !ft_is_valid_variable_char(*str))
 		return (NULL);
-	while (*str && (!ft_is_space(*str) 
+	while (*str && (!ft_is_space(*str)
 			&& !ft_is_quote(*str) && *str != DOLLAR))
 		str++;
 	return (ft_substr(start, 0, str - start));
@@ -107,7 +107,7 @@ void	ft_adjust_length_for_quotes(char *str, int *length)
 {
 	bool	in_dbl_q;
 	bool	in_sgl_q;
-	
+
 	in_sgl_q = false;
 	in_dbl_q = false;
 	while (*str)
@@ -119,41 +119,28 @@ void	ft_adjust_length_for_quotes(char *str, int *length)
 		if (*str == SGL_Q && !in_dbl_q)
 			(*length)--;
 		if (*str == DBL_Q && !in_sgl_q)
-			(*length)--;	
+			(*length)--;
 		str++;
 	}
-}
-
-void	ft_skip_quote()
-{
-	
 }
 
 bool	ft_should_expand_var(char *str, char *chr)
 {
 	bool	in_dbl_q;
 	bool	in_sgl_q;
-	char	*last_sgl;
-	char	*last_dbl;
 
 	in_dbl_q = false;
 	in_sgl_q = false;
 	while (*str != *chr)
 	{
-		if (*str == DBL_Q)
-		{
+		if (*str == DBL_Q && !in_sgl_q)
 			in_dbl_q = !in_dbl_q;
-			last_dbl = str;
-		}
-		if (*str == SGL_Q)
-		{
+		if (*str == SGL_Q && !in_dbl_q)
 			in_sgl_q = !in_sgl_q;
-			last_sgl = str;
-		}
 		str++;
 	}
-	if ((!ft_count_all_quotes(str) || !ft_count_sgl_quotes(str) 
-		|| ((in_dbl_q && in_sgl_q) && (last_sgl > last_dbl))))
+	if ((!ft_count_all_quotes(str) || !ft_count_sgl_quotes(str)
+			|| ((in_dbl_q && !in_sgl_q))))
 		return (true);
 	return (false);
 }
@@ -163,7 +150,7 @@ int	ft_calculate_new_length(char *str, char **env)
 	int		i;
 	int		len;
 	char	*var_name;
-	
+
 	len = 0;
 	i = 0;
 	while (str[i])
@@ -185,6 +172,11 @@ int	ft_calculate_new_length(char *str, char **env)
 	return (len);
 }
 
+size_t	ft_space_left(size_t buffsize, char *cursor, char *start)
+{
+	return (buffsize - (cursor - start) - 1);
+}
+
 void	ft_create_new_str(char *old, char *new, char **env, size_t buffsize)
 {
 	int			i;
@@ -192,40 +184,29 @@ void	ft_create_new_str(char *old, char *new, char **env, size_t buffsize)
 	char		*var_value;
 	bool		in_dbl_q;
 	bool		in_sgl_q;
-	size_t		space_left;
 	char 		*cursor;
 
 	cursor = new;
 	in_sgl_q = false;
 	in_dbl_q = false;
-	i = 0;
-	while (old[i])
+	i = -1;
+	while (old[++i])
 	{
 		if (old[i] == DOLLAR && ft_should_expand_var(old, &old[i]))
 		{
 			var_name = ft_get_var_name(&old[i + 1]);
 			var_value = ft_get_env_value(env, var_name);
-			space_left = buffsize - (cursor - new) - 1;
-			ft_strlcpy(cursor, var_value, space_left);
+			ft_strlcpy(cursor, var_value, ft_space_left(buffsize, cursor, new));
 			cursor += ft_strlen(var_value);
-			i += ft_strlen(var_name) + 1;
+			i += ft_strlen(var_name);
 			free(var_name);
 		}
 		else if (old[i] == SGL_Q && !in_dbl_q)
-		{
-				in_sgl_q = !in_sgl_q;
-				i++; 
-		}
+			in_sgl_q = !in_sgl_q;
 		else if (old[i] == DBL_Q && !in_sgl_q)
-		{
-				in_dbl_q = !in_dbl_q;
-				i++; 
-		}
+			in_dbl_q = !in_dbl_q;
 		else
-		{
 			*cursor++ = old[i];
-			i++;
-		}
 	}
 	*cursor = '\0';
 }
@@ -233,7 +214,7 @@ void	ft_create_new_str(char *old, char *new, char **env, size_t buffsize)
 int	ft_handle_expansion(char ***args, int idx, char **env)
 {
 	char	*str;
-	char 	*new_str;
+	char	*new_str;
 	char	*cursor;
 	int		new_length;
 
@@ -248,6 +229,7 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 		ft_create_new_str(str, cursor, env, (new_length + 2));
 		free((*args)[idx]);
 		(*args)[idx] = new_str;
+		printf("FINAL = %s\n", (*args)[idx]);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -255,7 +237,7 @@ int	ft_handle_expansion(char ***args, int idx, char **env)
 int	ft_expand(t_data *data)
 {
 	t_cmd	*current;
-	char 	**args;
+	char	**args;
 	int		i;
 	int		ret;
 
