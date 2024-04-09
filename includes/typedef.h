@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/03 16:09:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/09 12:33:28 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_redir_lst	t_redir_lst;
 typedef struct s_tok_lst	t_tok_lst;
 typedef struct s_env		t_env;
 typedef struct s_expand		t_expand;
+typedef struct s_hist		t_hist;
 
 typedef enum e_tok_type
 {
@@ -46,6 +47,7 @@ typedef enum e_redirect_type
 struct	s_data
 {
 	char		*input;
+	t_hist		*hist;
 	char		**env;
 	t_tok_lst	*tokens;
 	t_redir_lst	**redirections;
@@ -95,6 +97,12 @@ struct	s_expand
 	int				id;
 	int				position;
 	t_expand_char	char_type;
+};
+
+struct	s_hist
+{
+	char	*newline;
+	char	*lastline;
 };
 
 #endif

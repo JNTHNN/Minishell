@@ -6,11 +6,13 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/03 09:36:16 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:36:53 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	exit_code = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -24,6 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	data.env = ft_envcpy(envp);
 	data.cmd = NULL;
+	data.hist = ft_create_hist();
 	ft_init_signal();
 	while (true)
 	{
@@ -32,7 +35,16 @@ int	main(int argc, char **argv, char **envp)
 			return (E_MEM);
 		if (data.input && data.input[0])
 		{
+			ft_fill_local_history(&data);
 			add_history(data.input);
+			if (ft_strlen(data.input) == 2 && !ft_strncmp(data.input, "!!", 2))
+			{
+				if (data.hist->lastline)
+				{
+					free(data.input);
+					data.input = ft_strdup(data.hist->lastline);
+				}
+			}
 			ret = ft_tokenize(&data);
 			if (ret)
 			{
