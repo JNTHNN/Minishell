@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/10 13:45:00 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:24:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_cd_absolute(t_data *data, char *pwd)
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 }
 
-char	**ft_remove_tilde(char **path)
+char	**ft_remove_first(char **path)
 {
 	char	**new_path;
 	int 	i;
@@ -72,14 +72,19 @@ char	**ft_remove_tilde(char **path)
 	return (new_path);
 }
 
-char	**ft_replace_pwd(t_data *data)
+char	**ft_replace_pwd(t_data *data, char *shortcut)
 {
-	char	*home;
-	char	**temp_pwd;
+	char	*temp_pwd;
+	char	**pwd;
 
-	home = ft_getenv(data, "HOME=");
-	temp_pwd = ft_split(home, '/');
-	return (temp_pwd);
+	printf("Shortcut [%s]\n", shortcut);
+	if (shortcut && !ft_strncmp(shortcut, "-", 1))
+		temp_pwd = ft_getenv(data, "OLDPWD=");
+	else
+		temp_pwd = ft_getenv(data, "HOME=");
+	printf("REPLACE PWD [%s]\n", temp_pwd);
+	pwd = ft_split(temp_pwd, '/');
+	return (pwd);
 }
 
 void	ft_cd_relative(t_data *data, char *pwd)
@@ -95,10 +100,10 @@ void	ft_cd_relative(t_data *data, char *pwd)
 	{
 		printf("TEMP_PATH AVANT [%s] \n", temp_path[i++]);
 	}
-	if (!ft_strncmp(temp_path[0], "~", 1))
+	if (!ft_strncmp(temp_path[0], "~", 1) || !ft_strncmp(temp_path[0], "-", 1))
 	{
-		temp_path = ft_prepend_path(temp_path);
-		temp_pwd = ft_replace_pwd(data);
+		temp_pwd = ft_replace_pwd(data, temp_path[0]);
+		temp_path = ft_remove_first(temp_path);
 	}
 	i = 0;
 	while (temp_path[i])
@@ -106,7 +111,7 @@ void	ft_cd_relative(t_data *data, char *pwd)
 		printf("TEMP_PATH APRES [%s] \n", temp_path[i++]);
 	}
 	i = 0;
-	while (temp_pwd[i])
+	while (temp_pwd && temp_pwd[i])
 	{
 		printf("TEMP_PWD [%s] \n", temp_pwd[i++]);
 	}
