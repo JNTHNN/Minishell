@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/06 22:56:34 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:18:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 # include "parser.h"
 # include "utils.h"
 # include "clean.h"
-# include "expand.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
@@ -81,12 +80,20 @@ void	ft_cd_relative(t_data *data, char *pwd);
 char	**ft_append_pwd(char **pwd, char *path);
 char	**ft_sup_pwd(char **pwd);
 char	*ft_pwdcat(char **pwd);
+char	**ft_remove_first(char **path);
+char	**ft_replace_pwd(t_data *data, char *shortcut);
+
+/*	checker for cd : cd_utils3.c	*/
+int		ft_check_tilde(t_data *data);
+int		ft_check_home(t_data *data);
+int		ft_check_minus(t_data *data);
 
 /*		JG_exec			*/
 void	ft_cmd_exec(t_data *data);
 
 /*		UTILS		*/
 char	*ft_strcat(char *dest, const char *src);
+
 
 /* Handle errors : error.c */
 void	ft_throw_error(t_data *data, int err_code);
@@ -99,5 +106,7 @@ void	print_parse(t_cmd *cmd); // printf_TEMP.c
 
 /*  lexer.c */
 int		ft_check_quotes(char *input);
+
+
 
 #endif

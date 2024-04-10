@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/06 21:13:55 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:17:51 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // GERER TOUT LES RACCOURCIS
 // CD SANS ARGS -> $HOME √
-// CD - -> OLD_PWD
+// CD - -> OLD_PWD + PRINT 
 // CD ~ -> $HOME √
 // CD .. -> REPERTOIRE PARENT √
 // CD / -> RACINE SYSTEME √
@@ -39,28 +39,21 @@ static void	ft_change_pwd(t_data *data)
 
 static int	ft_check_dir(t_data *data)
 {
-	char	*home;
+	int		rv;
 
-	home = ft_getenv(data, "HOME=");
-	if (!home)
-	{
-		perror("No HOME, No party");
-		return (0);
-	}
+	rv = 0;
 	if (data->cmd->args[1])
 	{
-		if (!data->cmd->args[1] && chdir(home) == -1)
-		{
-			perror("cd home");
-			return (0);
-		}
+		if (!ft_strncmp(data->cmd->args[1], "-", 1))
+			rv = ft_check_minus(data);
+		if (!ft_strncmp(data->cmd->args[1], "~", 1))
+			rv = ft_check_tilde(data);
 		else if (chdir(data->cmd->args[1]) == -1)
-		{
 			perror("cd direction");
-			return (0);
-		}
 	}
-	return (1);
+	if (!data->cmd->args[1])
+		rv = ft_check_home(data);
+	return (rv);
 }
 
 void	ft_cd(t_data *data)

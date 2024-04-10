@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/06 21:17:34 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:52:27 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ void	ft_cd_relative(t_data *data, char *pwd)
 
 	temp_path = ft_split(data->cmd->args[1], '/');
 	temp_pwd = ft_split(pwd, '/');
+	if (!ft_strncmp(temp_path[0], "~", 1) || !ft_strncmp(temp_path[0], "-", 1))
+	{
+		temp_pwd = ft_replace_pwd(data, temp_path[0]);
+		temp_path = ft_remove_first(temp_path);
+	}
 	i = 0;
 	while (temp_path[i])
 	{
@@ -69,6 +74,7 @@ void	ft_cd_relative(t_data *data, char *pwd)
 			temp_pwd = ft_append_pwd(temp_pwd, temp_path[i]);
 		i++;
 	}
+	i = 0;
 	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd + 1));
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 }
