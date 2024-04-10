@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/10 19:18:57 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:49:17 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "parser.h"
 # include "utils.h"
 # include "clean.h"
+# include "expand.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
@@ -94,7 +95,6 @@ void	ft_cmd_exec(t_data *data);
 /*		UTILS		*/
 char	*ft_strcat(char *dest, const char *src);
 
-
 /* Handle errors : error.c */
 void	ft_throw_error(t_data *data, int err_code);
 
@@ -106,7 +106,5 @@ void	print_parse(t_cmd *cmd); // printf_TEMP.c
 
 /*  lexer.c */
 int		ft_check_quotes(char *input);
-
-
 
 #endif
