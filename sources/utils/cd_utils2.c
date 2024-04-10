@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/06 21:07:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:52:19 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	**ft_append_pwd(char **pwd, char *path)
 {
-	int	i;
-	char **append_pwd;
+	int		i;
+	char	**append_pwd;
 
 	i = 0;
 	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
