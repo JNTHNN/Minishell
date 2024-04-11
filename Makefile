@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/09 14:06:56 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/11 13:12:26 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ BUILTINS_SRC	:= builtins env pwd echo cd exit export exec
 LEXER_SRC		:= lexer
 UTILS_SRC		:= error utils lexer_utils lexer_utils2 lexer_utils3 parser_utils \
 parser_utils2 parser_utils3 clean export_utils export_utils2 expander_utils \
-expander_utils2 history
+expander_utils2 expander_utils3 history
 PARSER_SRC		:= parser
 EXPAND_SRC		:= expander
 

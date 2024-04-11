@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/09 15:07:50 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:12:54 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,17 @@ int	ft_calculate_new_length(char *str, t_data *data)
 		if (str[i] == DOLLAR && ft_should_expand_var(str, &str[i]))
 		{
 			var_name = ft_get_var_name(&str[i + 1]);
+			if (!var_name)
+			{
+				printf("VAR_NAME = %s|\n", var_name);
+				i += 2;
+				continue ;
+			}
 			if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
 				var_value = ft_itoa(exit_code);
 			else
 				var_value = ft_get_env_value(data->env, var_name);
+			printf("VAR_VAL = %s|\n", var_value);
 			len += ft_strlen(var_value);
 			i += ft_strlen(var_name);
 			free(var_name);
@@ -57,8 +64,13 @@ void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 	while (*old)
 	{
 		if (*old == DOLLAR && !state[IN_SGL_Q])
-		{
+		{	
 			var[NAME] = ft_get_var_name(old + 1);
+			if (!var[NAME])
+			{
+				old += 2;
+				continue ;
+			}
 			if (!ft_strncmp(var[NAME], "?", ft_strlen(var[NAME])))
 				var[VAL] = ft_itoa(exit_code);
 			else

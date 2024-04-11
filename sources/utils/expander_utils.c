@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:04:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/09 10:01:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:41:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,4 @@ int	ft_count_all_quotes(char *str)
 	if (!str)
 		return (0);
 	return (ft_count_dbl_quotes(str) + ft_count_sgl_quotes(str));
-}
-
-bool	ft_is_not_valid_variable_char(char c)
-{
-	if (c == '\0' || ft_is_space(c) || ft_is_quote(c) || c == DOLLAR)
-		return (true);
-	return (false);
 }

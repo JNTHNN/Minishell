@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:08:46 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/09 14:08:16 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:03:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ char	*ft_get_var_name(char *str)
 	start = str;
 	if (ft_is_not_valid_variable_char(*str))
 		return (NULL);
-	while (*str && (!ft_is_space(*str)
-			&& !ft_is_quote(*str) && *str != DOLLAR))
+	while (*str && !ft_is_not_valid_variable_char(*str))
 		str++;
 	return (ft_substr(start, 0, str - start));
 }
