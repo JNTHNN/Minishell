@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.h                                           :+:      :+:    :+:   */
+/*   history.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/06 22:59:29 by jgasparo         ###   ########.fr       */
+/*   Created: 2024/04/09 15:12:47 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/04/12 21:55:42 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPAND_H
-# define EXPAND_H
+#ifndef HISTORY_H
+# define HISTORY_H
 
-int	ft_expand(t_data *data);
+/* history.c */
+t_hist	*ft_create_hist(void);
+void	ft_fill_local_history(t_data *data);
 
 #endif

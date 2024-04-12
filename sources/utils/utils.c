@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/06 22:27:00 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:57:40 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@ void	*free_arr(char **arr)
 	int	i;
 
 	i = -1;
-	while (arr[++i])
+	if (arr)
 	{
-		free(arr[i]);
-		arr[i] = NULL;
+		while (arr[++i])
+		{
+			free(arr[i]);
+			arr[i] = NULL;
+		}
+		free(arr);
+		arr = NULL;
 	}
-	free(arr);
-	arr = NULL;
 	return (NULL);
 }
 
