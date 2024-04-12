@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/11 17:12:54 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 15:23:43 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,51 @@ int	ft_calculate_new_length(char *str, t_data *data)
 	int		len;
 	char	*var_name;
 	char	*var_value;
+	bool	is_itoa;
+	char	*start;
 
+	start = str;
+	is_itoa = false;
 	len = 0;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == DOLLAR && ft_should_expand_var(str, &str[i]))
+		if (str[i] == DOLLAR && ft_should_expand_var(start, &str[i]))
 		{
-			var_name = ft_get_var_name(&str[i + 1]);
-			if (!var_name)
+			if (str[i + 1] == '\0' || ft_is_space(str[i + 1])
+				|| !ft_is_valid_var_char(str[i + 1]))
 			{
-				printf("VAR_NAME = %s|\n", var_name);
-				i += 2;
+				len++;
+				i++;
 				continue ;
 			}
-			if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
-				var_value = ft_itoa(exit_code);
+			var_name = ft_get_var_name(&str[i + 1]);
+			if (var_name && *var_name)
+			{
+				if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
+				{
+					var_value = ft_itoa(exit_code);
+					is_itoa = true;
+				}
+				else
+					var_value = ft_get_env_value(data->env, var_name);
+				i += ft_strlen(var_name);
+				len += ft_strlen(var_value);
+				free(var_name);
+				if (is_itoa)
+					free(var_value);
+			}
 			else
-				var_value = ft_get_env_value(data->env, var_name);
-			printf("VAR_VAL = %s|\n", var_value);
-			len += ft_strlen(var_value);
-			i += ft_strlen(var_name);
-			free(var_name);
+			{
+				len++;
+				i++;
+			}
 		}
 		else
+		{
 			len++;
-		i++;
+			i++;
+		}
 	}
 	ft_adjust_length_for_quotes(str, &len);
 	return (len);
@@ -59,34 +78,53 @@ void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 	char			*cursor;
 	static bool		state[2] = {false, false};
 	char			*var[2];
+	bool			is_itoa;
 
+	is_itoa = false;
 	cursor = new;
 	while (*old)
 	{
 		if (*old == DOLLAR && !state[IN_SGL_Q])
-		{	
-			var[NAME] = ft_get_var_name(old + 1);
-			if (!var[NAME])
-			{
-				old += 2;
-				continue ;
-			}
-			if (!ft_strncmp(var[NAME], "?", ft_strlen(var[NAME])))
-				var[VAL] = ft_itoa(exit_code);
+		{
+			old++;
+			if (*old == '\0' || ft_is_space(*old)
+				|| !ft_is_valid_var_char(*old))
+				*cursor++ = '$';
 			else
-				var[VAL] = ft_get_env_value(data->env, var[NAME]);
-			ft_strlcpy(cursor, var[VAL], ft_space_left(buffsize, cursor, new));
-			cursor += ft_strlen(var[VAL]);
-			old += ft_strlen(var[NAME]);
-			free(var[NAME]);
+			{
+				var[NAME] = ft_get_var_name(old);
+				if (var[NAME] && *var[NAME])
+				{
+					if (!ft_strncmp(var[NAME], "?", ft_strlen(var[NAME])))
+					{
+						var[VAL] = ft_itoa(exit_code);
+						is_itoa = true;
+					}
+					else
+						var[VAL] = ft_get_env_value(data->env, var[NAME]);
+					ft_strlcpy(cursor, var[VAL], ft_space_left(buffsize, cursor, new));
+					cursor += ft_strlen(var[VAL]);
+					old += ft_strlen(var[NAME]);
+					if (is_itoa)
+						free(var[VAL]);
+				}
+				else
+					*cursor++ = '$';
+				free(var[NAME]);
+			}
 		}
 		else if (*old == SGL_Q && !state[IN_DBL_Q])
+		{
 			state[IN_SGL_Q] = !state[IN_SGL_Q];
+			old++;
+		}
 		else if (*old == DBL_Q && !state[IN_SGL_Q])
+		{
 			state[IN_DBL_Q] = !state[IN_DBL_Q];
+			old++;
+		}
 		else
-			*cursor++ = *old;
-		old++;
+			*cursor++ = *old++;
 	}
 	*cursor = '\0';
 }
@@ -109,8 +147,8 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 		ft_create_new_str(str, cursor, data, (new_length + 2));
 		free((*args)[idx]);
 		(*args)[idx] = new_str;
+		printf("FINAL = %s\n", (*args)[idx]);
 	}
-	printf("FINAL = %s\n", (*args)[idx]);
 	return (EXIT_SUCCESS);
 }
 

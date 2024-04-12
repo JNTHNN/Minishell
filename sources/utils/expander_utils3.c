@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 12:40:52 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/11 16:32:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:47:01 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,9 @@ bool	ft_is_not_valid_variable_char(char c)
 		|| c == DOLLAR || !ft_isalnum(c))
 		return (true);
 	return (false);
+}
+
+bool	ft_is_valid_var_char(char c)
+{
+	return (ft_isalnum(c) || c == '_');
 }

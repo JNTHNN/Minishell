@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:08:46 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/11 17:03:26 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:59:08 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	ft_should_expand_var(char *str, char *chr)
 
 	in_dbl_q = false;
 	in_sgl_q = false;
-	while (*str != *chr)
+	while (str != chr)
 	{
 		if (*str == DBL_Q && !in_sgl_q)
 			in_dbl_q = !in_dbl_q;
@@ -78,8 +78,8 @@ bool	ft_should_expand_var(char *str, char *chr)
 			in_sgl_q = !in_sgl_q;
 		str++;
 	}
-	if ((!ft_count_all_quotes(str) || !ft_count_sgl_quotes(str)
-			|| ((in_dbl_q && !in_sgl_q))))
+	if (!ft_count_all_quotes(str) || !ft_count_sgl_quotes(str)
+		|| !in_sgl_q)
 		return (true);
 	return (false);
 }
