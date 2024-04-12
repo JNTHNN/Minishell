@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/09 15:36:53 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:14:09 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	data.env = ft_envcpy(envp);
 	data.cmd = NULL;
 	data.hist = ft_create_hist();
+	data.is_itoa = false;
 	ft_init_signal();
 	while (true)
 	{

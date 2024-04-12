@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 11:11:34 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:47:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,7 @@ bool	ft_should_expand_var(char *str, char *chr);
 /* expander_utils3.c */
 bool	ft_is_not_valid_variable_char(char c);
 bool	ft_is_valid_var_char(char c);
+void	ft_increment(int *idx, int *len);
+void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len);
 
 #endif

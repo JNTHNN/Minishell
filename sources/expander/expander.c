@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 15:23:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:46:40 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,22 @@ int	ft_calculate_new_length(char *str, t_data *data)
 {
 	int		i;
 	int		len;
-	char	*var_name;
-	char	*var_value;
-	bool	is_itoa;
 	char	*start;
 
 	start = str;
-	is_itoa = false;
 	len = 0;
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == DOLLAR && ft_should_expand_var(start, &str[i]))
 		{
-			if (str[i + 1] == '\0' || ft_is_space(str[i + 1])
+			if (!(str[i + 1]) || ft_is_space(str[i + 1])
 				|| !ft_is_valid_var_char(str[i + 1]))
-			{
-				len++;
-				i++;
-				continue ;
-			}
-			var_name = ft_get_var_name(&str[i + 1]);
-			if (var_name && *var_name)
-			{
-				if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
-				{
-					var_value = ft_itoa(exit_code);
-					is_itoa = true;
-				}
-				else
-					var_value = ft_get_env_value(data->env, var_name);
-				i += ft_strlen(var_name);
-				len += ft_strlen(var_value);
-				free(var_name);
-				if (is_itoa)
-					free(var_value);
-			}
-			else
-			{
-				len++;
-				i++;
-			}
+				ft_increment(&i, &len);
+			ft_get_var_val_length(data, &str, &i, &len);
 		}
 		else
-		{
-			len++;
-			i++;
-		}
+			ft_increment(&i, &len);
 	}
 	ft_adjust_length_for_quotes(str, &len);
 	return (len);
@@ -147,8 +116,8 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 		ft_create_new_str(str, cursor, data, (new_length + 2));
 		free((*args)[idx]);
 		(*args)[idx] = new_str;
-		printf("FINAL = %s\n", (*args)[idx]);
 	}
+	printf("FINAL = %s\n", (*args)[idx]);
 	return (EXIT_SUCCESS);
 }
 
