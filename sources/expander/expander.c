@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 16:46:40 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:37:31 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,54 +46,24 @@ void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 {
 	char			*cursor;
 	static bool		state[2] = {false, false};
-	char			*var[2];
-	bool			is_itoa;
+	size_t			space_left;
 
-	is_itoa = false;
 	cursor = new;
 	while (*old)
 	{
 		if (*old == DOLLAR && !state[IN_SGL_Q])
 		{
 			old++;
-			if (*old == '\0' || ft_is_space(*old)
-				|| !ft_is_valid_var_char(*old))
+			if (!(*old) || ft_is_space(*old) || !ft_is_valid_var_char(*old))
 				*cursor++ = '$';
 			else
 			{
-				var[NAME] = ft_get_var_name(old);
-				if (var[NAME] && *var[NAME])
-				{
-					if (!ft_strncmp(var[NAME], "?", ft_strlen(var[NAME])))
-					{
-						var[VAL] = ft_itoa(exit_code);
-						is_itoa = true;
-					}
-					else
-						var[VAL] = ft_get_env_value(data->env, var[NAME]);
-					ft_strlcpy(cursor, var[VAL], ft_space_left(buffsize, cursor, new));
-					cursor += ft_strlen(var[VAL]);
-					old += ft_strlen(var[NAME]);
-					if (is_itoa)
-						free(var[VAL]);
-				}
-				else
-					*cursor++ = '$';
-				free(var[NAME]);
+				space_left = ft_space_left(buffsize, cursor, new);
+				ft_create_var_val(data, &old, &cursor, space_left);
 			}
 		}
-		else if (*old == SGL_Q && !state[IN_DBL_Q])
-		{
-			state[IN_SGL_Q] = !state[IN_SGL_Q];
-			old++;
-		}
-		else if (*old == DBL_Q && !state[IN_SGL_Q])
-		{
-			state[IN_DBL_Q] = !state[IN_DBL_Q];
-			old++;
-		}
 		else
-			*cursor++ = *old++;
+			ft_process_character(&old, &cursor, state);
 	}
 	*cursor = '\0';
 }
