@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/10 20:44:10 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:48:19 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static char	**ft_path_abs(t_data *data)
 
 	path = getenv("PATH"); // a changer par ft_getenv
 	my_path = ft_split(path, ':');
+	ft_pathiter(my_path, data);
+	return (my_path);
 	ft_pathiter(my_path, data);
 	return (my_path);
 }
@@ -93,6 +95,25 @@ static void	execute_command(t_data *data)
 }
 
 void	ft_cmd_exec(t_data *data)
+static void	execute_command(t_data *data)
+{
+	if (!ft_strncmp(data->cmd->args[0], "/", 1))
+	{
+		if (execve(data->cmd->args[0], data->cmd->args, data->env) == -1)
+			exit(EXIT_FAILURE);
+	}
+	else
+	{
+		if (ft_create_exec(data) == EXIT_FAILURE)
+		{
+			perror("command not found");
+			exit(EXIT_FAILURE);
+		}
+	}
+	exit(EXIT_SUCCESS);
+}
+
+void	ft_cmd_exec(t_data *data)
 {
 	pid_t	pid;
 	int		status;
@@ -106,7 +127,13 @@ void	ft_cmd_exec(t_data *data)
 	else
 		execute_command(data);
 }
+	else
+		execute_command(data);
+}
 
+/*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE
+**	-> EXIT POUR KILL LE PROCESSUS
+*/
 /*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE
 **	-> EXIT POUR KILL LE PROCESSUS
 */

@@ -6,11 +6,13 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/11 12:41:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:44:01 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	exit_code = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -22,8 +24,10 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(0);
 	}
-	data.env = ft_arrcpy(envp);
+	data.env = ft_envcpy(envp);
 	data.cmd = NULL;
+	data.hist = ft_create_hist();
+	data.is_itoa = false;
 	ft_init_signal();
 	printf("\033[1;1H\033[2J");
 	while (true)
@@ -33,7 +37,16 @@ int	main(int argc, char **argv, char **envp)
 			return (E_MEM);
 		if (data.input && data.input[0])
 		{
+			ft_fill_local_history(&data);
 			add_history(data.input);
+			if (ft_strlen(data.input) == 2 && !ft_strncmp(data.input, "!!", 2))
+			{
+				if (data.hist->lastline)
+				{
+					free(data.input);
+					data.input = ft_strdup(data.hist->lastline);
+				}
+			}
 			ret = ft_tokenize(&data);
 			if (ret)
 			{
@@ -47,34 +60,19 @@ int	main(int argc, char **argv, char **envp)
 				ft_throw_error(&data, ret);
 				continue ;
 			}
+			ret = ft_expand(&data);
+			if (ret)
+			{
+				ft_throw_error(&data, ret);
+				continue ;
+			}
 			if (data.cmd->is_builtin == false)
 				ft_cmd_exec(&data);
 			else
 				ft_builtin(&data);
-			// printf("OLD_PWD [%s]\n", getenv("OLDPWD"));
-			// printf("PWD [%s]\n", getenv("PWD"));
 			ft_reset_data(&data);
 		}
 		ft_signal();
 	}
-	system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
-
-/* pourquoi apres un exec, on sort du programme */
-
-/*
-**	Affichage env OK + copie de l'env
-**	besoin de re-avoir le prompt après l'execution d'une commande
-**	pour avoir le PATH :
-**	path = getenv("PATH");
-**	printf("PATH == %s\n", path);
-**	https://dev.to/harshbanthiya/writing-my-own-minimal-shell-in-c-part-2-the-builtin-functions-and-general-interpretation-4lnb
-**	segfault quand ctrl + d origine ?
-**	gerer les maj/minuscule des commandes -> mettre tout en minuscule pour le char *cmd
-**	probleme signaux affichage ^C quand input vide
-**	apres l'arret d'un process ctrl+c 
-**	check ft_list_sort + ft_sorted_list_insert pour export
-**	a voir si je peux prendre que certains var de l'env ou je dois tout prendre
-**	BUG AVEC CAT -> NE LIT PAS MAIS ACTIVE LE STDIN
-*/

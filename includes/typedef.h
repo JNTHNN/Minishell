@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/03 09:25:04 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:43:00 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_redir_lst	t_redir_lst;
 typedef struct s_tok_lst	t_tok_lst;
 typedef struct s_env		t_env;
 typedef struct s_expand		t_expand;
+typedef struct s_hist		t_hist;
 
 typedef enum e_tok_type
 {
@@ -30,7 +31,8 @@ typedef enum e_expand_char
 {
 	DBL_Q = 34,
 	SGL_Q = 39,
-	DOLLAR = 36
+	DOLLAR = 36,
+	UNDERSCORE = 95
 }	t_expand_char;
 
 typedef enum e_redirect_type
@@ -45,10 +47,12 @@ typedef enum e_redirect_type
 struct	s_data
 {
 	char		*input;
+	t_hist		*hist;
 	char		**env;
 	t_tok_lst	*tokens;
 	t_redir_lst	**redirections;
 	t_cmd		*cmd;
+	bool		is_itoa;
 };
 
 struct s_tok_lst
@@ -94,6 +98,12 @@ struct	s_expand
 	int				id;
 	int				position;
 	t_expand_char	char_type;
+};
+
+struct	s_hist
+{
+	char	*newline;
+	char	*lastline;
 };
 
 #endif
