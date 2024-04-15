@@ -6,18 +6,11 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:53:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 20:50:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// doit faire en sorte que je checke tout les possibilités des chemin
-// du path 
-
 #include "../../includes/minishell.h"
-#include <string.h>
-
-// ameliorer strcat pour faire l'action en une seule fonction
-// comme ca je lstiter avec, dans un lstmap
 
 static char	**ft_pathiter(char **path, t_data *data)
 {
@@ -80,10 +73,14 @@ static int	ft_create_exec(t_data *data)
 
 static void	execute_command(t_data *data)
 {
-	if (!ft_strncmp(data->cmd->args[0], "/", 1))
+	if (!ft_strncmp(data->cmd->args[0], "/", 1)
+		|| !ft_strncmp(data->cmd->args[0], "./", 2))
 	{
 		if (execve(data->cmd->args[0], data->cmd->args, data->env) == -1)
+		{
+			perror("execve absolu");
 			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
@@ -113,4 +110,38 @@ void	ft_cmd_exec(t_data *data)
 
 /*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE
 **	-> EXIT POUR KILL LE PROCESSUS
+*/
+
+/*	REDIRECTION '>'
+**	CHECKER LE FICHIER INDIQUE APRES LA REDIR
+**	SI N'EXISTE PAS -> CREER
+**	SI EXISTE -> CHECKER LES DROITS
+**	OPEN LE FICHIER
+**	REMPLACER LE FD STDOUT PAR LE FD DU FICHIER
+**	ECRASE LES DONNEES EXISTANTES
+**	CASE : echo A >B>C>D -> CREE B C D ET ECRIT QUE DANS D
+**	echo test >file test1 -> ECRIT test test1 DANS FILE
+*/
+
+/*	REDIRECTION '>>'
+**	CHECKER LE FICHIER INDIQUE APRES LA REDIR
+**	SI N'EXISTE PAS -> CREER
+**	SI EXISTE -> CHECKER LES DROITS
+**	OPEN LE FICHIER
+**	REMPLACER LE FD STDOUT PAR LE FD DU FICHIER
+**	ECRIT A LA SUITE DES DONNEES SI IL Y'EN A	
+*/
+
+/*	REDIRECTION '<'
+**	CHECKER LE FICHIER INDIQUE APRES LA REDIR
+**	SI N'EXISTE PAS -> ERROR
+**	SI EXISTE -> CHECKER LES DROITS
+**	OPEN LE FICHIER
+**	REMPLACER LE FD STDIN PAR LE FD DU FICHIER
+*/
+
+/*	REDIRECTION '<<'
+**	UTILISATION DU HEREDOC
+**	L'ARG APRES LA REDIR EST LE 'DELIMITEUR'
+**	
 */
