@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 21:37:31 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 12:07:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 		free((*args)[idx]);
 		(*args)[idx] = new_str;
 	}
-	printf("FINAL = %s\n", (*args)[idx]);
 	return (EXIT_SUCCESS);
 }
 
