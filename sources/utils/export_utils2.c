@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:27:48 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:31:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:45:42 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@
 
 static void	ft_swap_nodes(t_env *a, t_env *b)
 {
-	char	*temp;
+	char	*temp_var;
+	char	*temp_data;
 
-	temp = a->var;
+	temp_var = a->var;
 	a->var = b->var;
-	b->var = temp;
+	b->var = temp_var;
+	temp_data = a->data;
+	a->data = b->data;
+	b->data = temp_data;
 }
 
 static void	ft_sort_env(t_env *head)
@@ -49,35 +53,27 @@ static void	ft_sort_env(t_env *head)
 			}
 			unsort = unsort->next;
 		}
-		sorted = unsort;
 	}
+	sorted = unsort;
 }
 
 void	ft_print_env(t_env *head)
 {
-	char	*equal_sign;
+	t_env	*node;
 
 	ft_sort_env(head);
-	while (head)
+	node = head;
+	while (node)
 	{
-		equal_sign = ft_strchr(head->var, '=');
-		if (equal_sign)
-		{
-			*equal_sign = '\0';
-			printf("declare -x %s=\"%s\"\n", head->var, equal_sign + 1);
-			*equal_sign = '=';
-		}
-		else
-			printf("declare -x %s\n", head->var);
-		head = head->next;
+		if (node->var && node->data)
+			printf("declare -x %s\"%s\"\n", node->var, node->data);
+		node = node->next;
 	}
-}
-
-void	ft_show_list(t_env *head)
-{
-	while (head)
+	node = head;
+	while (node)
 	{
-		printf("%s\n", head->var);
-		head = head->next;
+		if (node->var && !node->data)
+			printf("declare -x %s\n", node->var);
+		node = node->next;
 	}
 }

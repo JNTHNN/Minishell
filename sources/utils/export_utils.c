@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:30:44 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:44:58 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	ft_envadd_back(t_env **lst, t_env *new)
 	*lst = new;
 }
 
-static void	ft_add_env(t_env **head, char *var)
+static void	ft_add_env(t_env **head, char *var, char *data)
 {
 	t_env	*new_node;
 
@@ -33,6 +33,7 @@ static void	ft_add_env(t_env **head, char *var)
 	if (!new_node)
 		return ;
 	new_node->var = var;
+	new_node->data = data;
 	new_node->next = NULL;
 	ft_envadd_back(head, new_node);
 }
@@ -46,7 +47,8 @@ static t_env	*ft_new_node(char *var)
 		return (NULL);
 	if (node)
 	{
-		node->var = ft_strdup(var);
+		node->var = ft_var(var);
+		node->data = ft_data(var);
 		node->next = NULL;
 	}
 	return (node);
@@ -88,25 +90,24 @@ t_env	*ft_setup_env(char **env)
 void	ft_modify_or_add_env(t_env **head, char *var)
 {
 	t_env	*current;
-	char	*equal_sign;
+	char	*deb;
+	char	*fin;
 
+	deb = ft_var(var);
+	fin = ft_data(var);
 	current = *head;
-	equal_sign = ft_strchr(var, '=');
-	if (equal_sign)
+	if (fin)
 	{
-		*equal_sign = '\0';
 		while (current)
 		{
-			if (!ft_strncmp(current->var, var, ft_strlen(var)))
+			if (!ft_strncmp(current->var, deb, ft_strlen(deb)))
 			{
-				free(current->var);
-				current->var = ft_strdup(var);
-				*equal_sign = '=';
+				free(current->data);
+				current->data = ft_strdup(fin);
 				return ;
 			}
 			current = current->next;
 		}
-		*equal_sign = '=';
 	}
-	ft_add_env(head, var);
+	ft_add_env(head, deb, fin);
 }
