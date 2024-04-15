@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:43:30 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/15 11:54:20 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:48:00 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	ft_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	ft_get_ctrl_d(t_data *data)
+void	ft_get_ctrl_d(t_data *data)
 {
 	if (data->input == NULL)
 	{
 		printf("\033[A\033[2K");
 		printf("%s", PROMPT "exit\n");
+		exit(0);
 	}
-	return (EXIT_SUCCESS);
 }
 
 /* personnalize interruptions */

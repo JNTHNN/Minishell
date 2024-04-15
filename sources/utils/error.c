@@ -6,13 +6,13 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/09 11:21:30 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:38:21 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_print_redir_error(int err_code)
+static void	ft_print_redir_error(int err_code)
 {
 	ft_putstr_fd(ERR_REDIR, STDERR_FILENO);
 	if (err_code == E_REDIR_OUT)
@@ -27,7 +27,7 @@ void	ft_print_redir_error(int err_code)
 		ft_putstr_fd("`newline'\n\033[0m", STDERR_FILENO);
 }
 
-void	ft_print_error(int err_code)
+static void	ft_print_error(int err_code)
 {
 	if (err_code == E_QUOTES)
 		ft_putstr_fd(ERR_QUOTES, STDERR_FILENO);
@@ -39,10 +39,29 @@ void	ft_print_error(int err_code)
 		ft_print_redir_error(err_code);
 }
 
-void	ft_throw_error(t_data *data, int err_code)
+static void	ft_throw_error(t_data *data, int err_code)
 {
 	ft_print_error(err_code);
 	exit_code = err_code;
 	// free all stuff (data...) before relaunch the program
 	(void)data;
+}
+
+int	ft_handle_error(t_data *data, int ret)
+{
+	if (ret)
+	{
+		ft_throw_error(data, ret);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+void	ft_handle_arg_error(int argc, char **argv)
+{
+	if (argc != 1 || argv[1])
+	{
+		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
+		exit(0);
+	}
 }
