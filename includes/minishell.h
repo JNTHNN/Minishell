@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/12 21:56:30 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:54:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@
 
 extern int	exit_code;
 
-void	ft_show_env(char **env);
-int		ft_input(char *in);
-
 /* Handle tokenization : t_tokenizer.c */
 int		ft_tokenize(t_data *data);
 
@@ -48,6 +45,7 @@ void	ft_signal(void);
 void	ft_sigint(int sig);
 int		ft_init_signal(void);
 void	rl_replace_line(const char *text, int clear_undo);
+int		ft_get_ctrl_d(t_data *data);
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);

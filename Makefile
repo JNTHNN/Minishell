@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/12 21:54:48 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/15 11:56:29 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,8 +95,8 @@ $(BUILD_DIR)%.o:$(SRC_DIR)%.c
 $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	@echo "${CYAN}Generating project executable.${WHITE}"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) $(DEBUG) -o $(NAME)
-	@echo "${GREEN}Compilation successful !${WHITE}"
-	@./$(NAME) # penser a l'enlever
+	@echo "${GREEN}Compilation successful !${WHITE}"	
+	@./$(NAME) # A ENLEVER !!!
 
 $(LIBFT_DIR)$(LIBFT):
 	@echo "\n$(CYAN)Generating Libft...$(WHITE)"

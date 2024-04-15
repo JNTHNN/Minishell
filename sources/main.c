@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/12 16:14:09 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:49:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(0);
 	}
+	ft_init_signal();
 	data.env = ft_envcpy(envp);
 	data.cmd = NULL;
 	data.hist = ft_create_hist();
 	data.is_itoa = false;
-	ft_init_signal();
 	while (true)
 	{
 		data.input = readline(PROMPT);
+		ft_get_ctrl_d(&data);
 		if (ft_trim_input(&data.input))
 			return (E_MEM);
 		if (data.input && data.input[0])

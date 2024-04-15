@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:43:30 by anvoets           #+#    #+#             */
-/*   Updated: 2024/03/16 22:55:25 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:54:20 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,13 @@ void	ft_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	ft_input(char *in)
+int	ft_get_ctrl_d(t_data *data)
 {
-	if (ft_strlen(in) > 0)
-		printf("%s\n", in);
+	if (data->input == NULL)
+	{
+		printf("\033[A\033[2K");
+		printf("%s", PROMPT "exit\n");
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -40,8 +43,8 @@ int	ft_init_signal(void)
 	struct termios	term;
 
 	ft_signal();
-	tcgetattr(0, &term);
+	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;
-	tcsetattr(0, TCSANOW, &term);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	return (EXIT_SUCCESS);
 }
