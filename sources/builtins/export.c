@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 15:48:32 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:53:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_export(t_data *data)
 			{
 				ft_modify_or_add_env(&head,
 					data->cmd->args[1]);
-				ft_show_list(head);
+				// ft_show_list(head);
 			}
 			else
 			{
