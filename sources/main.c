@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/04 14:45:53 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:41:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	data.env = ft_arrcpy(envp);
 	data.cmd = NULL;
 	ft_init_signal();
+	printf("\033[1;1H\033[2J");
 	while (true)
 	{
 		data.input = readline(PROMPT);

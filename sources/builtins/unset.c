@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/04 03:05:26 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 20:43:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_unset(t_data *data)
 		while (data->env[j])
 		{
 			if (ft_strncmp(data->cmd->args[i], data->env[j],
-				ft_strlen(data->cmd->args[i])) == 0)
+					ft_strlen(data->cmd->args[i])) == 0)
 			{
 				free(data->env[j]);
 				while (data->env[j])
