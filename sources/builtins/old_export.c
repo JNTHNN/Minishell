@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:19:47 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:55:39 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,6 @@
 */
 
 #include "../../includes/minishell.h"
-
-void	ft_free_array(char **env)
-{
-	int	i;
-
-	i = 0;
-	while(env[i])
-	{
-		free(env[i]);
-		i++;
-	}
-	free(env);
-}
 
 void	ft_free_lst(t_env *head)
 {
@@ -96,32 +83,20 @@ void	ft_update_env(t_env *head, t_data *data)
 
 void	ft_export(t_data *data)
 {
-	// GERER "EXPORT VAR"
-	// GERER CARACTERES NON VALIDE
-	
 	t_env	*head;
-	int		i;
 
-	head = ft_setup_env(data->env);	//creation de la liste chainee a base du tab env
-	i = 1;
+	head = ft_setup_env(data->env);
 	if (data->cmd->args)
 	{
-		if (!ft_strncmp(data->cmd->args[0], "export", 6)) // on recheck si c'est "export"
+		if (!ft_strncmp(data->cmd->args[0], "export", 6))
 		{
-			if (data->cmd->args[i])
+			if (data->cmd->args[1])
 			{
-				while (data->cmd->args[i])
-				{
-					if (data->cmd->args[i]) // si c'est "export var=data"
-					{
-						ft_modify_or_add_env(&head, // modifie ou ajoute
-							data->cmd->args[i]);
-						// ft_show_list(head); // print de la liste chainee
-					}
-				i++;
-				}
+				ft_modify_or_add_env(&head,
+					data->cmd->args[1]);
+				// ft_show_list(head);
 			}
-			else // sinon cest juste "export"
+			else
 			{
 				ft_print_env(head);
 			}
@@ -129,36 +104,3 @@ void	ft_export(t_data *data)
 	}
 	ft_update_env(head, data);
 }
-		// maintenant que les modifs ont été faites, je dois retourner la liste chainee 
-		// en char ** -> donc free l'ancien et le remplacer par le nouveau
-		// free au passage la liste chainee aussi
-
-
-
-// void	ft_export(t_data *data)
-// {
-// 	// GERER PLUSIEURS ARGS "EXPORT VAR=DATA VAR=DATA"
-// 	t_env	*head;
-
-// 	head = ft_setup_env(data->env);	//creation de la liste chainee a base du tab env
-// 	if (data->cmd->args)
-// 	{
-// 		if (!ft_strncmp(data->cmd->args[0], "export", 6)) // on recheck si c'est "export"
-// 		{
-// 			if (data->cmd->args[1]) // si c'est "export var=data"
-// 			{
-// 				ft_modify_or_add_env(&head, // modifie ou ajoute
-// 					data->cmd->args[1]);
-// 				ft_show_list(head); // print de la liste chainee
-// 			}
-// 			else // sinon cest juste "export"
-// 			{
-// 				ft_print_env(head);
-// 			}
-// 		}
-// 		ft_update_env(head, data);
-// 		// maintenant que les modifs ont été faites, je dois retourner la liste chainee 
-// 		// en char ** -> donc free l'ancien et le remplacer par le nouveau
-// 		// free au passage la liste chainee aussi
-// 	}
-// }
