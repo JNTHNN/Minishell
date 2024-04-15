@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/15 22:53:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:02:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_signal(void);
 void	ft_sigint(int sig);
 int		ft_init_signal(void);
 void	rl_replace_line(const char *text, int clear_undo);
+void    ft_get_ctrl_d(t_data *data);
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
@@ -103,7 +104,8 @@ void	ft_cmd_exec(t_data *data);
 char	*ft_strcat(char *dest, const char *src);
 
 /* Handle errors : error.c */
-void	ft_throw_error(t_data *data, int err_code);
+int		ft_handle_error(t_data *data, int ret);
+void	ft_handle_arg_error(int argc, char **argv);
 
 /* Lexer utils to handle t_tok_lst : lexer_utils.c */
 int		ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data);
