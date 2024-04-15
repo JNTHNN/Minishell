@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/15 15:33:50 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:18:47 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,25 @@ static int	ft_get_input(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+static int	ft_handle_error(t_data *data, int ret)
+{
+	if (ret)
+	{
+		ft_throw_error(data, ret);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	ft_executor(t_data *data)
+{
+	if (data->cmd->is_builtin == false)
+		ft_cmd_exec(data);
+	else
+		ft_builtin(data);
+	return (EXIT_SUCCESS);
+}
+
 static int	ft_minishell_loop(t_data *data)
 {
 	int		ret;
@@ -64,37 +83,23 @@ static int	ft_minishell_loop(t_data *data)
 	while (true)
 	{
 		ret = ft_get_input(data);
-		if (ret)
-		{
-			ft_throw_error(data, ret);
+		if (ft_handle_error(data, ret))
 			continue ;
-		}
 		if (data->input && data->input[0])
 		{
 			ft_handle_history(data);
 			ret = ft_tokenize(data);
-			if (ret)
-			{
-				ft_throw_error(data, ret);
+			if (ft_handle_error(data, ret))
 				continue ;
-			}
-			free(data->input);
 			ret = ft_parse(data);
-			if (ret)
-			{
-				ft_throw_error(data, ret);
+			if (ft_handle_error(data, ret))
 				continue ;
-			}
 			ret = ft_expand(data);
-			if (ret)
-			{
-				ft_throw_error(data, ret);
+			if (ft_handle_error(data, ret))
 				continue ;
-			}
-			if (data->cmd->is_builtin == false)
-				ft_cmd_exec(data);
-			else
-				ft_builtin(data);
+			ret = ft_executor(data);
+			if (ft_handle_error(data, ret))
+				continue ;
 			ft_reset_data(data);
 		}
 		ft_signal();
