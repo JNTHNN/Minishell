@@ -3,75 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/06 20:54:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:57:40 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	ft_tablen(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	**ft_add_to_env(char **env, char *new_var)
-{
-	char	**new_env;
-	int		i;
-	int		j;
-
-	i = 0;
-	while (env[i])
-		i++;
-	new_env = (char **)malloc((i + 2) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	j = 0;
-	while (j < i)
-	{
-		new_env[j] = ft_strdup(env[j]);
-		j++;
-	}
-	new_env[i] = ft_strdup(new_var);
-	new_env[i + 1] = NULL;
-	ft_free_array(env);
-	return (new_env);
-}
-
-char	*ft_getenv(t_data *data, char *search)
-{
-	int	i;
-
-	i = 0;
-	while (data->env[i])
-	{
-		if (!ft_strncmp(data->env[i], search, ft_strlen(search)))
-			return (data->env[i]);
-		i++;
-	}
-	return (NULL);
-}
 
 void	*free_arr(char **arr)
 {
 	int	i;
 
 	i = -1;
-	while (arr[++i])
+	if (arr)
 	{
-		free(arr[i]);
-		arr[i] = NULL;
+		while (arr[++i])
+		{
+			free(arr[i]);
+			arr[i] = NULL;
+		}
+		free(arr);
+		arr = NULL;
 	}
-	free(arr);
-	arr = NULL;
 	return (NULL);
 }
 
@@ -81,14 +36,47 @@ char	**ft_arrcpy(char **arr)
 	char	**cpy;
 
 	if (!arr || !arr[0])
+		return (NULL);
+	i = 0;
+	while (arr[i])
+		i++;
+	cpy = malloc((i + 1) * sizeof(char *));
+	if (!cpy)
+		return (NULL);
+	i = -1;
+	while (arr[++i])
 	{
-		printf("OK\n");
-		cpy = malloc((2 + 1) * sizeof(char *));
-		cpy[0] = ft_strdup("TEST=OUI");
-		cpy[1] = ft_strdup("TEST2=COOL");
-		cpy[2] = NULL;
-		return (cpy);
+		cpy[i] = ft_strdup(arr[i]);
+		if (!cpy[i])
+			return (free_arr(cpy));
 	}
+	cpy[i] = NULL;
+	return (cpy);
+}
+
+char	**ft_create_env(char **arr)
+{
+	char	temp[PATH_MAX];
+
+	arr = (char **)malloc(4 * sizeof(char *));
+	if (!arr)
+		return (NULL);
+	if (getcwd(temp, sizeof(temp)))
+		arr[0] = ft_strjoin("PWD=", temp);
+	arr[1] = ft_strdup("SHLVL=1");
+	arr[2] = ft_strdup("/usr/bin/env");
+	arr[3] = NULL;
+	return (arr);
+}
+
+char	**ft_envcpy(char **arr)
+{
+	int		i;
+	char	**cpy;
+
+	cpy = NULL;
+	if (!arr || !arr[0])
+		return (ft_create_env(cpy));
 	i = 0;
 	while (arr[i])
 		i++;
