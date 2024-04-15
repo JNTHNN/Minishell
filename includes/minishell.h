@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/15 15:42:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:53:24 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,16 @@ void	ft_free_array(char **env);
 /*  utils for export : export_utils.c   */
 t_env	*ft_setup_env(char **env);
 void	ft_modify_or_add_env(t_env **head, char *var);
-char	*ft_var(char *s);
-char	*ft_data(char *s);
 
 /* prints for export : export_utils2.c  */
 void	ft_print_env(t_env *head);
-void	ft_show_list(t_env *head);
+
+/* update_env for export : export_utils3.c    */
+void	ft_update_env(t_env *head, t_data *data);
+
+/*  var + data for export : export_utils4.c */
+char	*ft_var(char *s);
+char	*ft_data(char *s);
 
 /*  utils for cd : cd_utils.c   */
 void	ft_seek_replace(t_data *data, char *search, char *pwd);

@@ -6,24 +6,24 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 22:24:41 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:02:58 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:28:39 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// void	ft_free_array(char **env)
-// {
-// 	int	i;
+void	ft_free_array(char **env)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		free(env[i]);
-// 		i++;
-// 	}
-// 	free(env);
-// }
+	i = 0;
+	while (env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env);
+}
 
 int	ft_tablen(char **str)
 {

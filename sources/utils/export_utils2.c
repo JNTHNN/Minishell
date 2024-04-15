@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:27:48 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:20:34 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:45:42 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	ft_sort_env(t_env *head)
 
 void	ft_print_env(t_env *head)
 {
-	t_env *node;
+	t_env	*node;
 
 	ft_sort_env(head);
 	node = head;
@@ -75,18 +75,5 @@ void	ft_print_env(t_env *head)
 		if (node->var && !node->data)
 			printf("declare -x %s\n", node->var);
 		node = node->next;
-	}
-}
-
-void	ft_show_list(t_env *head)
-{
-	while (head)
-	{
-		if (head->var && head->data)
-			printf("%s%s\n", head->var, head->data);
-		else if (head->var && !head->data)
-			printf("%s\n", head->var);
-
-		head = head->next;
 	}
 }
