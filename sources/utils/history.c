@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 14:06:19 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/09 14:44:32 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:33:01 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_hist	*ft_create_hist(void)
 	return (hist);
 }
 
-void	ft_fill_local_history(t_data *data)
+static void	ft_fill_local_history(t_data *data)
 {
 	t_hist	*hist;
 
@@ -39,4 +39,18 @@ void	ft_fill_local_history(t_data *data)
 		free(hist->newline);
 	}
 	hist->newline = ft_strdup(data->input);
+}
+
+void	ft_handle_history(t_data *data)
+{
+	ft_fill_local_history(data);
+	add_history(data->input);
+	if (ft_strlen(data->input) == 2 && !ft_strncmp(data->input, "!!", 2))
+	{
+		if (data->hist->lastline)
+		{
+			free(data->input);
+			data->input = ft_strdup(data->hist->lastline);
+		}
+	}
 }

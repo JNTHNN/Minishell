@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
+#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/15 22:50:39 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/04/15 23:07:19 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,7 +100,6 @@ $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	@echo "${CYAN}Generating project executable.${WHITE}"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) $(DEBUG) -o $(NAME)
 	@echo "${GREEN}Compilation successful !${WHITE}"
-	@./$(NAME) # penser a l'enlever
 
 $(LIBFT_DIR)$(LIBFT):
 	@echo "\n$(CYAN)Generating Libft...$(WHITE)"

@@ -50,8 +50,8 @@ struct	s_data
 	t_hist		*hist;
 	char		**env;
 	t_tok_lst	*tokens;
-	t_redir_lst	**redirections;
 	t_cmd		*cmd;
+	t_redir_lst	**redirections;
 	bool		is_itoa;
 };
 
