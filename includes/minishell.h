@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/15 23:02:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:50:40 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/syslimits.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include "../libft/libft.h"
 # include "typedef.h"
 # include "error.h"
@@ -44,11 +46,11 @@ int		ft_input(char *in);
 int		ft_tokenize(t_data *data);
 
 /* Handle signals : s_signals.c	*/
-void	ft_signal(void);
+void	ft_signal(void *type);
 void	ft_sigint(int sig);
 int		ft_init_signal(void);
 void	rl_replace_line(const char *text, int clear_undo);
-void    ft_get_ctrl_d(t_data *data);
+void	ft_get_ctrl_d(t_data *data);
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
