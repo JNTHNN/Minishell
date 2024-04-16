@@ -14,10 +14,6 @@
 // du path 
 
 #include "../../includes/minishell.h"
-#include <string.h>
-
-// ameliorer strcat pour faire l'action en une seule fonction
-// comme ca je lstiter avec, dans un lstmap
 
 static char	**ft_pathiter(char **path, t_data *data)
 {
@@ -100,6 +96,7 @@ void	ft_cmd_exec(t_data *data)
 {
 	pid_t	pid;
 	int		status;
+	int		i = 0;
 
 	pid = fork();
 	status = 0;
@@ -109,6 +106,7 @@ void	ft_cmd_exec(t_data *data)
 		waitpid(pid, &status, 0);
 	else
 		execute_command(data);
+	i++;
 }
 
 /*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE
