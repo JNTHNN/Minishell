@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/16 16:33:47 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:45:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 // du path 
 
 #include "../../includes/minishell.h"
-
-// ameliorer strcat pour faire l'action en une seule fonction
-// comme ca je lstiter avec, dans un lstmap
 
 static char	**ft_pathiter(char **path, t_data *data)
 {

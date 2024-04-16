@@ -48,6 +48,7 @@ static void	ft_throw_error(t_data *data, int err_code)
 
 int	ft_handle_error(t_data *data, int ret)
 {
+	(void)data;
 	if (ret)
 	{
 		ft_throw_error(data, ret);
