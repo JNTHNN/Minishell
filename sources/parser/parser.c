@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 14:42:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:04:17 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 		if (*current)
 			*current = (*current)->next;
 	}
+	data->nb_of_cmds = cmd_id;
 	return (EXIT_SUCCESS);
 }
 

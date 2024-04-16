@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 10:29:00 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/27 10:04:10 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:59:51 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 		return (NULL);
 	new_node->r_type = token.r_type;
 	new_node->filename = ft_strdup(token.next->token);
-	new_node->cmd_nb = cmd_nb;
+	new_node->cmd_id = cmd_nb;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

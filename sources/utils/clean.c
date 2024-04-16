@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:21:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/15 21:44:26 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:35:28 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,43 @@ void	ft_free_cmds(t_cmd **cmd)
 		free_arr((*cmd)->args);
 		(*cmd)->args = NULL;
 		ft_free_redirections(&(*cmd)->redirections);
+		free(*cmd);
 		*cmd = current;
 	}
 	*cmd = NULL;
 }
 
+void	ft_free_data(t_data *data)
+{
+	if (data)
+	{
+		if (data->input)
+			free(data->input);
+		if (data->hist)
+		{
+			if (data->hist->newline)
+			{
+				free(data->hist->newline);
+				data->hist->newline = NULL;
+			}
+			if (data->hist->lastline)
+			{
+				free(data->hist->lastline);
+				data->hist->lastline = NULL;
+			}
+			free(data->hist);
+			data->hist = NULL;
+		}
+		free_arr(data->env);
+		if (data->tokens)
+			ft_free_tokens(&data->tokens);
+		if (data->cmd)
+			ft_free_cmds(&data->cmd);
+	}
+}
+
 void	ft_reset_data(t_data *data)
 {
 	ft_free_cmds(&data->cmd);
+	data->nb_of_cmds = 0;
 }

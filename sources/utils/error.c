@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/15 21:38:21 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:28:48 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ static void	ft_throw_error(t_data *data, int err_code)
 {
 	ft_print_error(err_code);
 	exit_code = err_code;
-	// free all stuff (data...) before relaunch the program
-	(void)data;
+	ft_free_if_error(data);
 }
 
 int	ft_handle_error(t_data *data, int ret)
