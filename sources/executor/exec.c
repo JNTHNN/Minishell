@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 20:50:37 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/03/30 19:53:04 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,16 @@ void	ft_cmd_exec(t_data *data)
 	if (pid == -1)
 		perror("fork");
 	else if (pid > 0)
+	{
 		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
+			printf("^\\Quit: %d\n", SIGQUIT);
+	}
 	else
+	{
+		ft_signal(SIG_DFL);
 		execute_command(data);
+	}
 }
 
 /*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE

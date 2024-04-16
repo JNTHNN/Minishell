@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:43:30 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/15 21:48:00 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:46:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	ft_sigint(int sig)
 	rl_redisplay();
 }
 
-void	ft_signal(void)
+void	ft_signal(void *type)
 {
 	signal(SIGINT, ft_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, type);
 }
 
 void	ft_get_ctrl_d(t_data *data)
@@ -37,12 +37,11 @@ void	ft_get_ctrl_d(t_data *data)
 	}
 }
 
-/* personnalize interruptions */
 int	ft_init_signal(void)
 {
 	struct termios	term;
 
-	ft_signal();
+	ft_signal(SIG_IGN);
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
