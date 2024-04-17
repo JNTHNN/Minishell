@@ -32,7 +32,7 @@ bool	ft_is_builtin(char *name)
 	return (false);
 }
 
-void	ft_builtin(t_data *data)
+int	ft_builtin(t_data *data)
 {
 	if (!ft_strncmp(data->cmd->args[0], "echo", 4))
 		ft_echo(data);
@@ -48,4 +48,5 @@ void	ft_builtin(t_data *data)
 		ft_env(data);
 	if (!ft_strncmp(data->cmd->args[0], "exit", 4))
 		ft_exit(data);
+	return (EXIT_SUCCESS);
 }

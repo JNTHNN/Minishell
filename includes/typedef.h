@@ -20,6 +20,7 @@ typedef struct s_tok_lst	t_tok_lst;
 typedef struct s_env		t_env;
 typedef struct s_expand		t_expand;
 typedef struct s_hist		t_hist;
+typedef struct s_exec		t_exec;
 
 typedef enum e_tok_type
 {
@@ -105,6 +106,13 @@ struct	s_hist
 {
 	char	*newline;
 	char	*lastline;
+};
+
+struct	s_exec
+{
+	int			**pipe_fd;
+	pid_t		child_pid;
+	int			status;
 };
 
 #endif

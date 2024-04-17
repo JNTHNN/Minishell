@@ -21,5 +21,6 @@ void	ft_exit(t_data *data)
 {
 	(void)data;
 	ft_putendl_fd("exit", 1);
+	ft_free_data(data);
 	exit(EXIT_SUCCESS);
 }

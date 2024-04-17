@@ -1,0 +1,60 @@
+jgasparo@shi-r1-p4 minishell % ./minishell 
+minibash1.0$ << EOF << OKI 
+❌ Something went wrong with memory allocation 
+=================================================================
+==18233==ERROR: AddressSanitizer: attempting double-free on 0x6020000028b0 in thread T0:
+    #0 0x1017f52c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x10174afc0 in ft_free_if_error clean2.c:20
+    #2 0x1017496bb in ft_throw_error error.c:46
+    #3 0x101749664 in ft_handle_error error.c:54
+    #4 0x101748669 in ft_minishell_loop main.c:53
+    #5 0x101748543 in main main.c:73
+    #6 0x7fff6f040cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+0x6020000028b0 is located 0 bytes inside of 14-byte region [0x6020000028b0,0x6020000028be)
+freed by thread T0 here:
+    #0 0x1017f52c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x10174962c in ft_tokenize lexer.c:121
+    #2 0x101748634 in ft_minishell_loop main.c:49
+    #3 0x101748543 in main main.c:73
+    #4 0x7fff6f040cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+previously allocated by thread T0 here:
+    #0 0x1017f517d in wrap_malloc+0x9d (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x4917d)
+    #1 0x10174e14d in ft_substr+0x8d (minishell:x86_64+0x10000714d)
+    #2 0x10174e49e in ft_strtrim+0x11e (minishell:x86_64+0x10000749e)
+    #3 0x10174a24e in ft_trim_input lexer_utils2.c:50
+    #4 0x101748710 in ft_get_input main.c:32
+    #5 0x1017485e4 in ft_minishell_loop main.c:43
+    #6 0x101748543 in main main.c:73
+    #7 0x7fff6f040cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+SUMMARY: AddressSanitizer: double-free (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6) in wrap_free+0xa6
+==18233==ABORTING
+zsh: abort      ./minishell
+jgasparo@shi-r1-p4 minishell % ./minishell
+minibash1.0$ ls << EOF << OKI
+IS_LAST = OKI / R_TYPE = -7
+Makefile        branch.c        includes        minishell       sources
+a.out           draw.excalidraw libft           print.c         test.c
+minibash1.0$ exit
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==18278==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000008 (pc 0x00010632691d bp 0x7ffee98df6d0 sp 0x7ffee98df6b0 T0)
+==18278==The signal is caused by a READ memory access.
+==18278==Hint: address points to the zero page.
+    #0 0x10632691d in ft_find_last_redir exec.c:48
+    #1 0x1063269af in ft_executor exec.c:61
+    #2 0x1063216a6 in ft_minishell_loop main.c:58
+    #3 0x106321543 in main main.c:73
+    #4 0x7fff6f040cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+==18278==Register values:
+rax = 0x0000000000000000  rbx = 0x0000000000000000  rcx = 0x00007ffee98df740  rdx = 0x0000000000000000  
+rdi = 0x0000606000000630  rsi = 0x00000000fffffff9  rbp = 0x00007ffee98df6d0  rsp = 0x00007ffee98df6b0  
+ r8 = 0x0000200000000000   r9 = 0x0000000000000000  r10 = 0xffffffffffffffff  r11 = 0x00000fffffffffff  
+r12 = 0x0000000000000000  r13 = 0x0000000000000000  r14 = 0x0000000000000000  r15 = 0x0000000000000000  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV exec.c:48 in ft_find_last_redir
+==18278==ABORTING
+^\Quit: 3

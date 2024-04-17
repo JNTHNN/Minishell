@@ -41,8 +41,8 @@ BUILTINS_SRC	:= builtins env pwd echo cd exit export unset
 LEXER_SRC		:= lexer
 UTILS_SRC		:= error utils utils2 lexer_utils lexer_utils2 lexer_utils3 \
 parser_utils parser_utils2 parser_utils3 clean clean2 export_utils export_utils2 \
-export_utils3 export_utils4 expander_utils \
-expander_utils2 expander_utils3 history cd_utils cd_utils2 cd_utils3
+export_utils3 export_utils4 expander_utils expander_utils2 \
+exec_utils expander_utils3 history cd_utils cd_utils2 cd_utils3
 PARSER_SRC		:= parser
 EXPAND_SRC		:= expander
 EXEC_SRC		:= exec
@@ -72,7 +72,7 @@ CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
-DEBUG			:= -O0 -fsanitize=address
+DEBUG			:= -O0 #-fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #

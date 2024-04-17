@@ -34,6 +34,7 @@
 # include "utils.h"
 # include "clean.h"
 # include "history.h"
+# include "executor.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
@@ -54,7 +55,7 @@ void	ft_get_ctrl_d(t_data *data);
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
-void	ft_builtin(t_data *data);
+int		ft_builtin(t_data *data);
 
 void	ft_echo(t_data *data);
 void	ft_cd(t_data *data);
@@ -98,9 +99,6 @@ char	**ft_replace_pwd(t_data *data, char *shortcut);
 int		ft_check_tilde(t_data *data);
 int		ft_check_home(t_data *data);
 int		ft_check_minus(t_data *data);
-
-/*		JG_exec			*/
-void	ft_cmd_exec(t_data *data);
 
 /*		UTILS		*/
 char	*ft_strcat(char *dest, const char *src);

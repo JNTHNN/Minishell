@@ -119,5 +119,6 @@ int	ft_tokenize(t_data *data)
 	if (ft_check_pipes(data->tokens))
 		return (E_PIPE);
 	free(data->input);
+	data->input = NULL;
 	return (EXIT_SUCCESS);
 }

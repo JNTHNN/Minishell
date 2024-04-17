@@ -78,7 +78,6 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 		new_node->is_builtin = ft_is_builtin(new_node->args[0]);
 	}
 	new_node->redirections = data->redirections[id - 1];
-	new_node->is_builtin = ft_is_builtin(new_node->args[0]);
 	new_node->data = data;
 	new_node->expanded_char = NULL;
 	new_node->left = NULL;
