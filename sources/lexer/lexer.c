@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/17 10:56:13 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:39:49 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,6 @@ int	ft_tokenize(t_data *data)
 	if (ft_check_pipes(data->tokens))
 		return (E_PIPE);
 	free(data->input);
+	data->input = NULL;
 	return (EXIT_SUCCESS);
 }
