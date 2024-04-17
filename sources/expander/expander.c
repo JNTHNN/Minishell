@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/15 12:07:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:20:42 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_expand(t_data *data)
 	{
 		args = current->args;
 		i = 0;
-		while (args[i])
+		while (args && args[i])
 		{
 			ret = ft_handle_expansion(&args, i, data);
 			if (ret)
