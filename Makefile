@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/17 16:48:09 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/18 11:02:41 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,12 +67,12 @@ DEPS        	:= $(OBJS:.o=.d)
 # 							  Compilation flags								   #
 # **************************************************************************** #
 
-CC 				:= cc
+CC 				:= cc # -g -O0
 CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib -I $(shell brew --prefix readline)/include
-DEBUG			:= -O0 -g #-fsanitize=address
+DEBUG			:= -fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #
@@ -97,7 +97,7 @@ $(BUILD_DIR)%.o:$(SRC_DIR)%.c
 
 $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	@echo "${CYAN}Generating project executable.${WHITE}"
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) $(DEBUG) -o $(NAME)
+	@$(CC) $(DEBUG) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) -o $(NAME)
 	@echo "${GREEN}Compilation successful !${WHITE}"
 
 $(LIBFT_DIR)$(LIBFT):
