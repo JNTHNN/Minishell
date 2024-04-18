@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/16 15:53:31 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:27:34 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 	}
 	else
 	{
-		new_node->args = ft_arrcpy(*args);
-		if (!new_node->args)
-			return (NULL);
-		free_arr(*args);
+		new_node->args = *args;
 		new_node->is_builtin = ft_is_builtin(new_node->args[0]);
 	}
 	new_node->redirections = data->redirections[id - 1];
