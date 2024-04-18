@@ -67,63 +67,102 @@ int	ft_executor(t_data *data)
 	if (data->nb_of_cmds == 1)
 	{
 		exec->pipe_fd[0] = (int *)malloc(sizeof(int) * 2);
-		if (ft_find_last_redir(&data->cmd->redirections, HEREDOC))
-			pipe(exec->pipe_fd[0]);
+		// if (ft_find_last_redir(&data->cmd->redirections, HEREDOC))
+		// 	pipe(exec->pipe_fd[0]);
 		if (!data->cmd->is_builtin)
 			return (ft_cmd_exec(data));
 		else
-			return (ft_builtin(data));
+			return (ft_builtin(data, data->cmd));
 	}
-
-	i = -1;
-	while (++i < data->nb_of_cmds)
-		exec->pipe_fd[i] = (int *)malloc(sizeof(int) * 2);
-	i = -1;
-	while (++i < data->nb_of_cmds)
+	if (data->nb_of_cmds > 1)
 	{
-		printf("I [%d]\n", i);
-		pipe(exec->pipe_fd[i]);
-		exec->child_pid = fork();
-		exec->status = 0;
-		if (exec->child_pid == -1)
-			perror("fork"); // return int error ? E_FORK
-		if (exec->child_pid == 0)
+		i = -1;
+		while (++i < data->nb_of_cmds)
 		{
-			// printf("CHILD_PID [%d]\n", exec->child_pid);
-			if (i == 0)
-			{
-				close(exec->pipe_fd[0][READ_END]);
-				if (dup2(exec->pipe_fd[1][0], exec->pipe_fd[0][1]) == -1)
-					return(EXIT_FAILURE);
-			}
-			if (i > 0 && i != data->nb_of_cmds)
-			{
-				if (dup2(exec->pipe_fd[i][WRITE_END], exec->pipe_fd[i - 1][READ_END]) == -1)
-					return(EXIT_FAILURE);
-				close(exec->pipe_fd[i][READ_END]);
-			}
-			if (i == data->nb_of_cmds)
-			{
-				if (dup2(STDIN_FILENO, exec->pipe_fd[i - 1][READ_END]) == -1)
-					return(EXIT_FAILURE);
-			}
-			printf("COUCOU\n");
-			if (data->cmd->is_builtin == false)
-				execute_command(data);
-			else
-				ft_builtin(data);
+			fprintf(stderr, "NB OF MALLOC PIPE [%d]\n", i);
+			exec->pipe_fd[i] = (int *)malloc(sizeof(int) * 2);
+			pipe(exec->pipe_fd[i]);
 		}
-		else
+		i = -1;
+		while (++i < data->nb_of_cmds)
 		{
+			exec->child_pid = fork();
+			exec->status = 0;
+			if (exec->child_pid < 0)
+				perror("fork");
+			if (exec->child_pid == 0)
+			{
+				close(exec->pipe_fd[0][1]);
+				close(exec->pipe_fd[1][0]);
+				close(exec->pipe_fd[1][1]);
+				if (data->cmd->is_builtin == false)
+					execute_command(data);
+				else
+					ft_builtin(data, data->cmd);
+				close(exec->pipe_fd[0][0]);
+
+			}
+			close(exec->pipe_fd[0][0]);
+			close(exec->pipe_fd[0][1]);
+			close(exec->pipe_fd[1][0]);
+			close(exec->pipe_fd[1][1]);
 			waitpid(exec->child_pid, &exec->status, 0);
 			if (WIFSIGNALED(exec->status))
 				printf("^\\Quit: %d\n", SIGQUIT);
 		}
 	}
 	return (EXIT_SUCCESS);
+
+
+	// i = -1;
+	// while (++i < data->nb_of_cmds)
+	// 	exec->pipe_fd[i] = (int *)malloc(sizeof(int) * 2);
+	// i = -1;
+	// while (++i < data->nb_of_cmds)
+	// {
+	// 	printf("I [%d]\n", i);
+	// 	pipe(exec->pipe_fd[i]);
+	// 	exec->child_pid = fork();
+	// 	exec->status = 0;
+	// 	if (exec->child_pid == -1)
+	// 		perror("fork"); // return int error ? E_FORK
+	// 	if (exec->child_pid == 0)
+	// 	{
+	// 		// printf("CHILD_PID [%d]\n", exec->child_pid);
+	// 		if (i == 0)
+	// 		{
+	// 			close(exec->pipe_fd[0][READ_END]);
+	// 			if (dup2(exec->pipe_fd[1][0], exec->pipe_fd[0][1]) == -1)
+	// 				return(EXIT_FAILURE);
+	// 		}
+	// 		if (i > 0 && i != data->nb_of_cmds)
+	// 		{
+	// 			if (dup2(exec->pipe_fd[i][WRITE_END], exec->pipe_fd[i - 1][READ_END]) == -1)
+	// 				return(EXIT_FAILURE);
+	// 			close(exec->pipe_fd[i][READ_END]);
+	// 		}
+	// 		if (i == data->nb_of_cmds)
+	// 		{
+	// 			if (dup2(STDIN_FILENO, exec->pipe_fd[i - 1][READ_END]) == -1)
+	// 				return(EXIT_FAILURE);
+	// 		}
+	// 		printf("COUCOU\n");
+	// 		if (data->cmd->is_builtin == false)
+	// 			execute_command(data);
+	// 		else
+	// 			ft_builtin(data);
+	// 	}
+	// 	else
+	// 	{
+	// 		waitpid(exec->child_pid, &exec->status, 0);
+	// 		if (WIFSIGNALED(exec->status))
+	// 			printf("^\\Quit: %d\n", SIGQUIT);
+	// 	}
+	// }
+	// return (EXIT_SUCCESS);
 }
 	// if (data->cmd->is_builtin == false)
 	// 	ft_cmd_exec(data);
 	// else
-	// 	ft_builtin(data);
 	// return (EXIT_SUCCESS);
+	// 	ft_builtin(data);

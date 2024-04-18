@@ -32,21 +32,21 @@ bool	ft_is_builtin(char *name)
 	return (false);
 }
 
-int	ft_builtin(t_data *data)
+int	ft_builtin(t_data *data, t_cmd *cmd) // ajout t_cmd *cmd
 {
-	if (!ft_strncmp(data->cmd->args[0], "echo", 4))
-		ft_echo(data);
-	if (!ft_strncmp(data->cmd->args[0], "cd", 2))
-		ft_cd(data);
-	if (!ft_strncmp(data->cmd->args[0], "pwd", 3))
+	if (!ft_strncmp(cmd->args[0], "echo", 4))
+		ft_echo(data, cmd);
+	if (!ft_strncmp(cmd->args[0], "cd", 2))
+		ft_cd(data, cmd);
+	if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		ft_pwd(data);
-	if (!ft_strncmp(data->cmd->args[0], "export", 6))
-		ft_export(data);
-	if (!ft_strncmp(data->cmd->args[0], "unset", 5))
-		ft_unset(data);
-	if (!ft_strncmp(data->cmd->args[0], "env", 3))
+	if (!ft_strncmp(cmd->args[0], "export", 6))
+		ft_export(data, cmd);
+	if (!ft_strncmp(cmd->args[0], "unset", 5))
+		ft_unset(data, cmd);
+	if (!ft_strncmp(cmd->args[0], "env", 3))
 		ft_env(data);
-	if (!ft_strncmp(data->cmd->args[0], "exit", 4))
+	if (!ft_strncmp(cmd->args[0], "exit", 4))
 		ft_exit(data);
 	return (EXIT_SUCCESS);
 }

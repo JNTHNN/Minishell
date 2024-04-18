@@ -22,42 +22,44 @@
 // CD ~user -> REPERTOIRE PERSO DE L'USER SPECIFIE
 // UNSET PWD NE FAIT RIEN MAIS EN CREE UN APRES L'ACTION DE CD
 
-static void	ft_change_pwd(t_data *data)
+static void	ft_change_pwd(t_data *data, t_cmd *cmd)
 {
 	char	*pwd;
 
 	pwd = ft_getenv(data, "PWD");
 	if (!pwd)
 		ft_putstr_fd("No PWD, No party\n", STDERR_FILENO);
-	if (!data->cmd->args[1])
+	if (!cmd->args[1])
 		ft_cd_home(data, pwd);
-	else if (data->cmd->args[1][0] == '/')
-		ft_cd_absolute(data, pwd);
+	else if (cmd->args[1][0] == '/')
+		ft_cd_absolute(data, cmd, pwd);
 	else
-		ft_cd_relative(data, pwd);
+		ft_cd_relative(data, cmd, pwd);
 }
 
-static int	ft_check_dir(t_data *data)
+static int	ft_check_dir(t_data *data, t_cmd *cmd)
 {
 	int		rv;
 
 	rv = 0;
-	if (data->cmd->args[1])
+	if (cmd->args[1])
 	{
-		if (!ft_strncmp(data->cmd->args[1], "-", 1))
+		if (!ft_strncmp(cmd->args[1], "-", 1))
 			rv = ft_check_minus(data);
-		if (!ft_strncmp(data->cmd->args[1], "~", 1))
+		if (!ft_strncmp(cmd->args[1], "~", 1))
 			rv = ft_check_tilde(data);
-		else if (chdir(data->cmd->args[1]) == -1)
+		else if (chdir(cmd->args[1]) == 0)
+			rv = 1;
+		else 
 			perror("cd direction");
 	}
-	if (!data->cmd->args[1])
+	if (!cmd->args[1])
 		rv = ft_check_home(data);
 	return (rv);
 }
 
-void	ft_cd(t_data *data)
+void	ft_cd(t_data *data, t_cmd *cmd)
 {
-	if (ft_check_dir(data))
-		ft_change_pwd(data);
+	if (ft_check_dir(data, cmd))
+		ft_change_pwd(data, cmd);
 }

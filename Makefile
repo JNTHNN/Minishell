@@ -67,7 +67,7 @@ DEPS        	:= $(OBJS:.o=.d)
 # 							  Compilation flags								   #
 # **************************************************************************** #
 
-CC 				:= cc # -g -O0
+CC 				:= cc  -g -O0
 CFLAGS 			:= -Wall -Wextra -Werror
 CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \

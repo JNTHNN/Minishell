@@ -39,23 +39,24 @@ static int	ft_check_option(char *option)
 	return (1);
 }
 
-void	ft_echo(t_data *data)
+void	ft_echo(t_data *data, t_cmd *cmd)
 {
 	int	i;
 	int	option;
+	(void)data;
 
 	i = 1;
 	option = 0;
-	while (data->cmd->args && data->cmd->args[i] != NULL
-		&& ft_check_option(data->cmd->args[i]) == 1)
+	while (cmd->args && cmd->args[i] != NULL
+		&& ft_check_option(cmd->args[i]) == 1)
 	{
 		option = 1;
 		i++;
 	}
-	while (data->cmd->args[i])
+	while (cmd->args[i])
 	{
-		ft_putstr_fd(data->cmd->args[i], 1);
-		if (data->cmd->args[i + 1])
+		ft_putstr_fd(cmd->args[i], 1);
+		if (cmd->args[i + 1])
 			ft_putstr_fd(" ", 1);
 		i++;
 	}
