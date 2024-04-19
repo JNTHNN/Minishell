@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/16 14:02:42 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:24:44 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ struct	s_hist
 struct	s_exec
 {
 	int			**pipe_fd;
-	pid_t		child_pid;
+	pid_t		*child_pid;
 	int			status;
 };
 
