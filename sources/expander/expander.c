@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/17 11:20:42 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/19 09:45:54 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 			return (E_MEM);
 		cursor = new_str;
 		ft_create_new_str(str, cursor, data, (new_length + 2));
-		free((*args)[idx]);
 		(*args)[idx] = new_str;
 	}
 	return (EXIT_SUCCESS);
