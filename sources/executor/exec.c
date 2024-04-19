@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/19 17:17:07 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:09:28 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,12 @@ int	ft_executor(t_data *data)
 			exec->pipe_fd[WRITE_END] = dup(exec->tmp_std[OUT]);
 		else
 		{
-			
+			pipe(exec->pipe_fd);
+			exec->tmp_std[IN] = exec->pipe_fd[READ_END];
+			exec->tmp_std[OUT] = exec->pipe_fd[WRITE_END];
 		}
-		
+		dup2(exec->pipe_fd[WRITE_END], STDOUT_FILENO);
+		close(exec->pipe_fd[WRITE_END]);
 		exec->child_pid[i] = fork();
 		exec->status = 0;
 		if (exec->child_pid[i] == -1)
@@ -90,25 +93,6 @@ int	ft_executor(t_data *data)
 		// Si on est dans le processus enfant
 		if (exec->child_pid[i] == 0)
 		{
-			// Si on est pas dans la 1re commande
-			if (i > 0)
-			{
-			}
-			// S'il y a une commande après
-			if (current_cmd->right)
-			{
-				dup2(exec->pipe_fd[i][WRITE_END], STDOUT_FILENO);
-				close(exec->pipe_fd[i][READ_END]);
-			}
-			// Fermer tous les autres pipes
-			j = -1;
-			while (++j < data->nb_of_cmds)
-			{
-				if (j != i - 1)
-					close(exec->pipe_fd[j][READ_END]);
-				if (j != i)
-					close(exec->pipe_fd[j][WRITE_END]);
-			}
 			// Exécution da la commande ou du builtin
 			if (!data->cmd->is_builtin)
 				execute_command(data, current_cmd);
@@ -124,8 +108,8 @@ int	ft_executor(t_data *data)
 	i = -1;
 	while (++i < data->nb_of_cmds)
 	{
-		close(exec->pipe_fd[i][READ_END]);
-		close(exec->pipe_fd[i][WRITE_END]);
+		close(exec->pipe_fd[READ_END]);
+		close(exec->pipe_fd[WRITE_END]);
 	}
 	// Attendre tous les enfants
 	i = -1;
