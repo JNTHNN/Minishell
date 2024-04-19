@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/19 11:24:44 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:09:49 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ struct	s_hist
 
 struct	s_exec
 {
-	int			**pipe_fd;
+	int			tmp_std[2];
+	int			pipe_fd[2];
 	pid_t		*child_pid;
 	int			status;
 };
