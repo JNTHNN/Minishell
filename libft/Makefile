@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
+#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/06 12:51:23 by gdelvign          #+#    #+#              #
-#    Updated: 2024/02/06 12:51:25 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/18 20:51:32 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 LIB			= ar -rcs
 
+BUILD_DIR  	:= ./.build/
 INCS		= libft.h
 SRCS		= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 				ft_strlen.c ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c \
@@ -32,9 +33,15 @@ SRCS		= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 				ft_printstr.c ft_printnbr.c ft_printuint.c ft_printaddress.c \
 				ft_printhex.c get_next_line.c get_next_line_utils.c
 
-OBJS		= $(SRCS:.c=.o)
+OBJS		:= $(SRCS:%.c=$(BUILD_DIR)%.o)
+DEPS        := $(OBJS:.o=.d)
 
 all: 		$(NAME)
+
+-include $(DEPS)
+$(BUILD_DIR)%.o:$(SRC_DIR)%.c
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS)
 
 $(NAME): $(OBJS)
 	@$(LIB)	$(NAME) $(OBJS)
@@ -42,8 +49,8 @@ $(NAME): $(OBJS)
 .c.o: 		
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-clean:		
-	@rm -f $(OBJS)
+clean:		 
+	@$(RM) -r $(BUILD_DIR)
 
 fclean:	clean
 	@rm -f $(NAME)

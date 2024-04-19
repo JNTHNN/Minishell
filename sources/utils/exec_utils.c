@@ -6,20 +6,20 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/17 09:29:16 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:15:22 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	execute_command(t_data *data)
+void	execute_command(t_data *data, t_cmd *cmd)
 {
-	if (data->cmd->args)
+	if (cmd->args)
 	{
-		if (!ft_strncmp(data->cmd->args[0], "/", 1)
-			|| !ft_strncmp(data->cmd->args[0], "./", 2))
+		if (!ft_strncmp(cmd->args[0], "/", 1)
+			|| !ft_strncmp(cmd->args[0], "./", 2))
 		{
-			if (execve(data->cmd->args[0], data->cmd->args, data->env) == -1)
+			if (execve(cmd->args[0], cmd->args, data->env) == -1)
 			{
 				perror("execve absolu");
 				exit(EXIT_FAILURE);
@@ -27,7 +27,7 @@ void	execute_command(t_data *data)
 		}
 		else
 		{
-			if (ft_create_exec(data) == EXIT_FAILURE)
+			if (ft_create_exec(data, cmd) == EXIT_FAILURE)
 			{
 				perror("command not found");
 				exit(EXIT_FAILURE);
@@ -38,12 +38,12 @@ void	execute_command(t_data *data)
 	// exit(EXIT_SUCCESS); // A SURVEILLER
 }
 
-char	**ft_pathiter(char **path, t_data *data)
+char	**ft_pathiter(char **path, t_cmd *cmd)
 {
 	char	*new_cmd;
 	char	*temp;
 
-	new_cmd = ft_strjoin("/", data->cmd->args[0]);
+	new_cmd = ft_strjoin("/", cmd->args[0]);
 	while (*path)
 	{
 		temp = ft_strjoin(*path, new_cmd);
@@ -53,22 +53,22 @@ char	**ft_pathiter(char **path, t_data *data)
 	return (path);
 }
 
-char	**ft_path_abs(t_data *data)
+char	**ft_path_abs(t_data *data, t_cmd *cmd)
 {
 	char	*path;
 	char	**my_path;
 
-	path = getenv("PATH");
+	path = ft_getenv(data, "PATH");
 	my_path = ft_split(path, ':');
-	ft_pathiter(my_path, data);
+	ft_pathiter(my_path, cmd);
 	return (my_path);
 }
 
-int	ft_create_exec(t_data *data)
+int	ft_create_exec(t_data *data, t_cmd *cmd)
 {
 	char	**progpath;
 
-	progpath = ft_path_abs(data);
+	progpath = ft_path_abs(data, cmd);
 	if (!progpath)
 	{
 		perror("path");
@@ -78,7 +78,7 @@ int	ft_create_exec(t_data *data)
 	{
 		if (access(*progpath, F_OK) == 0)
 		{
-			if (execve(*progpath, data->cmd->args, data->env) == -1)
+			if (execve(*progpath, cmd->args, data->env) == -1)
 			{
 				perror("command");
 				exit(EXIT_FAILURE);

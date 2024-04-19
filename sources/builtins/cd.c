@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/10 19:17:51 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:24:32 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ static int	ft_check_dir(t_data *data, t_cmd *cmd)
 	if (cmd->args[1])
 	{
 		if (!ft_strncmp(cmd->args[1], "-", 1))
-			rv = ft_check_minus(data);
+			return (rv = ft_check_minus(data));
 		if (!ft_strncmp(cmd->args[1], "~", 1))
 			rv = ft_check_tilde(data);
 		else if (chdir(cmd->args[1]) == 0)
 			rv = 1;
-		else 
+		else
 			perror("cd direction");
 	}
 	if (!cmd->args[1])
