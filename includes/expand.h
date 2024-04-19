@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   expand.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 11:08:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/02 00:08:33 by jgasparo         ###   ########.fr       */
+/*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
+/*   Updated: 2024/04/06 22:59:29 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef EXPAND_H
+# define EXPAND_H
 
-static int ft_isunder(int c)
-{
-	if (c == 95 || c == 61)
-		return (1);
-	return (0);
-}
+int	ft_expand(t_data *data);
 
-int	ft_isalnum(int c)
-{
-	return (ft_isalpha(c) || ft_isdigit(c) || ft_isunder(c));
-}
+#endif

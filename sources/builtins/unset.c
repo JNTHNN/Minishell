@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/06 22:51:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:48:44 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_unset(t_data *data)
+void	ft_unset(t_data *data, t_cmd *cmd)
 {
 	int	i;
 	int	j;
 
 	i = 1;
-	while (data->cmd->args[i])
+	while (cmd->args[i])
 	{
 		j = 0;
 		while (data->env[j])
 		{
-			if (ft_strncmp(data->cmd->args[i], data->env[j],
-					ft_strlen(data->cmd->args[i])) == 0)
+			if (ft_strncmp(cmd->args[i], data->env[j],
+					ft_strlen(cmd->args[i])) == 0)
 			{
 				free(data->env[j]);
 				while (data->env[j])

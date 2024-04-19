@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/17 11:24:07 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:26:55 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ static int	ft_get_input(t_data *data)
 	ft_get_ctrl_d(data);
 	if (ft_trim_input(&data->input))
 		return (E_MEM);
-	return (EXIT_SUCCESS);
-}
-
-static int	ft_executor(t_data *data)
-{
-	if (data->cmd->is_builtin == false)
-		ft_cmd_exec(data);
-	else
-		ft_builtin(data);
 	return (EXIT_SUCCESS);
 }
 

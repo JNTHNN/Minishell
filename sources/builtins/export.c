@@ -12,23 +12,23 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_export(t_data *data)
+void	ft_export(t_data *data, t_cmd *cmd)
 {
 	t_env	*head;
 	int		i;
 
 	head = ft_setup_env(data->env);
 	i = 1;
-	if (data->cmd->args)
+	if (cmd->args)
 	{
-		if (!ft_strncmp(data->cmd->args[0], "export", 6))
+		if (!ft_strncmp(cmd->args[0], "export", 6))
 		{
-			if (data->cmd->args[i])
+			if (cmd->args[i])
 			{
-				while (data->cmd->args[i])
+				while (cmd->args[i])
 				{
 					ft_modify_or_add_env(&head,
-						data->cmd->args[i]);
+						cmd->args[i]);
 					i++;
 				}
 			}

@@ -41,24 +41,24 @@ void	ft_cd_home(t_data *data, char *pwd)
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 }
 
-void	ft_cd_absolute(t_data *data, char *pwd)
+void	ft_cd_absolute(t_data *data, t_cmd *cmd, char *pwd)
 {
 	char	*new_pwd;
 
-	new_pwd = data->cmd->args[1];
+	new_pwd = cmd->args[1];
 	if (!(ft_strlen(new_pwd) == 1) && new_pwd[ft_strlen(new_pwd) - 1] == '/')
 		ft_memset(new_pwd + (ft_strlen(new_pwd) - 1), 0, 1);
-	ft_seek_replace(data, "PWD=", data->cmd->args[1]);
+	ft_seek_replace(data, "PWD=", cmd->args[1]);
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 }
 
-void	ft_cd_relative(t_data *data, char *pwd)
+void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 {
 	char	**temp_path;
 	char	**temp_pwd;
 	int		i;
 
-	temp_path = ft_split(data->cmd->args[1], '/');
+	temp_path = ft_split(cmd->args[1], '/');
 	temp_pwd = ft_split(pwd, '/');
 	if (!ft_strncmp(temp_path[0], "~", 1) || !ft_strncmp(temp_path[0], "-", 1))
 	{

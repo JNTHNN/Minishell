@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/16 14:02:42 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:24:44 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_tok_lst	t_tok_lst;
 typedef struct s_env		t_env;
 typedef struct s_expand		t_expand;
 typedef struct s_hist		t_hist;
+typedef struct s_exec		t_exec;
 
 typedef enum e_tok_type
 {
@@ -105,6 +106,13 @@ struct	s_hist
 {
 	char	*newline;
 	char	*lastline;
+};
+
+struct	s_exec
+{
+	int			**pipe_fd;
+	pid_t		*child_pid;
+	int			status;
 };
 
 #endif

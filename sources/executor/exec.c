@@ -3,96 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/16 16:45:26 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:32:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// doit faire en sorte que je checke tout les possibilités des chemin
-// du path 
-
 #include "../../includes/minishell.h"
 
-static char	**ft_pathiter(char **path, t_data *data)
-{
-	char	*new_cmd;
-	char	*temp;
-
-	new_cmd = ft_strjoin("/", data->cmd->args[0]);
-	while (*path)
-	{
-		temp = ft_strjoin(*path, new_cmd);
-		*path = temp;
-		path++;
-	}
-	return (path);
-}
-
-static char	**ft_path_abs(t_data *data)
-{
-	char	*path;
-	char	**my_path;
-
-	path = getenv("PATH");
-	my_path = ft_split(path, ':');
-	ft_pathiter(my_path, data);
-	return (my_path);
-}
-
-static int	ft_create_exec(t_data *data)
-{
-	char	**progpath;
-
-	progpath = ft_path_abs(data);
-	if (!progpath)
-	{
-		perror("path");
-		exit(EXIT_FAILURE);
-	}
-	while (*progpath)
-	{
-		if (access(*progpath, F_OK) == 0)
-		{
-			if (execve(*progpath, data->cmd->args, data->env) == -1)
-			{
-				perror("command");
-				exit(EXIT_FAILURE);
-			}
-		}
-		progpath++;
-	}
-	return (EXIT_FAILURE);
-}
-
-/*	On fork	
-**	PID == -1 : ERROR
-**	SI LE FORK REUSSIT, LE PROCESSUS PERE ATTEND LE PROCESSUS FILS
-**	PID > 0 :  ON BLOCK LE PROCESSUS PERE JUSQU'A QUE L'ENFANT TERMINE (WAITPID)
-**	PUIS ON KILL LE PROCESSUS ENFANT
-**	ELSE (PID == 0) : LE PROCESSUS ENFANT EXECUTE LA COMMANDE
-*/
-
-static void	execute_command(t_data *data)
-{
-	if (!ft_strncmp(data->cmd->args[0], "/", 1))
-	{
-		if (execve(data->cmd->args[0], data->cmd->args, data->env) == -1)
-			exit(EXIT_FAILURE);
-	}
-	else
-	{
-		if (ft_create_exec(data) == EXIT_FAILURE)
-		{
-			perror("command not found");
-			exit(EXIT_FAILURE);
-		}
-	}
-	exit(EXIT_SUCCESS);
-}
-
-void	ft_cmd_exec(t_data *data)
+int	ft_cmd_exec(t_data *data)
 {
 	pid_t	pid;
 	int		status;
@@ -100,7 +20,10 @@ void	ft_cmd_exec(t_data *data)
 	pid = fork();
 	status = 0;
 	if (pid == -1)
+	{
 		perror("fork");
+		return (EXIT_FAILURE);
+	}
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
@@ -110,10 +33,106 @@ void	ft_cmd_exec(t_data *data)
 	else
 	{
 		ft_signal(SIG_DFL);
-		execute_command(data);
+		execute_command(data, data->cmd);
 	}
+	return (EXIT_SUCCESS);
 }
 
-/*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE
-**	-> EXIT POUR KILL LE PROCESSUS
-*/
+t_redir_lst *ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
+{
+	t_redir_lst *is_last;
+
+	is_last = NULL;
+	if (!*lst)
+		return (NULL);
+	while (*lst)
+	{
+		if ((*lst)->r_type == type)
+			is_last = (*lst);
+		*lst = (*lst)->next;
+	}
+	// printf("IS_LAST = %s / R_TYPE = %d\n", is_last->filename, is_last->r_type);
+	return (is_last);
+}
+
+int	ft_executor(t_data *data)
+{
+	t_exec	*exec;
+	t_cmd	*current_cmd;
+	int		i;
+	int		j;
+
+	// Allocation de la structure exec et du tableau de pipe_fd et du tableau de child_pid
+	exec = (t_exec *)malloc(sizeof(t_exec));
+	exec->pipe_fd = (int **)malloc(sizeof(int *) * data->nb_of_cmds);
+	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
+	i = -1;
+	while (++i < data->nb_of_cmds)
+	{
+		exec->pipe_fd[i] = (int *)malloc(sizeof(int) * 2);
+		if (pipe(exec->pipe_fd[i]) == -1)
+			perror("pipe");
+	}
+	// Itrération sur les commandes de la liste chainée
+	current_cmd = data->cmd;
+	i = 0;
+	while (current_cmd)
+	{
+		exec->child_pid[i] = fork();
+		exec->status = 0;
+		if (exec->child_pid[i] == -1)
+			perror("fork");
+		// ENFANT
+		// Si on est dans le processus enfant
+		if (exec->child_pid[i] == 0)
+		{
+			// Si on est pas dans la 1re commande
+			if (i > 0)
+			{
+				dup2(exec->pipe_fd[i - 1][READ_END], STDIN_FILENO);
+				close(exec->pipe_fd[i - 1][WRITE_END]);
+			}
+			// S'il y a une commande après
+			if (current_cmd->right)
+			{
+				dup2(exec->pipe_fd[i][WRITE_END], STDOUT_FILENO);
+				close(exec->pipe_fd[i][READ_END]);
+			}
+			// Fermer tous les autres pipes
+			j = -1;
+			while (++j < data->nb_of_cmds)
+			{
+				if (j != i - 1)
+					close(exec->pipe_fd[j][READ_END]);
+				if (j != i)
+					close(exec->pipe_fd[j][WRITE_END]);
+			}
+			// Exécution da la commande ou du builtin
+			if (!data->cmd->is_builtin)
+				execute_command(data, current_cmd);
+			else
+				ft_builtin(data, current_cmd);
+			exit(EXIT_SUCCESS);
+		}
+		current_cmd = current_cmd->right;
+		i++;
+	}
+	// PARENT
+	// Fermer tous les pipes du parent
+	i = -1;
+	while (++i < data->nb_of_cmds)
+	{
+		close(exec->pipe_fd[i][READ_END]);
+		close(exec->pipe_fd[i][WRITE_END]);
+	}
+	// Attendre tous les enfants
+	i = -1;
+	while (++i < data->nb_of_cmds)
+	{
+		waitpid(exec->child_pid[i], &exec->status, 0);
+		if (WIFSIGNALED(exec->status))
+			perror("exit");
+		// printf("^\\Quit: %d\n", SIGQUIT);
+	}
+	return (EXIT_SUCCESS);
+}

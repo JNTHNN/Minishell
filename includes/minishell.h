@@ -34,6 +34,7 @@
 # include "utils.h"
 # include "clean.h"
 # include "history.h"
+# include "executor.h"
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
@@ -54,15 +55,15 @@ void	ft_get_ctrl_d(t_data *data);
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
-void	ft_builtin(t_data *data);
+int		ft_builtin(t_data *data, t_cmd *cmd);
 
-void	ft_echo(t_data *data);
-void	ft_cd(t_data *data);
+void	ft_echo(t_data *data, t_cmd *cmd);
+void	ft_cd(t_data *data, t_cmd *cmd);
 void	ft_pwd(t_data *data);
-void	ft_export(t_data *data);
+void	ft_export(t_data *data, t_cmd *cmd);
 void	ft_env(t_data *data);
 void	ft_exit(t_data *data);
-void	ft_unset(t_data *data);
+void	ft_unset(t_data *data, t_cmd *cmd);
 
 /*  export.c    */
 void	ft_free_array(char **env);
@@ -84,8 +85,8 @@ char	*ft_data(char *s);
 /*  utils for cd : cd_utils.c   */
 void	ft_seek_replace(t_data *data, char *search, char *pwd);
 void	ft_cd_home(t_data *data, char *pwd);
-void	ft_cd_absolute(t_data *data, char *pwd);
-void	ft_cd_relative(t_data *data, char *pwd);
+void	ft_cd_absolute(t_data *data, t_cmd *cmd, char *pwd);
+void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd);
 
 /*  manipulate tab for cd : cd_utils2.c */
 char	**ft_append_pwd(char **pwd, char *path);
@@ -98,9 +99,6 @@ char	**ft_replace_pwd(t_data *data, char *shortcut);
 int		ft_check_tilde(t_data *data);
 int		ft_check_home(t_data *data);
 int		ft_check_minus(t_data *data);
-
-/*		JG_exec			*/
-void	ft_cmd_exec(t_data *data);
 
 /*		UTILS		*/
 char	*ft_strcat(char *dest, const char *src);
