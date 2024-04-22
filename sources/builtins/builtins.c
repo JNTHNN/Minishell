@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/17 11:09:29 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:40:43 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <string.h>
 
+/*
+** checker for builtin | return true if it's a builtin
+*/
 bool	ft_is_builtin(char *name)
 {
 	int			i;
@@ -32,7 +35,10 @@ bool	ft_is_builtin(char *name)
 	return (false);
 }
 
-int	ft_builtin(t_data *data, t_cmd *cmd) // ajout t_cmd *cmd
+/*
+**	launch the right builtin
+*/
+int	ft_builtin(t_data *data, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->args[0], "echo", 4))
 		ft_echo(data, cmd);

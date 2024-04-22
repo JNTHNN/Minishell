@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/19 23:46:59 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/20 23:16:53 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ struct	s_exec
 	int			tmpout;
 	int			fdin;
 	int			fdout;
-	
 };
 
 #endif

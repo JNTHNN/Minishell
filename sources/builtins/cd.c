@@ -6,22 +6,15 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/18 22:24:32 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:49:39 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// GERER TOUT LES RACCOURCIS
-// CD SANS ARGS -> $HOME √
-// CD - -> OLD_PWD + PRINT 
-// CD ~ -> $HOME √
-// CD .. -> REPERTOIRE PARENT √
-// CD / -> RACINE SYSTEME √
-// CD . -> RIEN REPERTOIRE ACTUEL √
-// CD ~user -> REPERTOIRE PERSO DE L'USER SPECIFIE
-// UNSET PWD NE FAIT RIEN MAIS EN CREE UN APRES L'ACTION DE CD
-
+/*
+**	change pwd in env according to path type (without arg; absolute; relative)
+*/
 static void	ft_change_pwd(t_data *data, t_cmd *cmd)
 {
 	char	*pwd;
@@ -35,8 +28,12 @@ static void	ft_change_pwd(t_data *data, t_cmd *cmd)
 		ft_cd_absolute(data, cmd, pwd);
 	else
 		ft_cd_relative(data, cmd, pwd);
+	free(pwd);
 }
 
+/*
+**	check arg after cd ( - ; ~ ; path)
+*/
 static int	ft_check_dir(t_data *data, t_cmd *cmd)
 {
 	int		rv;
@@ -58,6 +55,9 @@ static int	ft_check_dir(t_data *data, t_cmd *cmd)
 	return (rv);
 }
 
+/*
+**	if the direction works -> we change pwd + oldpwd
+*/
 void	ft_cd(t_data *data, t_cmd *cmd)
 {
 	if (ft_check_dir(data, cmd))
