@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/19 21:09:28 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:00:07 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,18 @@ int	ft_cmd_exec(t_data *data)
 t_redir_lst *ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
 {
 	t_redir_lst *is_last;
+	t_redir_lst	*temp;
 
 	is_last = NULL;
 	if (!*lst)
 		return (NULL);
-	while (*lst)
+	temp = *lst;
+	while (temp)
 	{
-		if ((*lst)->r_type == type)
-			is_last = (*lst);
-		*lst = (*lst)->next;
+		if (temp->r_type == type)
+			is_last = temp;
+		temp = temp->next;
 	}
-	// printf("IS_LAST = %s / R_TYPE = %d\n", is_last->filename, is_last->r_type);
 	return (is_last);
 }
 
@@ -59,66 +60,65 @@ int	ft_executor(t_data *data)
 {
 	t_exec	*exec;
 	t_cmd	*current_cmd;
-	int		i;
-	int		j;
+	t_redir_lst	*last;
+	t_redir_lst	*last2;
+	t_redir_lst	*last3;
 
-	// Allocation de la structure exec et du tableau de pipe_fd et du tableau de child_pid
 	exec = (t_exec *)malloc(sizeof(t_exec));
-	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
-	exec->tmp_std[IN] = dup(STDIN_FILENO);
-	exec->tmp_std[OUT] = dup(STDOUT_FILENO);
-	exec->pipe_fd[READ_END] = dup(exec->tmp_std[IN]);
-	// Itrération sur les commandes de la liste chainée
-	current_cmd = data->cmd;
-	i = 0;
-	while (current_cmd)
+	exec->tmpin = dup(STDIN_FILENO);
+	exec->tmpout = dup(STDOUT_FILENO);
+	//if (data->redirections)
+	exec->fdin = dup(exec->tmpin);
+	if (data->nb_of_cmds == 1)
 	{
-		dup2(exec->pipe_fd[READ_END], STDIN_FILENO);
-		close(exec->pipe_fd[READ_END]);
-		if (!current_cmd->right)
-			exec->pipe_fd[WRITE_END] = dup(exec->tmp_std[OUT]);
+		if (!data->cmd->is_builtin)
+			ft_cmd_exec(data);
 		else
+			ft_builtin(data, data->cmd);
+	}
+	else
+	{
+		current_cmd = data->cmd;
+		while (current_cmd)
 		{
-			pipe(exec->pipe_fd);
-			exec->tmp_std[IN] = exec->pipe_fd[READ_END];
-			exec->tmp_std[OUT] = exec->pipe_fd[WRITE_END];
-		}
-		dup2(exec->pipe_fd[WRITE_END], STDOUT_FILENO);
-		close(exec->pipe_fd[WRITE_END]);
-		exec->child_pid[i] = fork();
-		exec->status = 0;
-		if (exec->child_pid[i] == -1)
-			perror("fork");
-		// ENFANT
-		// Si on est dans le processus enfant
-		if (exec->child_pid[i] == 0)
-		{
-			// Exécution da la commande ou du builtin
-			if (!data->cmd->is_builtin)
-				execute_command(data, current_cmd);
+			if ((last = ft_find_last_redir(&current_cmd->redirections, HEREDOC)) != NULL)
+				fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", last->filename, last->r_type);
+			if ((last2 = ft_find_last_redir(&current_cmd->redirections, IN)) != NULL)
+				fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", last2->filename, last2->r_type);
+			if ((last3 = ft_find_last_redir(&current_cmd->redirections, OUT)) != NULL)
+				fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", last3->filename, last3->r_type);
+			dup2(exec->fdin, STDIN_FILENO);
+			close(exec->fdin);
+			if (!current_cmd->right)
+				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
 			else
-				ft_builtin(data, current_cmd);
-			exit(EXIT_SUCCESS);
+			{
+				pipe(exec->pipe_fd);
+				exec->fdin = exec->pipe_fd[0];
+				exec->fdout = exec->pipe_fd[1];
+			}
+			dup2(exec->fdout, STDOUT_FILENO);
+			close(exec->fdout);
+			exec->child_pid = fork();
+			exec->status = 0;
+			if (exec->child_pid == -1)
+				perror("fork");
+			if (exec->child_pid == 0)
+			{
+				if (!current_cmd->is_builtin)
+					execute_command(data, current_cmd);
+				else
+					ft_builtin(data, current_cmd);
+				exit(EXIT_SUCCESS);
+			}
+			current_cmd = current_cmd->right;
+			waitpid(exec->child_pid, &exec->status, 0);
 		}
-		current_cmd = current_cmd->right;
-		i++;
-	}
-	// PARENT
-	// Fermer tous les pipes du parent
-	i = -1;
-	while (++i < data->nb_of_cmds)
-	{
-		close(exec->pipe_fd[READ_END]);
-		close(exec->pipe_fd[WRITE_END]);
-	}
-	// Attendre tous les enfants
-	i = -1;
-	while (++i < data->nb_of_cmds)
-	{
-		waitpid(exec->child_pid[i], &exec->status, 0);
-		if (WIFSIGNALED(exec->status))
-			perror("exit");
-		// printf("^\\Quit: %d\n", SIGQUIT);
+		dup2(exec->tmpin, STDIN_FILENO);
+		dup2(exec->tmpout, STDOUT_FILENO);
+		close(exec->tmpin);
+		close(exec->tmpout);
 	}
 	return (EXIT_SUCCESS);
 }
+
