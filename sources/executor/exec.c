@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-int	ft_cmd_exec(t_data *data)
+static int	ft_cmd_exec(t_data *data, t_exec *exec)
 {
 	pid_t	pid;
 	int		status;
@@ -29,6 +29,9 @@ int	ft_cmd_exec(t_data *data)
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
+		close(exec->tmpin);
+		close(exec->tmpout);
+		close(exec->fdin);
 	}
 	else
 	{
@@ -65,6 +68,7 @@ int	ft_executor(t_data *data)
 	t_redir_lst	*last3;
 
 	exec = (t_exec *)malloc(sizeof(t_exec));
+	data->exec = exec;
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
 	//if (data->redirections)
@@ -72,7 +76,7 @@ int	ft_executor(t_data *data)
 	if (data->nb_of_cmds == 1)
 	{
 		if (!data->cmd->is_builtin)
-			ft_cmd_exec(data);
+			ft_cmd_exec(data, exec);
 		else
 			ft_builtin(data, data->cmd);
 		dup2(exec->tmpin, STDIN_FILENO);
@@ -80,7 +84,6 @@ int	ft_executor(t_data *data)
 		close(exec->tmpin);
 		close(exec->tmpout);
 		close(exec->fdin);
-		close(exec->fdout);
 	}
 	else
 	{
@@ -126,10 +129,10 @@ int	ft_executor(t_data *data)
 		dup2(exec->tmpout, STDOUT_FILENO);
 		close(exec->tmpin);
 		close(exec->tmpout);
-		close(exec->fdin);
-		close(exec->fdout);
-		close(exec->pipe_fd[0]);
-		close(exec->pipe_fd[1]);
+		// close(exec->fdin);
+		// close(exec->fdout);
+		// close(exec->pipe_fd[0]);
+		// close(exec->pipe_fd[1]);
 	}
 	return (EXIT_SUCCESS);
 }

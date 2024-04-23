@@ -55,6 +55,7 @@ struct	s_data
 	t_redir_lst	**redirections;
 	bool		is_itoa;
 	int			nb_of_cmds;
+	t_exec		*exec;
 };
 
 struct s_tok_lst

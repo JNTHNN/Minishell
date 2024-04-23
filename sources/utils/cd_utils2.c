@@ -6,15 +6,12 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 01:38:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:21:27 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-**	removes the first path from the path
-*/
 char	**ft_remove_first(char **path)
 {
 	char	**new_path;
@@ -35,9 +32,6 @@ char	**ft_remove_first(char **path)
 	return (new_path);
 }
 
-/*
-**	adds the path to the end
-*/
 char	**ft_append_pwd(char **pwd, char *path)
 {
 	int		i;
@@ -47,7 +41,7 @@ char	**ft_append_pwd(char **pwd, char *path)
 	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
 	if (!append_pwd)
 		return (NULL);
-	while (pwd[i])
+	while (pwd && pwd[i])
 	{
 		append_pwd[i] = ft_strdup(pwd[i]);
 		i++;
@@ -57,20 +51,15 @@ char	**ft_append_pwd(char **pwd, char *path)
 	return (append_pwd);
 }
 
-/*
-**	replaces the shortcut with the corresponding path
-*/
 char	**ft_replace_pwd(t_data *data, char *shortcut)
 {
 	char	*temp_pwd;
 	char	**pwd;
 
-	temp_pwd = NULL;
 	if (shortcut && !ft_strncmp(shortcut, "-", 1))
 	{
 		temp_pwd = ft_getenv(data, "OLDPWD=");
-		if (temp_pwd)
-			printf("%s\n", temp_pwd + 7);
+		printf("%s\n", temp_pwd + 7);
 	}
 	else
 		temp_pwd = ft_getenv(data, "HOME=");
@@ -78,9 +67,6 @@ char	**ft_replace_pwd(t_data *data, char *shortcut)
 	return (pwd);
 }
 
-/*
-**	removes the ".." from the path
-*/
 char	**ft_sup_pwd(char **pwd)
 {
 	char	**new_pwd;
@@ -98,27 +84,22 @@ char	**ft_sup_pwd(char **pwd)
 		i++;
 	}
 	new_pwd[i] = NULL;
-	ft_free_array(pwd);
 	return (new_pwd);
 }
 
-/*
-**	concat pwd for relative
-*/
 char	*ft_pwdcat(char **pwd)
 {
 	char	*new_pwd;
-	char	*temp;
 	int		i;
+	int		size;
 
-	i = 0;
+	size = ft_tablen(pwd);
+	i = 1;
 	new_pwd = ft_strdup("");
-	while (pwd[i])
+	while (i < size)
 	{
-		temp = ft_strjoin(new_pwd, "/");
-		free(new_pwd);
-		new_pwd = ft_strjoin(temp, pwd[i]);
-		free(temp);
+		new_pwd = ft_strjoin(new_pwd, "/");
+		new_pwd = ft_strjoin(new_pwd, pwd[i]);
 		i++;
 	}
 	return (new_pwd);

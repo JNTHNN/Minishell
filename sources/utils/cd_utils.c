@@ -87,8 +87,8 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 		i++;
 	}
 	i = 0;
-	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd + 1));
+	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd));
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
-	ft_free_array(temp_path);
-	ft_free_array(temp_pwd);
+	// ft_free_array(temp_path);
+	// free_arr(temp_pwd);
 }

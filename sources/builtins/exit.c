@@ -20,6 +20,9 @@
 void	ft_exit(t_data *data)
 {
 	ft_putendl_fd("exit", 1);
+	close(data->exec->tmpin);
+	close(data->exec->tmpout);
+	close(data->exec->fdin);
 	ft_free_data(data);
 	exit(EXIT_SUCCESS);
 }

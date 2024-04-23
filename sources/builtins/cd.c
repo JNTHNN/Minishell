@@ -28,7 +28,6 @@ static void	ft_change_pwd(t_data *data, t_cmd *cmd)
 		ft_cd_absolute(data, cmd, pwd);
 	else
 		ft_cd_relative(data, cmd, pwd);
-	free(pwd);
 }
 
 /*
