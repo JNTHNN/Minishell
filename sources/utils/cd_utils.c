@@ -69,6 +69,8 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 	char	**temp_path;
 	char	**temp_pwd;
 	int		i;
+	int		j;
+	int		z;
 
 	temp_path = ft_split(cmd->args[1], '/');
 	temp_pwd = ft_split(pwd, '/');
@@ -87,8 +89,33 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 		i++;
 	}
 	i = 0;
+	while(temp_pwd[i])
+	{
+		j = 0;
+		printf("AVANT PWDCAT\n");
+		printf("LINE %d\n", i);
+		while(temp_pwd[i][j])
+			printf("%c", temp_pwd[i][j++]);
+		printf("\n");
+		i++;
+	}
+	z = ft_tablen(temp_pwd);
+	printf("SIZE OF TEMP_PWD = %d\n", z);
 	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd));
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+	z = ft_tablen(temp_pwd);
+	printf("SIZE OF TEMP_PWD = %d\n", z);
+	i = 0;
+	while(temp_pwd[i])
+	{
+		j = 0;
+		printf("APRES PWDCAT\n");
+		printf("LINE %d\n", i);
+		while(temp_pwd[i][j])
+			printf("%c", temp_pwd[i][j++]);
+		printf("\n");
+		i++;
+	}
 	// ft_free_array(temp_path);
-	// free_arr(temp_pwd);
+	// ft_free_array(temp_pwd);
 }

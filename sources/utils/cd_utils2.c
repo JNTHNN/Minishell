@@ -90,17 +90,36 @@ char	**ft_sup_pwd(char **pwd)
 char	*ft_pwdcat(char **pwd)
 {
 	char	*new_pwd;
+	char	**temp;
 	int		i;
+	int		j;
 	int		size;
 
-	size = ft_tablen(pwd);
+	i = 0;
+	temp = pwd;
+	while(pwd[i])
+	{
+		j = 0;
+		printf("DANS PWDCAT\n");
+		printf("LINE %d\n", i);
+		while(pwd[i][j])
+			printf("%c", pwd[i][j++]);
+		printf("\n");
+		i++;
+	}
+	size = ft_tablen(temp);
+	printf("SIZE DANS PWD %d\n", size);
 	i = 1;
 	new_pwd = ft_strdup("");
 	while (i < size)
 	{
+		printf("DANS BOUCLE %d %s + %s\n", i, new_pwd, temp[i]);
 		new_pwd = ft_strjoin(new_pwd, "/");
-		new_pwd = ft_strjoin(new_pwd, pwd[i]);
+		new_pwd = ft_strjoin(new_pwd, temp[i]);
 		i++;
 	}
+	size = ft_tablen(temp);
+	printf("SIZE DANS PWD %d\n", size);
+	// free_arr(temp);
 	return (new_pwd);
 }
