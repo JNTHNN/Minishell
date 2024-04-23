@@ -6,12 +6,15 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/10 18:52:27 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:59:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/*
+**	searches for variable in env, if doesn't exist -> adds it
+*/
 void	ft_seek_replace(t_data *data, char *search, char *pwd)
 {
 	int	i;
@@ -32,6 +35,9 @@ void	ft_seek_replace(t_data *data, char *search, char *pwd)
 		data->env = ft_add_to_env(data->env, ft_strjoin(search, pwd));
 }
 
+/*
+**	cd without args/path -> return to path in env var HOME
+*/
 void	ft_cd_home(t_data *data, char *pwd)
 {
 	char	*new_pwd;
@@ -41,6 +47,9 @@ void	ft_cd_home(t_data *data, char *pwd)
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 }
 
+/*
+**	cd with absolute path
+*/
 void	ft_cd_absolute(t_data *data, t_cmd *cmd, char *pwd)
 {
 	char	*new_pwd;
@@ -52,6 +61,9 @@ void	ft_cd_absolute(t_data *data, t_cmd *cmd, char *pwd)
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 }
 
+/*
+**	cd with relative path
+*/
 void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 {
 	char	**temp_path;
@@ -77,4 +89,6 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 	i = 0;
 	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd + 1));
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+	ft_free_array(temp_path);
+	ft_free_array(temp_pwd);
 }

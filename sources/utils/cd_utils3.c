@@ -6,12 +6,15 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:14:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/10 19:17:58 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:54:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/*
+**	checker for cd ~ | return 0 if error
+*/
 int	ft_check_tilde(t_data *data)
 {
 	char	*home;
@@ -30,6 +33,9 @@ int	ft_check_tilde(t_data *data)
 	return (1);
 }
 
+/*
+**	checker for cd | return 0 if error
+*/
 int	ft_check_home(t_data *data)
 {
 	char	*home;
@@ -48,6 +54,9 @@ int	ft_check_home(t_data *data)
 	return (1);
 }
 
+/*
+**	checker for cd - | return 0 if error
+*/
 int	ft_check_minus(t_data *data)
 {
 	char	*oldpwd;

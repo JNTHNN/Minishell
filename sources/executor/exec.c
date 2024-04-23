@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/22 12:00:07 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:41:28 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	ft_cmd_exec(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-t_redir_lst *ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
+t_redir_lst	*ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
 {
-	t_redir_lst *is_last;
+	t_redir_lst	*is_last;
 	t_redir_lst	*temp;
 
 	is_last = NULL;
@@ -55,11 +55,11 @@ t_redir_lst *ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
 	}
 	return (is_last);
 }
-
+#include <fcntl.h>
 int	ft_executor(t_data *data)
 {
-	t_exec	*exec;
-	t_cmd	*current_cmd;
+	t_exec		*exec;
+	t_cmd		*current_cmd;
 	t_redir_lst	*last;
 	t_redir_lst	*last2;
 	t_redir_lst	*last3;
@@ -75,6 +75,12 @@ int	ft_executor(t_data *data)
 			ft_cmd_exec(data);
 		else
 			ft_builtin(data, data->cmd);
+		dup2(exec->tmpin, STDIN_FILENO);
+		dup2(exec->tmpout, STDOUT_FILENO);
+		close(exec->tmpin);
+		close(exec->tmpout);
+		close(exec->fdin);
+		close(exec->fdout);
 	}
 	else
 	{
@@ -118,6 +124,10 @@ int	ft_executor(t_data *data)
 		dup2(exec->tmpout, STDOUT_FILENO);
 		close(exec->tmpin);
 		close(exec->tmpout);
+		close(exec->fdin);
+		close(exec->fdout);
+		close(exec->pipe_fd[0]);
+		close(exec->pipe_fd[1]);
 	}
 	return (EXIT_SUCCESS);
 }

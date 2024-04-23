@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 15:45:20 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/21 02:10:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 **	echo ~- = print le OLD_PWD
 */
 
+/*
+**	checker for -n | return 0 if not
+*/
 static int	ft_check_option(char *option)
 {
 	int	i;
@@ -39,12 +42,24 @@ static int	ft_check_option(char *option)
 	return (1);
 }
 
+// static int	ft_check_tilde(char *option)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (option[0] != '~')
+// 		return (0);
+// 	if (option[0] == '~' && !option[1])
+// 		return (1);
+// 	return (0);
+// }
+
 void	ft_echo(t_data *data, t_cmd *cmd)
 {
 	int	i;
 	int	option;
-	(void)data;
 
+	(void)data;
 	i = 1;
 	option = 0;
 	while (cmd->args && cmd->args[i] != NULL
@@ -65,15 +80,3 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 }
 
 /* EXTRA A IMPLEMENTER  = ECHO ~ et ECHO ~+ */
-
-		// if (!ft_strncmp(&str[1][0], "~", 1))
-		// {
-		// 	if (!ft_strncmp(&str[1][1], "+", 1))
-		// 	{
-		// 		printf("%s", getenv("PWD"));
-		// 	}
-		// 	printf("%s", getenv("HOME"));
-		// 	if (option == 0)
-		// 		ft_putstr_fd("\n", 1);
-		// 	break ;
-		// }
