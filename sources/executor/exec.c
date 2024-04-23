@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/23 14:57:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:43:21 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	ft_executor(t_data *data)
 			ft_cmd_exec(data);
 		else
 			ft_builtin(data, data->cmd);
-		printf("tu es ici !\n");
 		dup2(exec->tmpin, STDIN_FILENO);
 		dup2(exec->tmpout, STDOUT_FILENO);
 		close(exec->tmpin);

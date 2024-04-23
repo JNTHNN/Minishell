@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 00:59:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:42:13 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,5 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd + 1));
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 	ft_free_array(temp_path);
-	ft_free_array(temp_pwd);
+	//ft_free_array(temp_pwd);
 }

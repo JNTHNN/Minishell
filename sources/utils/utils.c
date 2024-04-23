@@ -6,13 +6,13 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/16 16:34:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:28:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	*free_arr(char **arr)
+void	*ft_free_array(char **arr)
 {
 	int	i;
 
@@ -48,7 +48,7 @@ char	**ft_arrcpy(char **arr)
 	{
 		cpy[i] = ft_strdup(arr[i]);
 		if (!cpy[i])
-			return (free_arr(cpy));
+			return (ft_free_array(cpy));
 	}
 	cpy[i] = NULL;
 	return (cpy);
@@ -88,7 +88,7 @@ char	**ft_envcpy(char **arr)
 	{
 		cpy[i] = ft_strdup(arr[i]);
 		if (!cpy[i])
-			return (free_arr(cpy));
+			return (ft_free_array(cpy));
 	}
 	cpy[i] = NULL;
 	return (cpy);

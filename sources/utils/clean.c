@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:21:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/16 16:35:28 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:26:51 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	ft_free_data(t_data *data)
 			free(data->hist);
 			data->hist = NULL;
 		}
-		free_arr(data->env);
+		ft_free_array(data->env);
 		if (data->tokens)
 			ft_free_tokens(&data->tokens);
 		if (data->cmd)
