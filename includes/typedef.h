@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/23 11:40:46 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:06:19 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ struct	s_data
 	t_redir_lst	**redirections;
 	bool		is_itoa;
 	int			nb_of_cmds;
+	t_exec		*exec;
 };
 
 struct s_tok_lst

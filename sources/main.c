@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/16 16:26:55 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:54:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	ft_init_data(t_data *data, char **envp)
 	data->cmd = NULL;
 	data->redirections = NULL;
 	data->is_itoa = false;
+	data->nb_of_cmds = 0;
+	data->exec = NULL;
 }
 
 static int	ft_get_input(t_data *data)

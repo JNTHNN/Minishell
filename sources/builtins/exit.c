@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/17 16:42:50 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:13:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 void	ft_exit(t_data *data)
 {
 	ft_putendl_fd("exit", 1);
+	close(data->exec->tmpin);
+	close(data->exec->tmpout);
+	close(data->exec->fdin);
 	ft_free_data(data);
 	exit(EXIT_SUCCESS);
 }
