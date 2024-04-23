@@ -96,7 +96,9 @@ int	ft_executor(t_data *data)
 			dup2(exec->fdin, STDIN_FILENO);
 			close(exec->fdin);
 			if (!current_cmd->right)
+			{
 				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
+			}
 			else
 			{
 				pipe(exec->pipe_fd);
