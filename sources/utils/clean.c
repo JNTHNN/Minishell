@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:21:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/23 22:26:51 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:53:58 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	ft_free_data(t_data *data)
 			free(data->redirections);
 			data->redirections = NULL;
 		}
+		ft_free_exec(data);
 	}
 }
 
@@ -109,5 +110,6 @@ void	ft_reset_data(t_data *data)
 		free(data->redirections);
 		data->redirections = NULL;
 	}
+	ft_free_exec(data);
 	data->nb_of_cmds = 0;
 }
