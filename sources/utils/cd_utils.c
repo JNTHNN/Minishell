@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 00:59:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:25:55 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 {
 	char	**temp_path;
 	char	**temp_pwd;
+	char	*test;
 	int		i;
 	int		j;
 	int		z;
@@ -101,7 +102,8 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 	}
 	z = ft_tablen(temp_pwd);
 	printf("SIZE OF TEMP_PWD = %d\n", z);
-	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd));
+	test = ft_pwdcat(temp_pwd);
+	ft_seek_replace(data, "PWD=", test);
 	ft_seek_replace(data, "OLDPWD=", pwd + 4);
 	z = ft_tablen(temp_pwd);
 	printf("SIZE OF TEMP_PWD = %d\n", z);
@@ -116,6 +118,6 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 		printf("\n");
 		i++;
 	}
-	// ft_free_array(temp_path);
-	// ft_free_array(temp_pwd);
+	ft_free_array(temp_path);
+	ft_free_array(temp_pwd);
 }

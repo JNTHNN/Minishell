@@ -6,35 +6,35 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:42:31 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:48:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/24 11:00:24 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*ft_if_quotes(char *s)
-{
-	size_t	len;
+// static char	*ft_if_quotes(char *s)
+// {
+// 	size_t	len;
 
-	len = ft_strlen(s);
-	if (ft_is_quote(s[0]) && ft_is_quote(s[len - 1]))
-	{
-		if (s[0] == SGL_Q)
-			return ("\'");
-		if (s[0] == DBL_Q)
-			return ("\"");
-	}
-	return (NULL);
-}
+// 	len = ft_strlen(s);
+// 	if (ft_is_quote(s[0]) && ft_is_quote(s[len - 1]))
+// 	{
+// 		if (s[0] == SGL_Q)
+// 			return ("\'");
+// 		if (s[0] == DBL_Q)
+// 			return ("\"");
+// 	}
+// 	return (NULL);
+// }
 
-static void	ft_trim_quotes(char **s)
-{
-	if (s && *s)
-	{
-		if (ft_if_quotes(*s))
-			*s = ft_strtrim(*s, ft_if_quotes(*s));
-	}
-}
+// static void	ft_trim_quotes(char **s)
+// {
+// 	if (s && *s)
+// 	{
+// 		if (ft_if_quotes(*s))
+// 			*s = ft_strtrim(*s, ft_if_quotes(*s));
+// 	}
+// }
 
 static char	*ft_strndup(char *s1, int size)
 {
@@ -82,6 +82,6 @@ char	*ft_data(char *s)
 		start = equal_sign - s + 1;
 		data = ft_strdup(s + start);
 	}
-	ft_trim_quotes(&data);
+	// ft_trim_quotes(&data);
 	return (data);
 }

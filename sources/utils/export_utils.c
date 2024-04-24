@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:44:58 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:17:43 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ t_env	*ft_setup_env(char **env)
 **	Check if var env already exist then modify
 **	or just add
 */
-
 void	ft_modify_or_add_env(t_env **head, char *var)
 {
 	t_env	*current;
