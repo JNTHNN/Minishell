@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 01:38:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:18:35 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,16 @@ char	*ft_pwdcat(char **pwd)
 	char	*new_pwd;
 	char	*temp;
 	int		i;
+	int		size;
 
+	size = ft_tablen(pwd);
 	i = 0;
 	new_pwd = ft_strdup("");
-	while (pwd[i])
+	while (i < size)
 	{
 		temp = ft_strjoin(new_pwd, "/");
 		free(new_pwd);
 		new_pwd = ft_strjoin(temp, pwd[i]);
-		free(temp);
 		i++;
 	}
 	return (new_pwd);
