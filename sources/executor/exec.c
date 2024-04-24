@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/23 22:43:21 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:18:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ int	ft_executor(t_data *data)
 	t_redir_lst	*last2;
 	t_redir_lst	*last3;
 
-	exec = (t_exec *)malloc(sizeof(t_exec));
-	data->exec = exec;
+	exec = ft_init_exec(data);
+	if (!exec)
+		return (E_MEM);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
 	//if (data->redirections)

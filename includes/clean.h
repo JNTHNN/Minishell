@@ -19,5 +19,6 @@ void	ft_reset_data(t_data *data);
 void	ft_free_data(t_data *data);
 void	ft_free_cmds(t_cmd **cmd);
 void	ft_free_if_error(t_data *data);
+void	ft_free_exec(t_data *data);
 
 #endif
