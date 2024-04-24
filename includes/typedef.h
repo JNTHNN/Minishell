@@ -54,6 +54,7 @@ struct	s_data
 	t_cmd		*cmd;
 	t_redir_lst	**redirections;
 	bool		is_itoa;
+	bool		resplit;
 	int			nb_of_cmds;
 	t_exec		*exec;
 };

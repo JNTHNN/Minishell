@@ -58,7 +58,6 @@ void	ft_free_cmds(t_cmd **cmd)
 	{
 		current = (*cmd)->right;
 		free((*cmd)->args);
-		(*cmd)->args = NULL;
 		ft_free_redirections(&(*cmd)->redirections);
 		free(*cmd);
 		*cmd = current;

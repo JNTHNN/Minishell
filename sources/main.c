@@ -23,6 +23,7 @@ static void	ft_init_data(t_data *data, char **envp)
 	data->cmd = NULL;
 	data->redirections = NULL;
 	data->is_itoa = false;
+	data->resplit = false;
 	data->nb_of_cmds = 0;
 	data->exec = NULL;
 }
