@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/20 23:48:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:21:28 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ static int	ft_cmd_exec(t_data *data, t_exec *exec)
 	{
 		ft_signal(SIG_DFL);
 		execute_command(data, data->cmd);
+		close(data->exec->tmpin);
+		close(data->exec->tmpout);
+		close(data->exec->fdin);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -58,7 +61,7 @@ t_redir_lst	*ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
 	}
 	return (is_last);
 }
-#include <fcntl.h>
+
 int	ft_executor(t_data *data)
 {
 	t_exec		*exec;
@@ -67,8 +70,9 @@ int	ft_executor(t_data *data)
 	t_redir_lst	*last2;
 	t_redir_lst	*last3;
 
-	exec = (t_exec *)malloc(sizeof(t_exec));
-	data->exec = exec;
+	exec = ft_init_exec(data);
+	if (!exec)
+		return (E_MEM);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
 	//if (data->redirections)

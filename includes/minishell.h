@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/16 12:50:40 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:25:43 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void	ft_export(t_data *data, t_cmd *cmd);
 void	ft_env(t_data *data);
 void	ft_exit(t_data *data);
 void	ft_unset(t_data *data, t_cmd *cmd);
-
-/*  export.c    */
-void	ft_free_array(char **env);
 
 /*  utils for export : export_utils.c   */
 t_env	*ft_setup_env(char **env);

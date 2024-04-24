@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/18 22:15:22 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:18:26 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,24 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 	return (EXIT_FAILURE);
 }
 
+t_exec	*ft_init_exec(t_data *data)
+{
+	t_exec		*exec;
+
+	exec = (t_exec *)malloc(sizeof(t_exec));
+	if (!exec)
+		return (NULL);
+	exec->pipe_fd[0] = -1;
+	exec->pipe_fd[1] = -1;
+	exec->child_pid = -1;
+	exec->status = -1;
+	exec->tmpin = -1;
+	exec->tmpout = -1;
+	exec->fdin = -1;
+	exec->fdout = -1;
+	data->exec = exec;
+	return (exec);
+}
 
 /*	On fork	
 **	PID == -1 : ERROR

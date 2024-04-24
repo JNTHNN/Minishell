@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/23 20:25:55 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:21:47 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,5 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 		i++;
 	}
 	ft_free_array(temp_path);
-	ft_free_array(temp_pwd);
+	//ft_free_array(temp_pwd);
 }

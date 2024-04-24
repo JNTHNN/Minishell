@@ -6,12 +6,14 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 21:38:24 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/24 11:46:39 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
+
+# define SPACE 32
 
 enum e_state
 {
@@ -48,5 +50,9 @@ void	ft_increment(int *idx, int *len);
 void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len);
 void	ft_create_var_val(t_data *data, char **str, char **cursor,
 			size_t space_left);
+
+/* expander_utils4.c */
+int		ft_resplit_first_arg(char ***args);
+bool	ft_should_resplit(char *arg);
 
 #endif
