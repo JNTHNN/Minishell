@@ -98,10 +98,10 @@ int	ft_expand(t_data *data)
 	current = data->cmd;
 	while (current)
 	{
-		data->resplit = ft_should_resplit(current->args[0]);
 		i = -1;
 		while (current->args && current->args[++i])
 		{
+			ft_should_resplit(current->args[0], data);
 			ret = ft_handle_expansion(&current->args, i, data);
 			if (ret)
 				return (ret);
