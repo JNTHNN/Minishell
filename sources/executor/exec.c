@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/24 15:21:28 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:18:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	ft_cmd_exec(t_data *data, t_exec *exec)
+int	ft_cmd_exec(t_data *data)
 {
 	pid_t	pid;
 	int		status;
@@ -29,9 +29,6 @@ static int	ft_cmd_exec(t_data *data, t_exec *exec)
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
-		close(exec->tmpin);
-		close(exec->tmpout);
-		close(exec->fdin);
 	}
 	else
 	{
@@ -80,7 +77,7 @@ int	ft_executor(t_data *data)
 	if (data->nb_of_cmds == 1)
 	{
 		if (!data->cmd->is_builtin)
-			ft_cmd_exec(data, exec);
+			ft_cmd_exec(data);
 		else
 			ft_builtin(data, data->cmd);
 		dup2(exec->tmpin, STDIN_FILENO);
@@ -133,10 +130,10 @@ int	ft_executor(t_data *data)
 		dup2(exec->tmpout, STDOUT_FILENO);
 		close(exec->tmpin);
 		close(exec->tmpout);
-		// close(exec->fdin);
-		// close(exec->fdout);
-		// close(exec->pipe_fd[0]);
-		// close(exec->pipe_fd[1]);
+		close(exec->fdin);
+		close(exec->fdout);
+		close(exec->pipe_fd[0]);
+		close(exec->pipe_fd[1]);
 	}
 	return (EXIT_SUCCESS);
 }
