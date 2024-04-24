@@ -74,9 +74,8 @@ int	ft_resplit_first_arg(char ***args)
 	return (EXIT_SUCCESS);
 }
 
-bool	ft_should_resplit(char *arg)
+void	ft_should_resplit(char *arg, t_data *data)
 {
-	if (ft_count_all_quotes(arg))
-		return (true);
-	return (false);
+	if (!arg || ft_count_all_quotes(arg))
+		data->resplit = true;
 }

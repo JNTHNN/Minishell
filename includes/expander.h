@@ -53,6 +53,6 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 
 /* expander_utils4.c */
 int		ft_resplit_first_arg(char ***args);
-bool	ft_should_resplit(char *arg);
+void	ft_should_resplit(char *arg, t_data *data);
 
 #endif
