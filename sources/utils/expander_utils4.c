@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:39:34 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/24 12:46:14 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:39:02 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	ft_check_space(char *arg)
 {
-	while (*arg && *arg != SPACE)
+	while (*arg && *arg != W_SPACE)
 		arg++;
 	if (*arg == '\0')
 		return (false);

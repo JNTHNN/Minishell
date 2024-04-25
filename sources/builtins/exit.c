@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/23 13:13:06 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:59:10 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_exit(t_data *data)
+int	ft_exit(t_data *data, t_cmd *cmd)
 {
-	ft_putendl_fd("exit", 1);
+	ft_putendl_fd("exit", STDERR_FILENO);
+	if (cmd->args[1] && cmd->args[2])
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
 	ft_free_data(data);
 	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

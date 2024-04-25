@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/23 22:25:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:38:57 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/syslimits.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <fcntl.h>
 # include "../libft/libft.h"
 # include "typedef.h"
 # include "error.h"
@@ -62,7 +63,7 @@ void	ft_cd(t_data *data, t_cmd *cmd);
 void	ft_pwd(t_data *data);
 void	ft_export(t_data *data, t_cmd *cmd);
 void	ft_env(t_data *data);
-void	ft_exit(t_data *data);
+int		ft_exit(t_data *data, t_cmd *cmd);
 void	ft_unset(t_data *data, t_cmd *cmd);
 
 /*  utils for export : export_utils.c   */

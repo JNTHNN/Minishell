@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/24 14:18:46 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:26:00 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ int	ft_executor(t_data *data)
 			}
 			current_cmd = current_cmd->right;
 			waitpid(exec->child_pid, &exec->status, 0);
+			if (WIFSIGNALED(exec->status))
+				printf("^\\Quit: %d\n", SIGQUIT);
 		}
 		dup2(exec->tmpin, STDIN_FILENO);
 		dup2(exec->tmpout, STDOUT_FILENO);
