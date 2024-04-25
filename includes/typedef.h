@@ -21,6 +21,7 @@ typedef struct s_env		t_env;
 typedef struct s_expand		t_expand;
 typedef struct s_hist		t_hist;
 typedef struct s_exec		t_exec;
+typedef struct s_last_r		t_last_r;
 
 typedef enum e_tok_type
 {
@@ -110,6 +111,14 @@ struct	s_hist
 	char	*lastline;
 };
 
+struct	s_last_r
+{
+	t_redir_lst	*last_in;
+	t_redir_lst	*last_out;
+	t_redir_lst	*last_out_t;
+	t_redir_lst	*last_hd;
+};
+
 struct	s_exec
 {
 	int			pipe_fd[2];
@@ -119,6 +128,7 @@ struct	s_exec
 	int			tmpout;
 	int			fdin;
 	int			fdout;
+	t_last_r	*last_r;
 };
 
 #endif
