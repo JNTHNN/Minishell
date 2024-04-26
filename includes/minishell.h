@@ -25,6 +25,7 @@
 # include <sys/syslimits.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <fcntl.h>
 # include "../libft/libft.h"
 # include "typedef.h"
 # include "error.h"
