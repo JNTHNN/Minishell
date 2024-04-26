@@ -53,6 +53,6 @@ int	ft_builtin(t_data *data, t_cmd *cmd)
 	if (!ft_strncmp(cmd->args[0], "env", 3))
 		ft_env(data);
 	if (!ft_strncmp(cmd->args[0], "exit", 4))
-		ft_exit(data);
+		ft_exit(data, cmd);
 	return (EXIT_SUCCESS);
 }

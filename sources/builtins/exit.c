@@ -17,12 +17,26 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_exit(t_data *data)
+int	ft_exit(t_data *data, t_cmd *cmd)
 {
-	ft_putendl_fd("exit", 1);
-	close(data->exec->tmpin);
-	close(data->exec->tmpout);
-	close(data->exec->fdin);
+	int	exit_status;
+
+	exit_status = EXIT_SUCCESS;
+	ft_putendl_fd("exit", STDERR_FILENO);
+	if (cmd->args[1] && ft_atoi(cmd->args[1]) && cmd->args[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+		exit_status = EXIT_FAILURE;
+		return (exit_status);
+	}
+	if (cmd->args[1] && !ft_atoi(cmd->args[1]))
+	{
+		ft_putendl_fd("minishell: exit: numeric argument required", STDERR_FILENO);
+		exit_status = EXIT_FAILURE;
+	}
+	if (cmd->args[1] && ft_atoi(cmd->args[1]))
+		exit_status = ft_atoi(cmd->args[1]);
 	ft_free_data(data);
-	exit(EXIT_SUCCESS);
+	exit(exit_status);
+	return (exit_status);
 }
