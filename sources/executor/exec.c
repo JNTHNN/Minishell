@@ -154,17 +154,7 @@ int	ft_executor(t_data *data)
 		current_cmd = data->cmd;
 		while (current_cmd)
 		{
-				ft_fill_last_redir(current_cmd, exec);
-				if (exec->last_r->in)
-					fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", exec->last_r->in->filename, exec->last_r->in->r_type);
-				if (exec->last_r->out)
-					fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", exec->last_r->out->filename, exec->last_r->out->r_type);
-				if (exec->last_r->hd)
-					fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", exec->last_r->hd->filename, exec->last_r->hd->r_type);
-			
-			exec->fdin = dup(exec->tmpin);
-			dup2(exec->fdin, STDIN_FILENO);
-			close(exec->fdin);
+			ft_fill_last_redir(current_cmd, exec);
 			if (!current_cmd->right)
 				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
 			else
@@ -173,7 +163,8 @@ int	ft_executor(t_data *data)
 				exec->fdin = exec->pipe_fd[0];
 				exec->fdout = exec->pipe_fd[1];
 			}
-			dup2(exec->fdout, STDOUT_FILENO);
+			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+				return (E_DUP);
 			close(exec->fdout);
 			exec->child_pid = fork();
 			exec->status = 0;
