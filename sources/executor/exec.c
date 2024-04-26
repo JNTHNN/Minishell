@@ -155,6 +155,11 @@ int	ft_executor(t_data *data)
 		while (current_cmd)
 		{
 			ft_fill_last_redir(current_cmd, exec);
+			if (current_cmd->left)
+			{
+				dup2(exec->fdin, STDIN_FILENO);
+				close (exec->fdin);
+			}
 			if (!current_cmd->right)
 				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
 			else
@@ -179,9 +184,6 @@ int	ft_executor(t_data *data)
 				exit(EXIT_SUCCESS);
 			}
 			current_cmd = current_cmd->right;
-			waitpid(exec->child_pid, &exec->status, 0);
-			if (WIFSIGNALED(exec->status))
-				printf("^\\Quit: %d\n", SIGQUIT);
 		}
 		dup2(exec->tmpin, STDIN_FILENO);
 		dup2(exec->tmpout, STDOUT_FILENO);
@@ -192,6 +194,9 @@ int	ft_executor(t_data *data)
 		close(exec->pipe_fd[0]);
 		close(exec->pipe_fd[1]);
 	}
+	waitpid(exec->child_pid, &exec->status, 0);
+	if (WIFSIGNALED(exec->status))
+		printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);
 }
 
