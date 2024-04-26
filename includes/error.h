@@ -30,7 +30,9 @@ typedef enum e_err_codes
 	E_REDIR_IN = -6,
 	E_REDIR_HD = -7,
 	E_REDIR_OUT = -8,
-	E_REDIR_OUT_T = -9
+	E_REDIR_OUT_T = -9,
+	E_OPEN = -10,
+	E_DUP = -11
 }	t_err_codes;
 
 #endif
