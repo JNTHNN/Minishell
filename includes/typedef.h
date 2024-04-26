@@ -13,14 +13,15 @@
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 
-typedef struct s_data		t_data;
-typedef struct s_cmd		t_cmd;
-typedef struct s_redir_lst	t_redir_lst;
-typedef struct s_tok_lst	t_tok_lst;
-typedef struct s_env		t_env;
-typedef struct s_expand		t_expand;
-typedef struct s_hist		t_hist;
-typedef struct s_exec		t_exec;
+typedef struct s_data			t_data;
+typedef struct s_cmd			t_cmd;
+typedef struct s_redir_lst		t_redir_lst;
+typedef struct s_tok_lst		t_tok_lst;
+typedef struct s_env			t_env;
+typedef struct s_expand			t_expand;
+typedef struct s_hist			t_hist;
+typedef struct s_exec			t_exec;
+typedef struct s_last_redir		t_last_redir;
 
 typedef enum e_tok_type
 {
@@ -110,15 +111,24 @@ struct	s_hist
 	char	*lastline;
 };
 
+struct	s_last_redir
+{
+	t_redir_lst	*in;
+	t_redir_lst	*out;
+	t_redir_lst	*out_t;
+	t_redir_lst	*hd;
+};
+
 struct	s_exec
 {
-	int			pipe_fd[2];
-	pid_t		child_pid;
-	int			status;
-	int			tmpin;
-	int			tmpout;
-	int			fdin;
-	int			fdout;
+	int				pipe_fd[2];
+	pid_t			child_pid;
+	int				status;
+	int				tmpin;
+	int				tmpout;
+	int				fdin;
+	int				fdout;
+	t_last_redir	*last_r;
 };
 
 #endif

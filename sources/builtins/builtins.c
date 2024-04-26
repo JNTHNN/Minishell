@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 01:40:43 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:00:04 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ int	ft_builtin(t_data *data, t_cmd *cmd)
 	if (!ft_strncmp(cmd->args[0], "env", 3))
 		ft_env(data);
 	if (!ft_strncmp(cmd->args[0], "exit", 4))
-		ft_exit(data);
+		ft_exit(data, cmd);
 	return (EXIT_SUCCESS);
 }

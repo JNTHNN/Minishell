@@ -35,7 +35,7 @@ void	execute_command(t_data *data, t_cmd *cmd)
 		}
 	}
 	printf("HELLO\n"); // passe quand '> ed'
-	// exit(EXIT_SUCCESS); // A SURVEILLER
+	exit(EXIT_SUCCESS); // A SURVEILLER
 }
 
 char	**ft_pathiter(char **path, t_cmd *cmd)
@@ -104,6 +104,13 @@ t_exec	*ft_init_exec(t_data *data)
 	exec->tmpout = -1;
 	exec->fdin = -1;
 	exec->fdout = -1;
+	exec->last_r = (t_last_redir *)malloc(sizeof(t_last_redir));
+	if (!exec->last_r)
+		return (NULL);
+	exec->last_r->in = NULL;
+	exec->last_r->out = NULL;
+	exec->last_r->out_t = NULL;
+	exec->last_r->hd = NULL;
 	data->exec = exec;
 	return (exec);
 }
