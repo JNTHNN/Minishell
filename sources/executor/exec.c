@@ -155,7 +155,9 @@ int	ft_executor(t_data *data)
 		while (current_cmd)
 		{
 			ft_fill_last_redir(current_cmd, exec);
-			if (current_cmd->left)
+			if (exec->last_r->hd)
+				ft_handle_heredoc(exec->last_r->hd->filename, exec);
+			else if (current_cmd->left)
 			{
 				dup2(exec->fdin, STDIN_FILENO);
 				close (exec->fdin);
