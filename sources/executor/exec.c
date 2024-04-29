@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/25 11:26:00 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:27:53 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,30 @@ int	ft_executor(t_data *data)
 			ft_handle_heredoc(exec->last_r->hd->filename, exec);
 		if (exec->last_r->in)
 		{
-			exec->fdin = open(exec->last_r->in->filename, O_RDONLY);
-			if (exec->fdin == -1)
-				return (E_OPEN);
-			if (dup2(exec->fdin, STDIN_FILENO) == -1)
-				return (E_DUP);
-			close(exec->fdin);
+			if (!exec->last_r->hd
+				|| (exec->last_r->hd && exec->last_r->hd->id < exec->last_r->in->id))
+			{
+				printf("%i\n", data->cmd->redirections->id);
+				exec->fdin = open(exec->last_r->in->filename, O_RDONLY);
+				if (exec->fdin == -1)
+				{
+					data->err_info = exec->last_r->in->filename;
+					return (E_OPEN);
+				}
+				if (dup2(exec->fdin, STDIN_FILENO) == -1)
+					return (E_DUP);
+				close(exec->fdin);
+			}
 		}
 		if (exec->last_r->out)
 		{
 			exec->fdout = open(exec->last_r->out->filename,
 					O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (exec->fdout == -1)
+			{
+				data->err_info = exec->last_r->out->filename;
+				return (E_OPEN);
+			}
 			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
 				return (E_DUP);
 			close(exec->fdout);
@@ -133,7 +146,10 @@ int	ft_executor(t_data *data)
 			exec->fdout = open(exec->last_r->out_t->filename,
 					O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (exec->fdout == -1)
+			{
+				data->err_info = exec->last_r->out_t->filename;
 				return (E_OPEN);
+			}
 			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
 				return (E_DUP);
 			close(exec->fdout);
@@ -155,6 +171,13 @@ int	ft_executor(t_data *data)
 		while (current_cmd)
 		{
 			ft_fill_last_redir(current_cmd, exec);
+			if (exec->last_r->hd)
+				ft_handle_heredoc(exec->last_r->hd->filename, exec);
+			else if (current_cmd->left)
+			{
+				dup2(exec->fdin, STDIN_FILENO);
+				close (exec->fdin);
+			}
 			if (!current_cmd->right)
 			{
 				printf("AV END FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
@@ -204,9 +227,6 @@ int	ft_executor(t_data *data)
 				exit(EXIT_SUCCESS);
 			}
 			current_cmd = current_cmd->right;
-			waitpid(exec->child_pid, &exec->status, 0);
-			if (WIFSIGNALED(exec->status))
-				printf("^\\Quit: %d\n", SIGQUIT);
 		}
 		dup2(exec->tmpin, STDIN_FILENO);
 		dup2(exec->tmpout, STDOUT_FILENO);
@@ -217,6 +237,9 @@ int	ft_executor(t_data *data)
 		close(exec->pipe_fd[0]);
 		close(exec->pipe_fd[1]);
 	}
+	waitpid(exec->child_pid, &exec->status, 0);
+	if (WIFSIGNALED(exec->status))
+		printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);
 }
 

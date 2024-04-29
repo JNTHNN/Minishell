@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/23 13:06:19 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:09:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ struct	s_data
 	bool		resplit;
 	int			nb_of_cmds;
 	t_exec		*exec;
+	char		*err_info;
 };
 
 struct s_tok_lst
@@ -72,6 +73,7 @@ struct s_tok_lst
 
 struct s_redir_lst
 {
+	int				id;
 	t_redirect_type	r_type;
 	char			*filename;
 	int				cmd_id;

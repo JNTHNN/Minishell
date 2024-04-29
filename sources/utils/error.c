@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/15 21:38:21 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:19:43 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_print_redir_error(int err_code)
 		ft_putstr_fd("`newline'\n\033[0m", STDERR_FILENO);
 }
 
-static void	ft_print_error(int err_code)
+static void	ft_print_error(int err_code, t_data *data)
 {
 	if (err_code == E_QUOTES)
 		ft_putstr_fd(ERR_QUOTES, STDERR_FILENO);
@@ -38,7 +38,10 @@ static void	ft_print_error(int err_code)
 	else if (err_code <= E_REDIR && err_code >= E_REDIR_OUT_T)
 		ft_print_redir_error(err_code);
 	else if (err_code == E_OPEN)
-		ft_putstr_fd(ERR_MEM, STDERR_FILENO);
+	{
+		ft_printf("❌\033[0;31m %s:", data->err_info);
+		ft_putstr_fd(ERR_OPEN, STDERR_FILENO);
+	}
 	else if (err_code == E_DUP)
 		ft_putstr_fd(ERR_DUP, STDERR_FILENO);
 	else
@@ -47,7 +50,7 @@ static void	ft_print_error(int err_code)
 
 static void	ft_throw_error(t_data *data, int err_code)
 {
-	ft_print_error(err_code);
+	ft_print_error(err_code, data);
 	exit_code = err_code;
 	ft_free_if_error(data);
 }
