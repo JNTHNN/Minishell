@@ -6,14 +6,14 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/24 11:46:39 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:38:21 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
-# define SPACE 32
+# define W_SPACE 32
 
 enum e_state
 {

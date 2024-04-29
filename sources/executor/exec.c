@@ -60,12 +60,37 @@ int	ft_fill_last_redir(t_cmd *cmd, t_exec *exec)
 {
 	if (cmd->redirections)
 	{
-		exec->last_r->last_in = ft_find_last_redir(&cmd->redirections, IN);
-		exec->last_r->last_out = ft_find_last_redir(&cmd->redirections, OUT);
-		exec->last_r->last_out_t = ft_find_last_redir(&cmd->redirections,
-				OUT_T);
-		exec->last_r->last_hd = ft_find_last_redir(&cmd->redirections, HEREDOC);
+		exec->last_r->in = ft_find_last_redir(&cmd->redirections, IN);
+		exec->last_r->out = ft_find_last_redir(&cmd->redirections, OUT);
+		exec->last_r->out_t = ft_find_last_redir(&cmd->redirections, OUT_T);
+		exec->last_r->hd = ft_find_last_redir(&cmd->redirections, HEREDOC);
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_handle_heredoc(char *delimiter, t_exec *exec)
+{
+	char	*line;
+
+	exec->fdout = open("/tmp/hd_temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (exec->fdout == -1)
+		return (E_OPEN);
+	while (true)
+	{
+		line = readline("> ");
+		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0)
+			break ;
+		ft_putendl_fd(line, exec->fdout);
+		free(line);
+	}
+	free(line);
+	close(exec->fdout);
+	exec->fdin = open("/tmp/hd_temp", O_RDONLY);
+	if (exec->fdin == -1)
+		return (E_OPEN);
+	if (dup2(exec->fdin, STDIN_FILENO) == -1)
+		return (E_DUP);
+	close(exec->fdin);
 	return (EXIT_SUCCESS);
 }
 
@@ -79,33 +104,48 @@ int	ft_executor(t_data *data)
 		return (E_MEM);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
+	if (exec->tmpin == -1 || exec->tmpout == -1)
+		return (E_DUP);
 	if (data->nb_of_cmds == 1)
 	{
 		ft_fill_last_redir(data->cmd, exec);
-		if (exec->last_r->last_in)
+		if (exec->last_r->hd)
+			ft_handle_heredoc(exec->last_r->hd->filename, exec);
+		if (exec->last_r->in)
 		{
-			exec->fdin = open(exec->last_r->last_in->filename, O_RDONLY);
-			dup2(exec->fdin, STDIN_FILENO);
+			exec->fdin = open(exec->last_r->in->filename, O_RDONLY);
+			if (exec->fdin == -1)
+				return (E_OPEN);
+			if (dup2(exec->fdin, STDIN_FILENO) == -1)
+				return (E_DUP);
 			close(exec->fdin);
 		}
-		if (exec->last_r->last_out)
+		if (exec->last_r->out)
 		{
-			exec->fdout = open(exec->last_r->last_out->filename, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-			dup2(exec->fdout, STDOUT_FILENO);
+			exec->fdout = open(exec->last_r->out->filename,
+					O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+				return (E_DUP);
 			close(exec->fdout);
 		}
-		if (exec->last_r->last_out_t)
+		if (exec->last_r->out_t)
 		{
-			exec->fdout = open(exec->last_r->last_out_t->filename, O_CREAT | O_WRONLY | O_APPEND, 0777);
-			dup2(exec->fdout, STDOUT_FILENO);
+			exec->fdout = open(exec->last_r->out_t->filename,
+					O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (exec->fdout == -1)
+				return (E_OPEN);
+			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+				return (E_DUP);
 			close(exec->fdout);
 		}
 		if (!data->cmd->is_builtin)
 			ft_cmd_exec(data);
 		else
 			ft_builtin(data, data->cmd);
-		dup2(exec->tmpin, STDIN_FILENO);
-		dup2(exec->tmpout, STDOUT_FILENO);
+		if (dup2(exec->tmpin, STDIN_FILENO) == -1)
+			return (E_DUP);
+		if (dup2(exec->tmpout, STDOUT_FILENO) == -1)
+			return (E_DUP);
 		close(exec->tmpin);
 		close(exec->tmpout);
 	}
@@ -114,19 +154,7 @@ int	ft_executor(t_data *data)
 		current_cmd = data->cmd;
 		while (current_cmd)
 		{
-				ft_fill_last_redir(current_cmd, exec);
-				if (exec->last_r->last_in)
-					fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", exec->last_r->last_in->filename, exec->last_r->last_in->r_type);
-				if (exec->last_r->last_out)
-					fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", exec->last_r->last_out->filename, exec->last_r->last_out->r_type);
-				if (exec->last_r->last_hd)
-					fprintf(stderr, "IS_LAST = %s / R_TYPE = %d\n", exec->last_r->last_hd->filename, exec->last_r->last_hd->r_type);
-			exec->fdin = dup(exec->tmpin);
-			
-			
-			dup2(exec->fdin, STDIN_FILENO);
-			close(exec->fdin);
-			printf("CURCMD RIGHT = %s\n", current_cmd->args[0]);
+			ft_fill_last_redir(current_cmd, exec);
 			if (!current_cmd->right)
 			{
 				printf("AV END FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
@@ -141,7 +169,8 @@ int	ft_executor(t_data *data)
 				exec->fdout = exec->pipe_fd[1];
 				printf("AP PIPE CHECK FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 			}
-			close(exec->fdin);
+			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+				return (E_DUP);
 			close(exec->fdout);
 			
 			

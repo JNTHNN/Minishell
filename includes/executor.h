@@ -15,6 +15,4 @@ int		ft_executor(t_data *data);
 int		ft_cmd_exec(t_data *data);
 t_exec	*ft_init_exec(t_data *data);
 
-
-
 #endif
