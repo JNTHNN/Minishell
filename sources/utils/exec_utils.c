@@ -35,7 +35,7 @@ void	execute_command(t_data *data, t_cmd *cmd)
 		}
 	}
 	printf("HELLO\n"); // passe quand '> ed'
-	exit(EXIT_SUCCESS); // A SURVEILLER
+	exit(EXIT_FAILURE); // A SURVEILLER
 }
 
 char	**ft_pathiter(char **path, t_cmd *cmd)

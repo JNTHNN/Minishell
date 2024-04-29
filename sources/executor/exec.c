@@ -213,6 +213,7 @@ int	ft_executor(t_data *data)
 		close(exec->fdout);
 		close(exec->pipe_fd[0]);
 		close(exec->pipe_fd[1]);
+		wait(NULL);
 	}
 	waitpid(exec->child_pid, &exec->status, 0);
 	if (WIFSIGNALED(exec->status))
