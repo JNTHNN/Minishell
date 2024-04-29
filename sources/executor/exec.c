@@ -180,46 +180,23 @@ int	ft_executor(t_data *data)
 			}
 			if (!current_cmd->right)
 			{
-				printf("AV END FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
-				printf("AP END FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 			}
 			else
 			{
 				pipe(exec->pipe_fd);
-				printf("AV PIPE CHECK FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 				exec->fdin = exec->pipe_fd[0];
 				exec->fdout = exec->pipe_fd[1];
-				printf("AP PIPE CHECK FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 			}
 			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
 				return (E_DUP);
 			close(exec->fdout);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			// dup2(exec->fdin, STDIN_FILENO);
-			// close(exec->fdin);
-			// dup2(STDOUT_FILENO, exec->fdout);
-			// dup2(exec->fdout, exec->fdin);
-			// close(exec->fdout);
 			exec->child_pid = fork();
 			exec->status = 0;
-			printf("CHECK FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 			if (exec->child_pid == -1)
 				perror("fork");
 			if (exec->child_pid == 0)
 			{
-				printf("CHECK FD PIP_FD[0] %d PIP_FD[1] %d TMPIN %d TMPOUT %d FDIN %d FDOUT %d\n", exec->pipe_fd[0], exec->pipe_fd[1], exec->tmpin, exec->tmpout, exec->fdin, exec->fdout);
 				if (!current_cmd->is_builtin)
 					execute_command(data, current_cmd);
 				else
