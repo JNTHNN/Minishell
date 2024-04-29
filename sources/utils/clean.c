@@ -42,6 +42,7 @@ void	ft_free_redirections(t_redir_lst **lst)
 	{
 		current = (*lst)->next;
 		free((*lst)->filename);
+		free((*lst)->hd_path);
 		free(*lst);
 		*lst = current;
 	}

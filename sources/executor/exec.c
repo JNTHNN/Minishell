@@ -74,6 +74,7 @@ t_redir_lst	*ft_last_heredoc(t_data *data)
 	t_redir_lst	*current;
 	t_redir_lst	*last;
 
+	last = NULL;
 	i = -1;
 	while (++i < data->nb_of_cmds)
 	{
@@ -120,6 +121,33 @@ int	ft_handle_heredoc(t_data *data, t_redir_lst *node, t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
+int	ft_trigger_heredoc(t_data *data, t_exec *exec)
+{
+	int			i;
+	int			ret;
+	t_redir_lst	*current;
+
+	i = -1;
+	while (++i < data->nb_of_cmds)
+	{
+		if (data->redirections[i])
+		{
+			current = data->redirections[i];
+			while (current != NULL)
+			{
+				if (current->r_type == HEREDOC)
+				{
+					ret = ft_handle_heredoc(data, current, exec);
+					if (ret)
+						return (ret);
+				}
+				current = current->next;
+			}
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
 
 int	ft_executor(t_data *data)
 {
@@ -136,8 +164,7 @@ int	ft_executor(t_data *data)
 	if (data->nb_of_cmds == 1)
 	{
 		ft_fill_last_redir(data->cmd, exec);
-		
-		
+		ft_trigger_heredoc(data, exec);
 		if (exec->last_r->in)
 		{
 			if (!exec->last_r->hd
@@ -197,9 +224,8 @@ int	ft_executor(t_data *data)
 		while (current_cmd)
 		{
 			ft_fill_last_redir(current_cmd, exec);
-			if (exec->last_r->hd)
-				ft_handle_heredoc(exec->last_r->hd->hd_path, exec->last_r->hd->filename, exec);
-			else if (current_cmd->left)
+			ft_trigger_heredoc(data, exec);
+			if (current_cmd->left)
 			{
 				dup2(exec->fdin, STDIN_FILENO);
 				close (exec->fdin);
@@ -243,4 +269,3 @@ int	ft_executor(t_data *data)
 		printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);
 }
-
