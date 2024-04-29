@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/18 11:01:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:56:04 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ int	ft_parse(t_data *data)
 	if (ret)
 		return (ret);
 	ret = ft_parse_loop(&current, &cmd_args, data);
+	if (ret)
+		return (ret);
+	ret = ft_build_hd_path(data);
 	if (ret)
 		return (ret);
 	return (EXIT_SUCCESS);
