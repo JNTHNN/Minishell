@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 08:42:22 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/28 12:11:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:50:33 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,8 @@ void	ft_nullify_tok_nodes(t_tok_lst *node);
 void	ft_remove_redir(t_tok_lst *lst);
 int		ft_init_redir(t_redir_lst ***redirections, t_data **data, int *cmd_nb);
 int		ft_count_cmd_args(t_tok_lst **current);
+
+/* parser_utils4.c */
+void	ft_add_redir_node_id(t_redir_lst **redirections);
 
 #endif

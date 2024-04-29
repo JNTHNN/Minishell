@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/23 14:54:26 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:09:58 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	ft_init_data(t_data *data, char **envp)
 	data->resplit = false;
 	data->nb_of_cmds = 0;
 	data->exec = NULL;
+	data->err_info = NULL;
 }
 
 static int	ft_get_input(t_data *data)
