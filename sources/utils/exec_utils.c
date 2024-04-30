@@ -97,7 +97,9 @@ t_exec	*ft_init_exec(t_data *data)
 		return (NULL);
 	exec->pipe_fd[0] = -1;
 	exec->pipe_fd[1] = -1;
-	exec->child_pid = -1;
+	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
+	if (!exec->child_pid)
+		return (NULL);
 	exec->status = -1;
 	exec->tmpin = -1;
 	exec->tmpout = -1;
