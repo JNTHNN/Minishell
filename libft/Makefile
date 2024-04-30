@@ -45,6 +45,7 @@ $(BUILD_DIR)%.o:$(SRC_DIR)%.c
 
 $(NAME): $(OBJS)
 	@$(LIB)	$(NAME) $(OBJS)
+	@mv $(NAME) $(BUILD_DIR)
 
 .c.o: 		
 	@$(CC) $(CFLAGS) -c $< -o $@

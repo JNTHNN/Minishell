@@ -20,7 +20,8 @@ NAME			:= minishell
 # 								  File paths								   #
 # **************************************************************************** #
 
-LIBFT_DIR 		:= ./libft/
+LIBFT_BUILD 	:= ./libft/.build/
+LIBFT_DIR		:= ./libft/
 INC_DIR 		:= ./includes/
 SRC_DIR			:= ./sources/
 BUILD_DIR  		:= ./.build/
@@ -96,15 +97,16 @@ $(BUILD_DIR)%.o:$(SRC_DIR)%.c
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@ -I $(INC_DIR)
 
-$(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
-	@echo "${CYAN}Generating project executable.${WHITE}"
-	@$(CC) $(DEBUG) $(CFLAGS) $(OBJS) $(LIBFT_DIR)$(LIBFT) $(READL) -o $(NAME)
-	@echo "${GREEN}Compilation successful !${WHITE}"
-
-$(LIBFT_DIR)$(LIBFT):
+$(LIBFT_BUILD)$(LIBFT):
 	@echo "\n$(CYAN)Generating Libft...$(WHITE)"
 	@make -C $(LIBFT_DIR)
 	@echo "$(GREEN)Libft created!$(WHITE)\n"
+
+$(NAME): $(OBJS) $(LIBFT_BUILD)$(LIBFT)
+	@echo "${CYAN}Generating project executable.${WHITE}"
+	@$(CC) $(DEBUG) $(CFLAGS) $(OBJS) $(LIBFT_BUILD)$(LIBFT) $(READL) -o $(NAME)
+	@echo "${GREEN}Compilation successful !${WHITE}"
+
 
 clean :
 	@echo "\n${CYAN}Deleting object files...${WHITE}"
