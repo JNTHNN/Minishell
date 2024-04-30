@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/24 13:38:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:15:18 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,29 +91,13 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 
 int	ft_expand(t_data *data)
 {
-	t_cmd	*current;
-	int		i;
-	int		ret;
+	int	ret;
 
-	current = data->cmd;
-	while (current)
-	{
-		i = -1;
-		while (current->args && current->args[++i])
-		{
-			ft_should_resplit(current->args[0], data);
-			ret = ft_handle_expansion(&current->args, i, data);
-			if (ret)
-				return (ret);
-			if (!data->resplit)
-			{
-				ret = ft_resplit_first_arg(&current->args);
-				if (ret)
-					return (ret);
-			}
-		}
-		current = current->right;
-		data->resplit = false;
-	}
+	ret = ft_expand_cmd_args(data);
+	if (ret)
+		return (ret);
+	ret = ft_expand_redir(data);
+	if (ret)
+		return (ret);
 	return (EXIT_SUCCESS);
 }
