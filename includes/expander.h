@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/25 09:38:21 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:15:33 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ enum e_var
 };
 
 /* expander.c */
+int		ft_calculate_new_length(char *str, t_data *data);
+size_t	ft_space_left(size_t buffsize, char *cursor, char *start);
+void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize);
+int		ft_handle_expansion(char ***args, int idx, t_data *data);
 int		ft_expand(t_data *data);
 
 /* expander_utils.c */
@@ -54,5 +58,9 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 /* expander_utils4.c */
 int		ft_resplit_first_arg(char ***args);
 void	ft_should_resplit(char *arg, t_data *data);
+
+/* expander_utils5.c */
+int		ft_expand_cmd_args(t_data *data);
+int		ft_expand_redir(t_data *data);
 
 #endif

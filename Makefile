@@ -6,7 +6,7 @@
 #    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/29 10:52:43 by gdelvign         ###   ########.fr        #
+#    Updated: 2024/04/30 10:43:32 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,8 @@ LEXER_SRC		:= lexer
 UTILS_SRC		:= error utils utils2 lexer_utils lexer_utils2 lexer_utils3 \
 parser_utils parser_utils2 parser_utils3 parser_utils4 clean clean2 export_utils \
 export_utils2 export_utils3 export_utils4 expander_utils exec_utils \
-expander_utils2 expander_utils3 expander_utils4 history cd_utils cd_utils2 \
-cd_utils3
+expander_utils2 expander_utils3 expander_utils4 expander_utils5 history \
+cd_utils cd_utils2 cd_utils3
 PARSER_SRC		:= parser
 EXPAND_SRC		:= expander
 EXEC_SRC		:= exec
@@ -103,7 +103,7 @@ $(LIBFT_BUILD)$(LIBFT):
 	@echo "$(GREEN)Libft created!$(WHITE)\n"
 
 $(NAME): $(OBJS) $(LIBFT_BUILD)$(LIBFT)
-	@echo "${CYAN}Generating project executable.${WHITE}"
+	@echo "${CYAN}Generating minishell.${WHITE}"
 	@$(CC) $(DEBUG) $(CFLAGS) $(OBJS) $(LIBFT_BUILD)$(LIBFT) $(READL) -o $(NAME)
 	@echo "${GREEN}Compilation successful !${WHITE}"
 

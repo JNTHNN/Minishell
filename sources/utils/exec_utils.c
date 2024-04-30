@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/24 14:18:26 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:18:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void	execute_command(t_data *data, t_cmd *cmd)
 			}
 		}
 	}
-	printf("HELLO\n"); // passe quand '> ed'
-	exit(EXIT_FAILURE); // A SURVEILLER
+	exit(EXIT_SUCCESS);
 }
 
 char	**ft_pathiter(char **path, t_cmd *cmd)
