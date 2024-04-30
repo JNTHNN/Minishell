@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
+#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/06 12:51:23 by gdelvign          #+#    #+#              #
-#    Updated: 2024/04/18 20:51:32 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/04/30 10:42:57 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= libft.a 
 
-CC			= gcc
+CC			= cc -g -O0
 CFLAGS		= -Wall -Wextra -Werror
 LIB			= ar -rcs
 
@@ -45,6 +45,7 @@ $(BUILD_DIR)%.o:$(SRC_DIR)%.c
 
 $(NAME): $(OBJS)
 	@$(LIB)	$(NAME) $(OBJS)
+	@mv $(NAME) $(BUILD_DIR)
 
 .c.o: 		
 	@$(CC) $(CFLAGS) -c $< -o $@
