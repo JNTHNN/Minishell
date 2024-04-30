@@ -154,8 +154,10 @@ int	ft_executor(t_data *data)
 	t_exec		*exec;
 	t_cmd		*current_cmd;
 	pid_t		*pid = NULL;
-	int			i;
+	pid_t 		tmp;
+	int			i = 0;
 
+	pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	exec = ft_init_exec(data);
 	if (!exec)
 		return (E_MEM);
@@ -225,37 +227,28 @@ int	ft_executor(t_data *data)
 		current_cmd = data->cmd;
 		while (current_cmd)
 		{
-			printf("fdin = %d\n", exec->fdin);
 			ft_fill_last_redir(current_cmd, exec);
 			ft_trigger_heredoc(data, exec);
 			if (current_cmd->left)
 			{
-				dup2(exec->fdin, STDIN_FILENO);
-				close (exec->fdin);
+				dup2(exec->pipe_fd[0], STDIN_FILENO);
 			}
 			if (!current_cmd->right)
 			{
-				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
+				dup2(exec->tmpout, exec->pipe_fd[1]);
+				close(exec->tmpout);
 			}
 			else
 			{
 				pipe(exec->pipe_fd);
-				exec->fdin = exec->pipe_fd[0];
-				exec->fdout = exec->pipe_fd[1];
 			}
-			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+			if (dup2(exec->pipe_fd[1], STDOUT_FILENO) == -1)
 				return (E_DUP);
-			close(exec->fdout);
-			// exec->child_pid = fork();
-			i = 0;
-			pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
+			close(exec->pipe_fd[1]);
 			pid[i] = fork();
-			printf("PID APRES FORK [%d]\n", pid[i]);
 			exec->status = 0;
-			// if (exec->child_pid == -1)
 			if (pid[i] == -1)
 				perror("fork");
-			// if (exec->child_pid == 0)
 			if (pid[i] == 0)
 			{
 				if (!current_cmd->is_builtin)
@@ -275,30 +268,13 @@ int	ft_executor(t_data *data)
 		close(exec->fdout);
 		close(exec->pipe_fd[0]);
 		close(exec->pipe_fd[1]);
-		// wait(NULL);
+		
 	}
-	// waitpid(pid[1], &exec->status, 0);
-	// printf("2er proccess terminée\n");
-	// waitpid(pid[2], &exec->status, 0);
-	// printf("3er proccess terminée\n");
-	i = 0;
-	int	len = data->nb_of_cmds;
-	pid_t tmp;
-	while (len--)
+	while (i--)
 	{
-		tmp = waitpid(pid[len], &exec->status, 0);
-		printf("PID [%d] STATUS [%d]\n", tmp, exec->status);
-		if (tmp == pid[len])
-		{
-			if (WIFEXITED(exec->status))
-				exit_code = WEXITSTATUS(exec->status);
-		}
-		if (exec->pipe_fd[1] >= 0)
-			close(exec->pipe_fd[1]);
-		if (exec->pipe_fd[0] >= 0)
-			close(exec->pipe_fd[0]);
+		dup2(exec->tmpout, exec->pipe_fd[1]);
+		tmp = waitpid(0, &exec->status, 0);
 	}
-	
 	if (WIFSIGNALED(exec->status))
 		printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);

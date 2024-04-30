@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/29 11:27:53 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:13:22 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,39 +68,95 @@ int	ft_fill_last_redir(t_cmd *cmd, t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_handle_heredoc(char *delimiter, t_exec *exec)
+t_redir_lst	*ft_last_heredoc(t_data *data)
+{
+	int			i;
+	t_redir_lst	*current;
+	t_redir_lst	*last;
+
+	last = NULL;
+	i = -1;
+	while (++i < data->nb_of_cmds)
+	{
+		if (data->redirections[i])
+		{
+			current = data->redirections[i];
+			while (current != NULL)
+			{
+				if (current->r_type == HEREDOC)
+					last = current;
+				current = current->next;
+			}
+		}
+	}
+	return (last);
+}
+
+int	ft_handle_heredoc(t_data *data, t_redir_lst *node, t_exec *exec)
 {
 	char	*line;
 
-	exec->fdout = open("/tmp/hd_temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	exec->fdout = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (exec->fdout == -1)
 		return (E_OPEN);
 	while (true)
 	{
 		line = readline("> ");
-		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0)
+		if (ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
 			break ;
 		ft_putendl_fd(line, exec->fdout);
 		free(line);
 	}
 	free(line);
 	close(exec->fdout);
-	exec->fdin = open("/tmp/hd_temp", O_RDONLY);
-	if (exec->fdin == -1)
-		return (E_OPEN);
-	if (dup2(exec->fdin, STDIN_FILENO) == -1)
-		return (E_DUP);
-	close(exec->fdin);
+	if (node == ft_last_heredoc(data))
+	{
+		exec->fdin = open(node->hd_path, O_RDONLY);
+		if (exec->fdin == -1)
+			return (E_OPEN);
+		if (dup2(exec->fdin, STDIN_FILENO) == -1)
+			return (E_DUP);
+		close(exec->fdin);
+	}
 	return (EXIT_SUCCESS);
 }
+
+int	ft_trigger_heredoc(t_data *data, t_exec *exec)
+{
+	int			i;
+	int			ret;
+	t_redir_lst	*current;
+
+	i = -1;
+	while (++i < data->nb_of_cmds)
+	{
+		if (data->redirections[i])
+		{
+			current = data->redirections[i];
+			while (current != NULL)
+			{
+				if (current->r_type == HEREDOC)
+				{
+					ret = ft_handle_heredoc(data, current, exec);
+					if (ret)
+						return (ret);
+				}
+				current = current->next;
+			}
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
 
 int	ft_executor(t_data *data)
 {
 	t_exec		*exec;
 	t_cmd		*current_cmd;
 	pid_t		*pid = NULL;
-	int			i;
+	int			i = 0;
 
+	pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	exec = ft_init_exec(data);
 	if (!exec)
 		return (E_MEM);
@@ -111,14 +167,12 @@ int	ft_executor(t_data *data)
 	if (data->nb_of_cmds == 1)
 	{
 		ft_fill_last_redir(data->cmd, exec);
-		if (exec->last_r->hd)
-			ft_handle_heredoc(exec->last_r->hd->filename, exec);
+		ft_trigger_heredoc(data, exec);
 		if (exec->last_r->in)
 		{
 			if (!exec->last_r->hd
 				|| (exec->last_r->hd && exec->last_r->hd->id < exec->last_r->in->id))
 			{
-				printf("%i\n", data->cmd->redirections->id);
 				exec->fdin = open(exec->last_r->in->filename, O_RDONLY);
 				if (exec->fdin == -1)
 				{
@@ -172,38 +226,37 @@ int	ft_executor(t_data *data)
 		current_cmd = data->cmd;
 		while (current_cmd)
 		{
-			printf("fdin = %d\n", exec->fdin);
 			ft_fill_last_redir(current_cmd, exec);
-			if (exec->last_r->hd)
-				ft_handle_heredoc(exec->last_r->hd->filename, exec);
-			else if (current_cmd->left)
+			ft_trigger_heredoc(data, exec);
+			if (current_cmd->left)
 			{
-				dup2(exec->fdin, STDIN_FILENO);
-				close (exec->fdin);
+				dup2(exec->pipe_fd[0], STDIN_FILENO);
+				// close(exec->pipe_fd[0]);
+				fprintf(stderr, "L PID [%d] ID [%d] STATUS [%d] PIPE0[%d] PIPE1[%d] FD IN[%d] FD OUT[%d] TMPIN [%d] TMPOUT [%d]\n", pid[i], i, exec->status, exec->pipe_fd[0], exec->pipe_fd[1], exec->fdin, exec->fdout, exec->tmpin, exec->tmpout);
 			}
 			if (!current_cmd->right)
 			{
-				exec->fdout = dup(exec->tmpout); // ajouter outfile ici
+				dup2(exec->tmpout, exec->pipe_fd[1]);
+				close(exec->tmpout);
+				// exec->pipe_fd[1] = dup(exec->tmpout); // ajouter outfile ici
+				fprintf(stderr, "R PID [%d] ID [%d] STATUS [%d] PIPE0[%d] PIPE1[%d] FD IN[%d] FD OUT[%d] TMPIN [%d] TMPOUT [%d]\n", pid[i], i, exec->status, exec->pipe_fd[0], exec->pipe_fd[1], exec->fdin, exec->fdout, exec->tmpin, exec->tmpout);
 			}
 			else
 			{
 				pipe(exec->pipe_fd);
-				exec->fdin = exec->pipe_fd[0];
-				exec->fdout = exec->pipe_fd[1];
+				// exec->fdin = exec->pipe_fd[0];
+				// exec->fdout = exec->pipe_fd[1];
 			}
-			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+			fprintf(stderr, "AV PID [%d] ID [%d] STATUS [%d] PIPE0[%d] PIPE1[%d] FD IN[%d] FD OUT[%d] TMPIN [%d] TMPOUT [%d]\n", pid[i], i, exec->status, exec->pipe_fd[0], exec->pipe_fd[1], exec->fdin, exec->fdout, exec->tmpin, exec->tmpout);
+			if (dup2(exec->pipe_fd[1], STDOUT_FILENO) == -1)
 				return (E_DUP);
-			close(exec->fdout);
-			// exec->child_pid = fork();
-			i = 0;
-			pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
+			fprintf(stderr, "AP PID [%d] ID [%d] STATUS [%d] PIPE0[%d] PIPE1[%d] FD IN[%d] FD OUT[%d] TMPIN [%d] TMPOUT [%d]\n", pid[i], i, exec->status, exec->pipe_fd[0], exec->pipe_fd[1], exec->fdin, exec->fdout, exec->tmpin, exec->tmpout);
+			close(exec->pipe_fd[1]);
 			pid[i] = fork();
-			printf("PID APRES FORK [%d]\n", pid[i]);
+			fprintf(stderr, "F PID [%d] ID [%d] STATUS [%d] PIPE0[%d] PIPE1[%d] FD IN[%d] FD OUT[%d] TMPIN [%d] TMPOUT [%d]\n", pid[i], i, exec->status, exec->pipe_fd[0], exec->pipe_fd[1], exec->fdin, exec->fdout, exec->tmpin, exec->tmpout);
 			exec->status = 0;
-			// if (exec->child_pid == -1)
 			if (pid[i] == -1)
 				perror("fork");
-			// if (exec->child_pid == 0)
 			if (pid[i] == 0)
 			{
 				if (!current_cmd->is_builtin)
@@ -223,32 +276,16 @@ int	ft_executor(t_data *data)
 		close(exec->fdout);
 		close(exec->pipe_fd[0]);
 		close(exec->pipe_fd[1]);
-		// wait(NULL);
+		
 	}
-	// waitpid(pid[1], &exec->status, 0);
-	// printf("2er proccess terminée\n");
-	// waitpid(pid[2], &exec->status, 0);
-	// printf("3er proccess terminée\n");
-	i = 0;
-	int	len = data->nb_of_cmds;
 	pid_t tmp;
-	while (len--)
+	while (i--)
 	{
-		tmp = waitpid(pid[len], &exec->status, 0);
-		printf("PID [%d] STATUS [%d]\n", tmp, exec->status);
-		if (tmp == pid[len])
-		{
-			if (WIFEXITED(exec->status))
-				exit_code = WEXITSTATUS(exec->status);
-		}
-		if (exec->pipe_fd[1] >= 0)
-			close(exec->pipe_fd[1]);
-		if (exec->pipe_fd[0] >= 0)
-			close(exec->pipe_fd[0]);
+		dup2(exec->tmpout, exec->pipe_fd[1]);
+		tmp = waitpid(0, &exec->status, 0);
+		fprintf(stderr, "W PID [%d] ID [%d] STATUS [%d] PIPE0[%d] PIPE1[%d] FD IN[%d] FD OUT[%d] TMPIN [%d] TMPOUT [%d]\n", tmp, i, exec->status, exec->pipe_fd[0], exec->pipe_fd[1], exec->fdin, exec->fdout, exec->tmpin, exec->tmpout);
 	}
-	
 	if (WIFSIGNALED(exec->status))
 		printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);
 }
-
