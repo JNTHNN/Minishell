@@ -208,7 +208,6 @@ int	ft_executor(t_data *data)
 		return (E_DUP);
 	if (data->nb_of_cmds == 1)
 	{
-		printf("ARG %s\n", data->cmd->args[0]);
 		ft_fill_last_redir(data->cmd, exec);
 		failed = ft_check_redir_in(&data->cmd->redirections);
 		ft_trigger_heredoc(data, exec, failed);
