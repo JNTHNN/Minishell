@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/02 19:48:40 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/21 02:10:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int	ft_check_option(char *option)
 	return (1);
 }
 
-
 // static int	ft_check_tilde(char *option)
 // {
 // 	int	i;
@@ -71,6 +70,7 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 	}
 	while (cmd->args[i])
 	{
+		ft_putstr_fd(cmd->args[i], 1);
 		if (cmd->args[i + 1])
 			ft_putstr_fd(" ", 1);
 		i++;
