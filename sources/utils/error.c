@@ -74,3 +74,13 @@ void	ft_handle_arg_error(int argc, char **argv)
 		exit(0);
 	}
 }
+
+void	ft_errno(char *s, t_data *data)
+{
+	exit_code = errno;
+	ft_putstr_fd("minibash: ", 2);
+	perror(s);
+	errno = 0;
+	ft_free_if_error(data);
+	exit(exit_code);
+}

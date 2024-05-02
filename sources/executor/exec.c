@@ -21,12 +21,13 @@ int	ft_cmd_exec(t_data *data)
 	status = 0;
 	if (pid == -1)
 	{
-		perror("fork");
+		ft_errno("fork", data);
 		return (EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
-		waitpid(pid, &status, 0);
+		if (waitpid(pid, &status, 0) == -1)
+			ft_errno("waitpid", data);
 		if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
 	}

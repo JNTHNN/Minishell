@@ -37,4 +37,6 @@ typedef enum e_err_codes
 	E_DUP = -11
 }	t_err_codes;
 
+void	ft_errno(char *s, t_data *data);
+
 #endif
