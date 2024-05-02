@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/29 11:19:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:33:44 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,16 @@ void	ft_handle_arg_error(int argc, char **argv)
 	}
 }
 
-void	ft_errno(char *s, t_data *data)
+void	ft_errno(char *s, t_data *data, int flag)
 {
 	exit_code = errno;
-	ft_putstr_fd("minibash: ", 2);
+	ft_putstr_fd("❌\033[0;31mminibash: ", 2);
 	perror(s);
+	ft_putstr_fd("\033[0m", 2);
 	errno = 0;
-	ft_free_if_error(data);
-	exit(exit_code);
+	if (flag)
+	{
+		ft_free_if_error(data);
+		exit(exit_code);
+	}
 }

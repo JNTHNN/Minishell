@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/02 21:51:11 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/02 21:55:19 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	ft_cmd_exec(t_data *data)
 	status = 0;
 	if (pid == -1)
 	{
-		ft_errno("fork", data);
+		ft_errno("fork", data, false);
 		return (EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
 		if (waitpid(pid, &status, 0) == -1)
-			ft_errno("waitpid", data);
+			ft_errno("waitpid", data, false);
 		if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
 	}
@@ -241,7 +241,7 @@ int	ft_executor(t_data *data)
 {
 	t_exec		*exec;
 	t_cmd		*current_cmd;
-	pid_t 		tmp;
+	// pid_t 		tmp;
 	int			i;
 
 	i = 0;

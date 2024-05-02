@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 00:49:39 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:21:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ft_check_dir(t_data *data, t_cmd *cmd)
 		else if (chdir(cmd->args[1]) == 0)
 			rv = 1;
 		else
-			perror("cd direction");
+			ft_errno("chdir", data, false);
 	}
 	if (!cmd->args[1])
 		rv = ft_check_home(data);

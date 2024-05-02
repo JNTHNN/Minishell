@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/29 11:19:16 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:21:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ typedef enum e_err_codes
 	E_DUP = -11
 }	t_err_codes;
 
-void	ft_errno(char *s, t_data *data);
+void	ft_errno(char *s, t_data *data, int flag);
 
 #endif
