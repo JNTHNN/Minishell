@@ -14,7 +14,7 @@
 
 bool	ft_is_valid_var_char(char c)
 {
-	return (ft_isalnum(c) || c == '_');
+	return (c == '?' || c == '_' || ft_isalnum(c));
 }
 
 void	ft_increment(int *idx, int *len)
@@ -41,7 +41,7 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 		*i += ft_strlen(var_name);
 		*len += ft_strlen(var_value);
 		free(var_name);
-		if (data->is_itoa)
+		if (var_value && data->is_itoa)
 		{
 			free(var_value);
 			data->is_itoa = false;
@@ -71,7 +71,10 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 		*cursor += ft_strlen(var_value);
 		*str += ft_strlen(var_name);
 		if (data->is_itoa)
+		{
 			free(var_value);
+			data->is_itoa = false;
+		}
 	}
 	else
 		**cursor++ = '$';

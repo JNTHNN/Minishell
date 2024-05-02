@@ -35,7 +35,9 @@ char	*ft_get_var_name(char *str)
 	char	*start;
 
 	start = str;
-	if (ft_is_not_valid_variable_char(*str))
+	if (*str == '?')
+		return (ft_strdup("?"));
+	else if (ft_is_not_valid_variable_char(*str))
 		return (NULL);
 	while (*str && !ft_is_not_valid_variable_char(*str))
 		str++;

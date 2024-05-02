@@ -47,7 +47,7 @@ void	ft_handle_history(t_data *data)
 	add_history(data->input);
 	if (ft_strlen(data->input) == 2 && !ft_strncmp(data->input, "!!", 2))
 	{
-		if (data->hist->lastline)
+		if (data->hist && data->hist->lastline)
 		{
 			free(data->input);
 			data->input = ft_strdup(data->hist->lastline);
