@@ -38,7 +38,7 @@ int	ft_cmd_exec(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_open_redir_in(t_cmd *cmd, t_exec *exec)
+int	ft_open_redir_in(t_data *data, t_cmd *cmd, t_exec *exec)
 {
 	t_redir_lst	*current;
 
@@ -51,9 +51,56 @@ int	ft_open_redir_in(t_cmd *cmd, t_exec *exec)
 		{
 			exec->fdin = open(current->filename, O_RDONLY);
 			if (exec->fdin == -1)
-				return (E_DUP);
+				return (data->err_info = current->filename, E_OPEN);
+		}
+		else if (current->r_type == HEREDOC)
+		{
+			exec->fdin = open(current->hd_path, O_RDONLY);
+			if (exec->fdin == -1)
+				return (data->err_info = current->filename, E_OPEN);
 		}
 		current = current->next;
+	}
+	if (exec->fdin > 0)
+	{
+		if (dup2(exec->fdin, STDIN_FILENO) == -1)
+			return (E_DUP);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_open_redir_out(t_data *data, t_cmd *cmd, t_exec *exec)
+{
+	t_redir_lst	*current;
+
+	if (!cmd->redirections)
+		return (EXIT_SUCCESS);
+	current = cmd->redirections;
+	while (current)
+	{
+		if (current->r_type == OUT)
+		{
+			exec->fdout = open(current->filename,
+					O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (exec->fdout == -1)
+			{
+				perror(current->filename);
+				return (data->err_info = current->filename, E_OPEN);
+			}
+		}
+		else if (current->r_type == OUT_T)
+		{
+			exec->fdout = open(current->filename,
+					O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (exec->fdout == -1)
+				return (data->err_info = current->filename, E_OPEN);
+		}
+		current = current->next;
+	}
+	if (exec->fdout >= 0)
+	{
+		if (dup2(exec->fdout, STDOUT_FILENO) == -1)
+			return (E_DUP);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -130,26 +177,26 @@ t_redir_lst	*ft_last_heredoc(t_data *data)
 	return (last);
 }
 
-int	ft_handle_heredoc(t_data *data, t_redir_lst *node, t_exec *exec, t_redir_lst *in_failed)
+int	ft_handle_heredoc(t_data *data, t_redir_lst *node)
 {
 	char	*line;
+	int		fd;
 
-	exec->fdout = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (exec->fdout == -1)
+	fd = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd == -1)
 		return (E_OPEN);
 	while (true)
 	{
 		line = readline("> ");
 		if (ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
 			break ;
-		ft_putendl_fd(line, exec->fdout);
+		ft_putendl_fd(line, fd);
 		free(line);
 	}
 	free(line);
-	close(exec->fdout);
+	close(fd);
 
 	(void)data;
-	(void)in_failed;
 	// if (node == ft_last_heredoc(data) && !in_failed)
 	// {
 	// 	exec->fdin = open(node->hd_path, O_RDONLY);
@@ -159,11 +206,10 @@ int	ft_handle_heredoc(t_data *data, t_redir_lst *node, t_exec *exec, t_redir_lst
 	// 		return (E_DUP);
 	// 	close(exec->fdin);
 	// }
-	printf("COUCOU");
 	return (EXIT_SUCCESS);
 }
 
-int	ft_trigger_heredoc(t_data *data, t_exec *exec, t_redir_lst *failed)
+int	ft_trigger_heredoc(t_data *data)
 {
 	int			i;
 	int			ret;
@@ -179,7 +225,7 @@ int	ft_trigger_heredoc(t_data *data, t_exec *exec, t_redir_lst *failed)
 			{
 				if (current->r_type == HEREDOC)
 				{
-					ret = ft_handle_heredoc(data, current, exec, failed);
+					ret = ft_handle_heredoc(data, current);
 					if (ret)
 						return (ret);
 				}
@@ -194,7 +240,6 @@ int	ft_executor(t_data *data)
 {
 	t_exec		*exec;
 	t_cmd		*current_cmd;
-	t_redir_lst	*failed;
 	pid_t 		tmp;
 	int			i;
 
@@ -208,55 +253,20 @@ int	ft_executor(t_data *data)
 		return (E_DUP);
 	if (data->nb_of_cmds == 1)
 	{
-		ft_fill_last_redir(data->cmd, exec);
-		failed = ft_check_redir_in(&data->cmd->redirections);
-		ft_trigger_heredoc(data, exec, failed);
-		if (exec->last_r->in)
+		ft_trigger_heredoc(data);
+		exit_code = ft_open_redir_in(data, data->cmd, exec);
+		if (exit_code)
+			return (exit_code);
+		exit_code = ft_open_redir_out(data, data->cmd, exec);
+		if (exit_code)
+			return (exit_code);
+		if (!exit_code)
 		{
-			exec->fdin = open(exec->last_r->in->filename, O_RDONLY);
-			if (exec->fdin == -1)
-			{
-				data->err_info = exec->last_r->in->filename;
-				return (E_OPEN);
-			}
-			if (!exec->last_r->hd
-				|| (exec->last_r->hd && exec->last_r->hd->id < exec->last_r->in->id))
-			{
-				if (dup2(exec->fdin, STDIN_FILENO) == -1)
-					return (E_DUP);
-				close(exec->fdin);
-			}
+			if (!data->cmd->is_builtin)
+				ft_cmd_exec(data);
+			else
+				ft_builtin(data, data->cmd);
 		}
-		if (exec->last_r->out)
-		{
-			exec->fdout = open(exec->last_r->out->filename,
-					O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (exec->fdout == -1)
-			{
-				data->err_info = exec->last_r->out->filename;
-				return (E_OPEN);
-			}
-			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
-				return (E_DUP);
-			close(exec->fdout);
-		}
-		if (exec->last_r->out_t)
-		{
-			exec->fdout = open(exec->last_r->out_t->filename,
-					O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (exec->fdout == -1)
-			{
-				data->err_info = exec->last_r->out_t->filename;
-				return (E_OPEN);
-			}
-			if (dup2(exec->fdout, STDOUT_FILENO) == -1)
-				return (E_DUP);
-			close(exec->fdout);
-		}
-		if (!data->cmd->is_builtin)
-			ft_cmd_exec(data);
-		else
-			ft_builtin(data, data->cmd);
 		if (dup2(exec->tmpin, STDIN_FILENO) == -1)
 			return (E_DUP);
 		if (dup2(exec->tmpout, STDOUT_FILENO) == -1)
@@ -270,8 +280,8 @@ int	ft_executor(t_data *data)
 		while (current_cmd)
 		{
 			// failed = ft_check_redir_in(&current_cmd->redirections);
-			ft_trigger_heredoc(data, exec, NULL);
-			ft_open_redir_in(current_cmd, exec);
+			ft_trigger_heredoc(data);
+			ft_open_redir_in(data, current_cmd, exec);
 			if (current_cmd->left)
 			{
 				if (exec->last_r->in)

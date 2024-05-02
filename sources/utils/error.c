@@ -71,6 +71,6 @@ void	ft_handle_arg_error(int argc, char **argv)
 	if (argc != 1 || argv[1])
 	{
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
-		exit(0);
+		exit(1);
 	}
 }

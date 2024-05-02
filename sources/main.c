@@ -16,9 +16,8 @@ int	exit_code = 0;
 
 static void	ft_init_data(t_data *data, char **envp)
 {
+	(void)envp;
 	data->input = NULL;
-	data->hist = ft_create_hist();
-	data->env = ft_envcpy(envp);
 	data->tokens = NULL;
 	data->cmd = NULL;
 	data->redirections = NULL;
@@ -27,6 +26,14 @@ static void	ft_init_data(t_data *data, char **envp)
 	data->nb_of_cmds = 0;
 	data->exec = NULL;
 	data->err_info = NULL;
+	data->hist = ft_create_hist();
+	data->env = ft_envcpy(envp);
+	if (!data->hist || !data->env)
+	{
+		ft_handle_error(data, E_MEM);
+		errno = ENOMEM;
+		exit(errno);
+	}
 }
 
 static int	ft_get_input(t_data *data)

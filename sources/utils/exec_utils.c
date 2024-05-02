@@ -43,7 +43,7 @@ char	**ft_pathiter(char **path, t_cmd *cmd)
 	char	*temp;
 
 	new_cmd = ft_strjoin("/", cmd->args[0]);
-	while (*path)
+	while (path && *path)
 	{
 		temp = ft_strjoin(*path, new_cmd);
 		*path = temp;

@@ -54,7 +54,7 @@ char	*ft_getenv(t_data *data, char *search)
 	int	i;
 
 	i = 0;
-	while (data->env[i])
+	while (data->env && data->env[i])
 	{
 		if (!ft_strncmp(data->env[i], search, ft_strlen(search)))
 			return (data->env[i]);
