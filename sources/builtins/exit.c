@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/25 09:59:10 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:51:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->args[1] && ft_atoi(cmd->args[1]) && cmd->args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		exit_status = EXIT_FAILURE;
-		return (exit_status);
+		g_exit_code = EXIT_FAILURE;
+		return (g_exit_code);
 	}
 	if (cmd->args[1] && !ft_atoi(cmd->args[1]))
 	{
 		ft_putendl_fd("minishell: exit: numeric argument required",
 			STDERR_FILENO);
-		exit_status = EXIT_FAILURE;
+		exit_status = 255;
 	}
 	if (cmd->args[1] && ft_atoi(cmd->args[1]))
 		exit_status = ft_atoi(cmd->args[1]);

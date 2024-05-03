@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 17:33:16 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:09:20 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,24 @@ t_env	*ft_setup_env(char **env)
 void	ft_modify_or_add_env(t_env **head, char *var)
 {
 	t_env	*current;
-	char	*deb;
-	char	*fin;
+	char	*name;
+	char	*data;
 
-	deb = ft_var(var);
-	fin = ft_data(var);
+	name = ft_var(var);
+	data = ft_data(var);
 	current = *head;
-	if (fin)
+	if (data)
 	{
 		while (current)
 		{
-			if (!ft_strncmp(current->var, deb, ft_strlen(deb)))
+			if (!ft_strncmp(current->var, name, ft_strlen(name)))
 			{
 				free(current->data);
-				current->data = ft_strdup(fin);
+				current->data = ft_strdup(data);
 				return ;
 			}
 			current = current->next;
 		}
 	}
-	ft_add_env(head, deb, fin);
+	ft_add_env(head, name, data);
 }

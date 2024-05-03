@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:08:46 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 14:59:08 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:43:22 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,20 @@ char	*ft_get_env_value(char **env, char *var_name)
 {
 	int		i;
 	char	*var_value;
+	char	*new_var_name;
 
 	var_value = NULL;
 	if (!var_name)
 		return (NULL);
 	i = 0;
+	new_var_name = ft_strjoin(var_name, "=");
 	while (env[i])
 	{
-		if (!ft_strncmp(env[i], var_name, ft_strlen(var_name)))
+		if (!ft_strncmp(env[i], new_var_name, ft_strlen(new_var_name)))
 			var_value = ft_strchr(env[i], '=') + 1;
 		i++;
 	}
+	free(new_var_name);
 	return (var_value);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/05/03 11:22:34 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:33:35 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		ft_builtin(t_data *data, t_cmd *cmd);
 void	ft_echo(t_data *data, t_cmd *cmd);
 void	ft_cd(t_data *data, t_cmd *cmd);
 void	ft_pwd(t_data *data);
-void	ft_export(t_data *data, t_cmd *cmd);
+int     ft_export(t_data *data, t_cmd *cmd);
 void	ft_env(t_data *data);
 int		ft_exit(t_data *data, t_cmd *cmd);
 void	ft_unset(t_data *data, t_cmd *cmd);
