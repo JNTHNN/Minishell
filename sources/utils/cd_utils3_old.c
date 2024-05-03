@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:14:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 23:51:38 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:03:32 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 /*
 **	checker for cd ~ | return 0 if error
 */
-int	ft_check_tilde(t_cd *cd)
+int	ft_check_tilde(t_data *data)
 {
-	if (!cd->home)
+	char	*home;
+
+	home = ft_getenv(data, "HOME=");
+	if (!home)
 	{
 		ft_putstr_fd(ERR_HOME, 2);
-		ft_errno(NULL, 1, cd->data, false);
+		ft_errno(NULL, 1, data, false);
 		return (0);
 	}
-	if (chdir(ft_strjoin(cd->home + 5, cd->dir + 1)) == -1)
+	if (chdir(ft_strjoin(home + 5, data->cmd->args[1] + 1)) == -1)
 	{
-		ft_errno("cd", 1, cd->data, false);
+		ft_errno("cd", 1, data, false);
 		return (0);
 	}
 	return (1);
@@ -34,17 +37,20 @@ int	ft_check_tilde(t_cd *cd)
 /*
 **	checker for cd | return 0 if error
 */
-int	ft_check_home(t_cd *cd)
+int	ft_check_home(t_data *data)
 {
-	if (!cd->home)
+	char	*home;
+
+	home = ft_getenv(data, "HOME=");
+	if (!home)
 	{
 		ft_putstr_fd(ERR_HOME, 2);
-		ft_errno(NULL, 1, cd->data, false);
+		ft_errno(NULL, 1, data, false);
 		return (0);
 	}
-	if (chdir(cd->home + 5) == -1)
+	if (chdir(home + 5) == -1)
 	{
-		ft_errno("cd", 1, cd->data, false);
+		ft_errno("cd", 1, data, false);
 		return (0);
 	}
 	return (1);
@@ -53,17 +59,20 @@ int	ft_check_home(t_cd *cd)
 /*
 **	checker for cd - | return 0 if error
 */
-int	ft_check_minus(t_cd *cd)
+int	ft_check_minus(t_data *data)
 {
-	if (!cd->oldpwd)
+	char	*oldpwd;
+
+	oldpwd = ft_getenv(data, "OLDPWD=");
+	if (!oldpwd)
 	{
 		ft_putstr_fd(ERR_OLDPWD, 2);
-		ft_errno(NULL, 1, cd->data, false);
+		ft_errno(NULL, 1, data, false);
 		return (0);
 	}
-	if (chdir(cd->oldpwd + 7) == -1)
+	if (chdir(oldpwd + 7) == -1)
 	{
-		ft_errno("cd", 1, cd->data, false);
+		ft_errno("cd", 1, data, false);
 		return (0);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/05/03 20:33:35 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:45:31 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ char	**ft_remove_first(char **path);
 char	**ft_replace_pwd(t_data *data, char *shortcut);
 
 /*	checker for cd : cd_utils3.c	*/
-int		ft_check_tilde(t_data *data);
-int		ft_check_home(t_data *data);
-int		ft_check_minus(t_data *data);
+int		ft_check_tilde(t_cd *cd);
+int		ft_check_home(t_cd *cd);
+int		ft_check_minus(t_cd *cd);
 
 /*		UTILS		*/
 char	*ft_strcat(char *dest, const char *src);
