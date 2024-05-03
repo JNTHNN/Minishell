@@ -32,10 +32,10 @@ void	ft_free_exec(t_data *data)
 	exec = data->exec;
 	if (data && exec)
 	{
-		if (exec->pipe_fd[0] != -1)
-			close(exec->pipe_fd[0]);
-		if (exec->pipe_fd[1] != -1)
-			close(exec->pipe_fd[1]);
+		// if (exec->pipe_fd[0] != -1)
+		// 	close(exec->pipe_fd[0]);
+		// if (exec->pipe_fd[1] != -1)
+		// 	close(exec->pipe_fd[1]);
 		if (exec->fdin != -1)
 			close(exec->fdin);
 		if (exec->fdout != -1)

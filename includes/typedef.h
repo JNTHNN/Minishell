@@ -124,7 +124,7 @@ struct	s_last_redir
 
 struct	s_exec
 {
-	int				pipe_fd[2];
+	int				**pipes;
 	pid_t			*child_pid;
 	int				status;
 	int				tmpin;

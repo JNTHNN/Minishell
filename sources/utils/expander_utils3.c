@@ -33,7 +33,7 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 	{
 		if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
 		{
-			var_value = ft_itoa(exit_code);
+			var_value = ft_itoa(g_exit_code);
 			data->is_itoa = true;
 		}
 		else
@@ -62,7 +62,7 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 	{
 		if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
 		{
-			var_value = ft_itoa(exit_code);
+			var_value = ft_itoa(g_exit_code);
 			data->is_itoa = true;
 		}
 		else
