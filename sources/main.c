@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:49 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/29 11:09:58 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:22:34 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	exit_code = 0;
+int	g_exit_code = 0;
 
 static void	ft_init_data(t_data *data, char **envp)
 {

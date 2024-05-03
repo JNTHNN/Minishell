@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/02 21:55:19 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:52:31 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ int	ft_cmd_exec(t_data *data)
 	status = 0;
 	if (pid == -1)
 	{
-		ft_errno("fork", data, false);
+		ft_errno("fork", errno, data, false);
 		return (EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
 		if (waitpid(pid, &status, 0) == -1)
-			ft_errno("waitpid", data, false);
-		if (WIFSIGNALED(status))
+			ft_errno("waitpid", errno, data, false);
+		if (WIFEXITED(status))
+        	g_exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
 	}
 	else
@@ -255,13 +257,13 @@ int	ft_executor(t_data *data)
 	if (data->nb_of_cmds == 1)
 	{
 		ft_trigger_heredoc(data);
-		exit_code = ft_open_redir_in(data, data->cmd, exec);
-		if (exit_code)
-			return (exit_code);
-		exit_code = ft_open_redir_out(data, data->cmd, exec);
-		if (exit_code)
-			return (exit_code);
-		if (!exit_code)
+		g_exit_code = ft_open_redir_in(data, data->cmd, exec);
+		if (g_exit_code)
+			return (g_exit_code);
+		g_exit_code = ft_open_redir_out(data, data->cmd, exec);
+		if (g_exit_code)
+			return (g_exit_code);
+		if (!g_exit_code)
 		{
 			if (!data->cmd->is_builtin)
 				ft_cmd_exec(data);

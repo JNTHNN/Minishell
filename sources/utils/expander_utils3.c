@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 12:40:52 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/12 21:40:48 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:22:34 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 	{
 		if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
 		{
-			var_value = ft_itoa(exit_code);
+			var_value = ft_itoa(g_exit_code);
 			data->is_itoa = true;
 		}
 		else
@@ -62,7 +62,7 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 	{
 		if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
 		{
-			var_value = ft_itoa(exit_code);
+			var_value = ft_itoa(g_exit_code);
 			data->is_itoa = true;
 		}
 		else

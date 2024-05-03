@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/29 16:18:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:40:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,15 @@ void	execute_command(t_data *data, t_cmd *cmd)
 			|| !ft_strncmp(cmd->args[0], "./", 2))
 		{
 			if (execve(cmd->args[0], cmd->args, data->env) == -1)
-			{
-				perror("execve absolu");
-				exit(EXIT_FAILURE);
-			}
+				ft_errno(data->cmd->args[0], 127, data, true);
 		}
 		else
 		{
-			if (ft_create_exec(data, cmd) == EXIT_FAILURE)
-			{
-				perror("command not found");
-				exit(EXIT_FAILURE);
-			}
+			if (ft_create_exec(data, cmd))
+				ft_errno(data->cmd->args[0], 127, data, true);
 		}
 	}
-	exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE); // utile ?
 }
 
 char	**ft_pathiter(char **path, t_cmd *cmd)
@@ -69,19 +63,13 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 
 	progpath = ft_path_abs(data, cmd);
 	if (!progpath)
-	{
-		perror("path");
-		exit(EXIT_FAILURE);
-	}
+		return (E_PATH);
 	while (*progpath)
 	{
 		if (access(*progpath, F_OK) == 0)
 		{
 			if (execve(*progpath, cmd->args, data->env) == -1)
-			{
-				perror("command");
-				exit(EXIT_FAILURE);
-			}
+				return (E_EXECVE);
 		}
 		progpath++;
 	}

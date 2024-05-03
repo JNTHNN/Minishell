@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/02 20:21:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:37:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,15 @@
 static void	ft_change_pwd(t_data *data, t_cmd *cmd)
 {
 	char	*pwd;
+	// static char	cwd[PATH_MAX];
 
 	pwd = ft_getenv(data, "PWD");
-	if (!pwd)
-		ft_putstr_fd("No PWD, No party\n", STDERR_FILENO);
+	// if (!pwd)
+	// {
+	// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	// 		pwd = cwd;
+	// 	printf("start pwd = %s\n", cwd);
+	// }
 	if (!cmd->args[1])
 		ft_cd_home(data, pwd);
 	else if (cmd->args[1][0] == '/')
@@ -47,7 +52,7 @@ static int	ft_check_dir(t_data *data, t_cmd *cmd)
 		else if (chdir(cmd->args[1]) == 0)
 			rv = 1;
 		else
-			ft_errno("chdir", data, false);
+			ft_errno(cmd->args[1], 1, data, false);
 	}
 	if (!cmd->args[1])
 		rv = ft_check_home(data);

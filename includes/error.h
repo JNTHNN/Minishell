@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/02 20:21:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:34:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # define ERR_OPEN " No such file or directory \033[0m\n"
 # define ERR_DUP "❌\033[0;31m Bad file descriptor \033[0m\n"
 # define ERR_UNDEF "❌\033[0;31m Undefined error \033[0m\n"
+# define ERR_OLDPWD "❌\033[0;31m minibash: cd: OLDPWD not set\033[0m\n"
+# define ERR_HOME "❌\033[0;31m minibash: cd: HOME not set\033[0m\n"
 
 typedef enum e_err_codes
 {
@@ -34,9 +36,11 @@ typedef enum e_err_codes
 	E_REDIR_OUT = -8,
 	E_REDIR_OUT_T = -9,
 	E_OPEN = -10,
-	E_DUP = -11
+	E_DUP = -11,
+	E_PATH = -12,
+	E_EXECVE = -13
 }	t_err_codes;
 
-void	ft_errno(char *s, t_data *data, int flag);
+void	ft_errno(char *s, int code, t_data *data, int flag);
 
 #endif

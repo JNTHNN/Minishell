@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:19:45 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/03/30 19:36:28 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:26:49 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ void	ft_pwd(t_data *data)
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
-		perror("getcwd()");
+		ft_errno("pwd", 1, data, false);
 }

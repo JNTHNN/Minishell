@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/24 15:21:47 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:44:00 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,21 @@
 */
 void	ft_seek_replace(t_data *data, char *search, char *pwd)
 {
-	int	i;
-	int	found;
+	int			i;
+	int			found;
+	static char	cwd[PATH_MAX];
 
 	i = 0;
 	found = 0;
+	// if (!pwd)
+	// {
+	// 	printf("ici\n");
+	// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	// 		pwd = cwd;
+	// 	printf("pwd = %s\n", pwd);
+	// }
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		pwd = cwd;
 	while (data->env[i])
 	{
 		if (!ft_strncmp(data->env[i], search, ft_strlen(search)))
@@ -58,7 +68,7 @@ void	ft_cd_absolute(t_data *data, t_cmd *cmd, char *pwd)
 	if (!(ft_strlen(new_pwd) == 1) && new_pwd[ft_strlen(new_pwd) - 1] == '/')
 		ft_memset(new_pwd + (ft_strlen(new_pwd) - 1), 0, 1);
 	ft_seek_replace(data, "PWD=", cmd->args[1]);
-	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+	ft_seek_replace(data, "OLDPWD=", pwd);
 }
 
 /*
@@ -68,11 +78,9 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 {
 	char	**temp_path;
 	char	**temp_pwd;
-	char	*test;
 	int		i;
-	int		j;
-	int		z;
 
+	printf("cest %s\n", pwd);
 	temp_path = ft_split(cmd->args[1], '/');
 	temp_pwd = ft_split(pwd, '/');
 	if (!ft_strncmp(temp_path[0], "~", 1) || !ft_strncmp(temp_path[0], "-", 1))
@@ -90,34 +98,15 @@ void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
 		i++;
 	}
 	i = 0;
-	while(temp_pwd[i])
+	while (temp_pwd[i])
 	{
-		j = 0;
-		printf("AVANT PWDCAT\n");
-		printf("LINE %d\n", i);
-		while(temp_pwd[i][j])
-			printf("%c", temp_pwd[i][j++]);
-		printf("\n");
+		printf("temp_pwd = %s\n", temp_pwd[i]);
 		i++;
 	}
-	z = ft_tablen(temp_pwd);
-	printf("SIZE OF TEMP_PWD = %d\n", z);
-	test = ft_pwdcat(temp_pwd);
-	ft_seek_replace(data, "PWD=", test);
-	ft_seek_replace(data, "OLDPWD=", pwd + 4);
-	z = ft_tablen(temp_pwd);
-	printf("SIZE OF TEMP_PWD = %d\n", z);
-	i = 0;
-	while(temp_pwd[i])
-	{
-		j = 0;
-		printf("APRES PWDCAT\n");
-		printf("LINE %d\n", i);
-		while(temp_pwd[i][j])
-			printf("%c", temp_pwd[i][j++]);
-		printf("\n");
-		i++;
-	}
+	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd));
+	printf("AV OLD -> pwd = %s\n", pwd);
+	ft_seek_replace(data, "OLDPWD=", pwd);
+	printf("AP OLD -> pwd = %s\n", pwd);
 	ft_free_array(temp_path);
 	//ft_free_array(temp_pwd);
 }

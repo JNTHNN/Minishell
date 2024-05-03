@@ -6,16 +6,9 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 15:48:44 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:48:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-**	unset sans rien ? ne se passe rien mais ne doit pas etre considerer comme
-**	une erreur
-**	unset avec un nom de variable presente dans l'env va la supprimer.
-**	peut unset plusieurs var a la fois
-*/
 
 #include "../../includes/minishell.h"
 

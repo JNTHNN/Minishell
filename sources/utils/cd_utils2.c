@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/23 22:18:35 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:30:48 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**ft_append_pwd(char **pwd, char *path)
 	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
 	if (!append_pwd)
 		return (NULL);
-	while (pwd[i])
+	while (pwd && pwd[i])
 	{
 		append_pwd[i] = ft_strdup(pwd[i]);
 		i++;
@@ -111,9 +111,21 @@ char	*ft_pwdcat(char **pwd)
 	char	*temp;
 	int		i;
 	int		size;
+	static char	cwd[PATH_MAX];
 
 	size = ft_tablen(pwd);
 	i = 0;
+	if (pwd == NULL || *pwd == NULL)
+	{
+		printf("HELLO\n");
+		if (getcwd(cwd, sizeof(cwd)) != NULL)
+		{
+			printf("pwdcat pwd = %s\n", cwd);
+			return(cwd);
+		}
+	}
+	if (!ft_strncmp(pwd[0], "PWD=", 4))
+		i = 1;
 	new_pwd = ft_strdup("");
 	while (i < size)
 	{
