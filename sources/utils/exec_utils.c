@@ -95,8 +95,6 @@ t_exec	*ft_init_exec(t_data *data)
 	exec = (t_exec *)malloc(sizeof(t_exec));
 	if (!exec)
 		return (NULL);
-	// exec->pipe_fd[0] = -1;
-	// exec->pipe_fd[1] = -1;
 	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	if (!exec->child_pid)
 		return (NULL);
@@ -105,13 +103,7 @@ t_exec	*ft_init_exec(t_data *data)
 	exec->tmpout = -1;
 	exec->fdin = -1;
 	exec->fdout = -1;
-	exec->last_r = (t_last_redir *)malloc(sizeof(t_last_redir));
-	if (!exec->last_r)
-		return (NULL);
-	exec->last_r->in = NULL;
-	exec->last_r->out = NULL;
-	exec->last_r->out_t = NULL;
-	exec->last_r->hd = NULL;
+	exec->trigger_hd = false;
 	data->exec = exec;
 	return (exec);
 }

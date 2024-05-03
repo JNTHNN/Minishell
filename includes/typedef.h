@@ -114,14 +114,6 @@ struct	s_hist
 	char	*lastline;
 };
 
-struct	s_last_redir
-{
-	t_redir_lst	*in;
-	t_redir_lst	*out;
-	t_redir_lst	*out_t;
-	t_redir_lst	*hd;
-};
-
 struct	s_exec
 {
 	int				**pipes;
@@ -131,7 +123,7 @@ struct	s_exec
 	int				tmpout;
 	int				fdin;
 	int				fdout;
-	t_last_redir	*last_r;
+	bool			trigger_hd;
 };
 
 #endif
