@@ -51,7 +51,7 @@ static void	ft_print_error(int err_code, t_data *data)
 static void	ft_throw_error(t_data *data, int err_code)
 {
 	ft_print_error(err_code, data);
-	exit_code = err_code;
+	g_exit_code = err_code;
 	ft_free_if_error(data);
 }
 

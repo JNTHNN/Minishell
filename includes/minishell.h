@@ -39,7 +39,7 @@
 
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
-extern int	exit_code;
+extern int	g_exit_code;
 
 void	ft_show_env(char **env);
 int		ft_input(char *in);

@@ -16,17 +16,20 @@ char	*ft_get_env_value(char **env, char *var_name)
 {
 	int		i;
 	char	*var_value;
+	char	*new_var_name;
 
 	var_value = NULL;
 	if (!var_name)
 		return (NULL);
 	i = 0;
+	new_var_name = ft_strjoin(var_name, "=");
 	while (env[i])
 	{
-		if (!ft_strncmp(env[i], var_name, ft_strlen(var_name)))
+		if (!ft_strncmp(env[i], new_var_name, ft_strlen(new_var_name)))
 			var_value = ft_strchr(env[i], '=') + 1;
 		i++;
 	}
+	free(new_var_name);
 	return (var_value);
 }
 

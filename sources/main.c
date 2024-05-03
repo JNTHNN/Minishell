@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	exit_code = 0;
+int	g_exit_code = 0;
 
 static void	ft_init_data(t_data *data, char **envp)
 {
