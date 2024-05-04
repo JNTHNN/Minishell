@@ -12,19 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-// Test  26: ✅⚠️  export A- 
-// mini error = ( HOME not set)
-// bash error = ( not a valid identifier)
-// Test  30: ✅⚠️  export HELLO-=123 
-// mini error = ( HOME not set)
-// bash error = ( not a valid identifier)
-// Test  31: ✅⚠️  export = 
-// mini error = ( not a valid identifier)
-// bash error = ( not a valid identifier)
-// Test  32: ✅⚠️  export 123 
-// mini error = ( not an identifier)
-// bash error = ( not a valid identifier)
-
 static int	ft_check_var(char *str)
 {
 	int		i;
@@ -58,11 +45,10 @@ int	ft_export(t_data *data, t_cmd *cmd)
 		{
 			if (cmd->args[i])
 			{
-				if (!ft_check_var(cmd->args[i]))
-					return (E_VAR);
 				while (cmd->args[i])
 				{
-					ft_modify_or_add_env(&head, cmd->args[i]);
+					if (ft_check_var(cmd->args[i]))
+						ft_modify_or_add_env(&head, cmd->args[i]);
 					i++;
 				}
 			}

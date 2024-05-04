@@ -19,13 +19,11 @@ static int	ft_check_var(char *str)
 
 	i = 0;
 	var = ft_var(str);
-	if (var[i] == '=')
-		return (ft_errno(ERR_U_VAR_EQ, 1, NULL, false), 0);
 	if (!var || ft_isdigit(var[i]))
 		return (ft_errno(ERR_U_VAR_ID, 1, NULL, false), 0);
 	while (var[i])
 	{
-		if (!ft_isalnum(var[i]))
+		if (!ft_isalnum(var[i]) || var[i] == '=')
 			return (ft_errno(ERR_U_VAR_EQ, 1, NULL, false), 0);
 		i++;
 	}
