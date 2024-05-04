@@ -20,6 +20,8 @@
 # define MINUS "-"
 # define PARENT ".."
 # define CURRENT "."
+# define TPLUS "~+"
+# define TMINUS "~-"
 
 
 /*  utils for cd : cd_utils.c   */
