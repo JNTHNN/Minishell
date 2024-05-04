@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 12:52:31 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:32:44 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ int	ft_cmd_exec(t_data *data)
 	status = 0;
 	if (pid == -1)
 	{
-		ft_errno("fork", errno, data, false);
+		perror("fork");
 		return (EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
-		if (waitpid(pid, &status, 0) == -1)
-			ft_errno("waitpid", errno, data, false);
-		if (WIFEXITED(status))
-        	g_exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
 	}
 	else
@@ -64,10 +61,11 @@ int	ft_open_redir_in(t_data *data, t_cmd *cmd, t_exec *exec)
 		}
 		current = current->next;
 	}
-	if (exec->fdin > 0)
+	if (exec->fdin != -1)
 	{
 		if (dup2(exec->fdin, STDIN_FILENO) == -1)
 			return (E_DUP);
+		close(exec->fdin);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -100,87 +98,16 @@ int	ft_open_redir_out(t_data *data, t_cmd *cmd, t_exec *exec)
 		}
 		current = current->next;
 	}
-	if (exec->fdout >= 0)
+	if (exec->fdout != -1)
 	{
 		if (dup2(exec->fdout, STDOUT_FILENO) == -1)
 			return (E_DUP);
+		close(exec->fdout);
 	}
 	return (EXIT_SUCCESS);
 }
 
-t_redir_lst	*ft_find_last_redir(t_redir_lst **lst, t_redirect_type type)
-{
-	t_redir_lst	*is_last;
-	t_redir_lst	*temp;
-
-	is_last = NULL;
-	if (!*lst)
-		return (NULL);
-	temp = *lst;
-	while (temp)
-	{
-		if (temp->r_type == type)
-			is_last = temp;
-		temp = temp->next;
-	}
-	return (is_last);
-}
-
-int	ft_fill_last_redir(t_cmd *cmd, t_exec *exec)
-{
-	if (cmd->redirections)
-	{
-		exec->last_r->in = ft_find_last_redir(&cmd->redirections, IN);
-		exec->last_r->out = ft_find_last_redir(&cmd->redirections, OUT);
-		exec->last_r->out_t = ft_find_last_redir(&cmd->redirections, OUT_T);
-		exec->last_r->hd = ft_find_last_redir(&cmd->redirections, HEREDOC);
-	}
-	return (EXIT_SUCCESS);
-}
-
-t_redir_lst	*ft_check_redir_in(t_redir_lst **lst)
-{
-	t_redir_lst	*temp;
-	t_redir_lst	*failed;
-
-	if (!*lst)
-		return (NULL);
-	failed = NULL;
-	temp = *lst;
-	while (temp)
-	{
-		if (temp->r_type == IN && access(temp->filename, F_OK | R_OK))
-			failed = temp;
-		temp = temp->next;
-	}
-	return (failed);
-}
-
-t_redir_lst	*ft_last_heredoc(t_data *data)
-{
-	int			i;
-	t_redir_lst	*current;
-	t_redir_lst	*last;
-
-	last = NULL;
-	i = -1;
-	while (++i < data->nb_of_cmds)
-	{
-		if (data->redirections[i])
-		{
-			current = data->redirections[i];
-			while (current != NULL)
-			{
-				if (current->r_type == HEREDOC)
-					last = current;
-				current = current->next;
-			}
-		}
-	}
-	return (last);
-}
-
-int	ft_handle_heredoc(t_data *data, t_redir_lst *node)
+int	ft_handle_heredoc(t_redir_lst *node)
 {
 	char	*line;
 	int		fd;
@@ -198,21 +125,10 @@ int	ft_handle_heredoc(t_data *data, t_redir_lst *node)
 	}
 	free(line);
 	close(fd);
-
-	(void)data;
-	// if (node == ft_last_heredoc(data) && !in_failed)
-	// {
-	// 	exec->fdin = open(node->hd_path, O_RDONLY);
-	// 	if (exec->fdin == -1)
-	// 		return (E_OPEN);
-	// 	if (dup2(exec->fdin, STDIN_FILENO) == -1)
-	// 		return (E_DUP);
-	// 	close(exec->fdin);
-	// }
 	return (EXIT_SUCCESS);
 }
 
-int	ft_trigger_heredoc(t_data *data)
+int	ft_trigger_heredoc(t_data *data, t_exec *exec)
 {
 	int			i;
 	int			ret;
@@ -228,13 +144,35 @@ int	ft_trigger_heredoc(t_data *data)
 			{
 				if (current->r_type == HEREDOC)
 				{
-					ret = ft_handle_heredoc(data, current);
+					ret = ft_handle_heredoc(current);
 					if (ret)
 						return (ret);
 				}
 				current = current->next;
 			}
 		}
+	}
+	exec->trigger_hd = true;
+	return (EXIT_SUCCESS);
+}
+
+int	ft_init_pipes(t_data *data, t_exec *exec)
+{
+	int	nb_of_pipes;
+	int	i;
+
+	nb_of_pipes = data->nb_of_cmds - 1;
+	exec->pipes = (int **)malloc(nb_of_pipes * sizeof(int *));
+	if (!exec->pipes)
+		return (E_MEM);
+	i = -1;
+	while (++i < nb_of_pipes)
+	{
+		exec->pipes[i] = (int *)malloc(2 * sizeof(int));
+		if (!exec->pipes[i])
+			return (E_MEM);
+		if (pipe(exec->pipes[i]) == F_ERROR)
+			return (E_MEM);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -243,20 +181,22 @@ int	ft_executor(t_data *data)
 {
 	t_exec		*exec;
 	t_cmd		*current_cmd;
-	// pid_t 		tmp;
 	int			i;
 
 	i = 0;
 	exec = ft_init_exec(data);
 	if (!exec)
 		return (E_MEM);
+	g_exit_code = ft_init_pipes(data, exec);
+	if (g_exit_code)
+		return (g_exit_code);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
 	if (exec->tmpin == -1 || exec->tmpout == -1)
 		return (E_DUP);
 	if (data->nb_of_cmds == 1)
 	{
-		ft_trigger_heredoc(data);
+		ft_trigger_heredoc(data, exec);
 		g_exit_code = ft_open_redir_in(data, data->cmd, exec);
 		if (g_exit_code)
 			return (g_exit_code);
@@ -282,32 +222,34 @@ int	ft_executor(t_data *data)
 		current_cmd = data->cmd;
 		while (current_cmd)
 		{
-			// failed = ft_check_redir_in(&current_cmd->redirections);
-			ft_trigger_heredoc(data);
-			ft_open_redir_in(data, current_cmd, exec);
-			if (current_cmd->left)
-			{
-				if (exec->last_r->in)
-					dup2(exec->fdin, STDIN_FILENO);
-				else
-					dup2(exec->pipe_fd[0], STDIN_FILENO);
-			}
-			if (!current_cmd->right)
-			{
-				dup2(exec->tmpout, exec->pipe_fd[1]);
-				close(exec->tmpout);
-			}
-			else
-				pipe(exec->pipe_fd);
-			if (dup2(exec->pipe_fd[1], STDOUT_FILENO) == -1)
-				return (E_DUP);
-			close(exec->pipe_fd[1]);
+			if (exec->trigger_hd == false)
+				ft_trigger_heredoc(data, exec);
 			exec->child_pid[i] = fork();
 			exec->status = 0;
-			if (exec->child_pid[i] == -1)
+			if (exec->child_pid[i] == F_ERROR)
 				perror("fork");
-			if (exec->child_pid[i] == 0)
+			if (exec->child_pid[i] == FORKED_CHILD)
 			{
+				g_exit_code = ft_open_redir_in(data, current_cmd, exec);
+				if (g_exit_code)
+					return (g_exit_code);
+				g_exit_code = ft_open_redir_out(data, current_cmd, exec);
+				if (g_exit_code)
+					return (g_exit_code);
+				if (current_cmd->left && exec->fdin == NOT_INIT)
+				{
+					if (dup2(exec->pipes[i - 1][0], STDIN_FILENO) == F_ERROR)
+						return (E_DUP);
+					close(exec->pipes[i - 1][1]);
+				}
+				if (current_cmd->right && exec->fdout == NOT_INIT)
+				{
+					if (dup2(exec->pipes[i][1], STDOUT_FILENO) == F_ERROR)
+						return (E_DUP);
+					close(exec->pipes[i][0]);
+				}
+				if (!current_cmd->right && exec->fdout == NOT_INIT)
+					dup2(exec->tmpout, STDOUT_FILENO);
 				if (!current_cmd->is_builtin)
 					execute_command(data, current_cmd);
 				else
@@ -316,24 +258,30 @@ int	ft_executor(t_data *data)
 			}
 			i++;
 			current_cmd = current_cmd->right;
-			i++;
+			exec->fdin = -1;
+			exec->fdout = -1;
 		}
+		// Close all parent pipes ends
+		int j = -1;
+		while (++j < data->nb_of_cmds - 1)
+		{
+			close(exec->pipes[j][0]);
+			close(exec->pipes[j][1]);
+		}
+
+		// restore std i/o
 		dup2(exec->tmpin, STDIN_FILENO);
 		dup2(exec->tmpout, STDOUT_FILENO);
 		close(exec->tmpin);
 		close(exec->tmpout);
-		close(exec->fdin);
-		close(exec->fdout);
-		close(exec->pipe_fd[0]);
-		close(exec->pipe_fd[1]);
-		
 	}
 	while (i--)
 	{
-		dup2(exec->tmpout, exec->pipe_fd[1]);
-		waitpid(exec->child_pid[i], &exec->status, 0);
+		exec->child_pid[i] = waitpid(0, &exec->status, 0);
 	}
 	if (WIFSIGNALED(exec->status))
 		printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);
 }
+
+// FREE PIPES HERE OR IN CLEAN, ETC.

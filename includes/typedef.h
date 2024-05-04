@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/03 22:32:40 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:15:52 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef struct s_expand			t_expand;
 typedef struct s_hist			t_hist;
 typedef struct s_exec			t_exec;
 typedef struct s_last_redir		t_last_redir;
-typedef struct s_cd				t_cd;
 
 typedef enum e_tok_type
 {
@@ -115,38 +114,16 @@ struct	s_hist
 	char	*lastline;
 };
 
-struct	s_last_redir
-{
-	t_redir_lst	*in;
-	t_redir_lst	*out;
-	t_redir_lst	*out_t;
-	t_redir_lst	*hd;
-};
-
 struct	s_exec
 {
-	int				pipe_fd[2];
+	int				**pipes;
 	pid_t			*child_pid;
 	int				status;
 	int				tmpin;
 	int				tmpout;
 	int				fdin;
 	int				fdout;
-	t_last_redir	*last_r;
-};
-
-struct	s_cd
-{
-	t_data	*data;
-	t_cmd	*cmd;
-	char	*dir;
-	char	*pwd;
-	char	*oldpwd;
-	char	*home;
-	char	*err;
-	char	*temp_tilde;
-	char	**temp_pwd;
-	char	**temp_path;
+	bool			trigger_hd;
 };
 
 #endif

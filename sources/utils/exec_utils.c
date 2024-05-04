@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 12:40:45 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:18:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,21 @@ void	execute_command(t_data *data, t_cmd *cmd)
 			|| !ft_strncmp(cmd->args[0], "./", 2))
 		{
 			if (execve(cmd->args[0], cmd->args, data->env) == -1)
-				ft_errno(data->cmd->args[0], 127, data, true);
+			{
+				perror("execve absolu");
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
-			if (ft_create_exec(data, cmd))
-				ft_errno(data->cmd->args[0], 127, data, true);
+			if (ft_create_exec(data, cmd) == EXIT_FAILURE)
+			{
+				perror("command not found");
+				exit(EXIT_FAILURE);
+			}
 		}
 	}
-	exit(EXIT_FAILURE); // utile ?
+	exit(EXIT_SUCCESS);
 }
 
 char	**ft_pathiter(char **path, t_cmd *cmd)
@@ -63,13 +69,19 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 
 	progpath = ft_path_abs(data, cmd);
 	if (!progpath)
-		return (E_PATH);
+	{
+		perror("path");
+		exit(EXIT_FAILURE);
+	}
 	while (*progpath)
 	{
 		if (access(*progpath, F_OK) == 0)
 		{
 			if (execve(*progpath, cmd->args, data->env) == -1)
-				return (E_EXECVE);
+			{
+				perror("command");
+				exit(EXIT_FAILURE);
+			}
 		}
 		progpath++;
 	}
@@ -83,8 +95,6 @@ t_exec	*ft_init_exec(t_data *data)
 	exec = (t_exec *)malloc(sizeof(t_exec));
 	if (!exec)
 		return (NULL);
-	exec->pipe_fd[0] = -1;
-	exec->pipe_fd[1] = -1;
 	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	if (!exec->child_pid)
 		return (NULL);
@@ -93,13 +103,7 @@ t_exec	*ft_init_exec(t_data *data)
 	exec->tmpout = -1;
 	exec->fdin = -1;
 	exec->fdout = -1;
-	exec->last_r = (t_last_redir *)malloc(sizeof(t_last_redir));
-	if (!exec->last_r)
-		return (NULL);
-	exec->last_r->in = NULL;
-	exec->last_r->out = NULL;
-	exec->last_r->out_t = NULL;
-	exec->last_r->hd = NULL;
+	exec->trigger_hd = false;
 	data->exec = exec;
 	return (exec);
 }
