@@ -12,6 +12,19 @@
 
 #include "../../includes/minishell.h"
 
+// Test  26: ✅⚠️  export A- 
+// mini error = ( HOME not set)
+// bash error = ( not a valid identifier)
+// Test  30: ✅⚠️  export HELLO-=123 
+// mini error = ( HOME not set)
+// bash error = ( not a valid identifier)
+// Test  31: ✅⚠️  export = 
+// mini error = ( not a valid identifier)
+// bash error = ( not a valid identifier)
+// Test  32: ✅⚠️  export 123 
+// mini error = ( not an identifier)
+// bash error = ( not a valid identifier)
+
 static int	ft_check_var(char *str)
 {
 	int		i;

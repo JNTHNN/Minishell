@@ -22,6 +22,7 @@ typedef struct s_expand			t_expand;
 typedef struct s_hist			t_hist;
 typedef struct s_exec			t_exec;
 typedef struct s_last_redir		t_last_redir;
+typedef struct s_cd				t_cd;
 
 typedef enum e_tok_type
 {
@@ -124,6 +125,20 @@ struct	s_exec
 	int				fdin;
 	int				fdout;
 	bool			trigger_hd;
+};
+
+struct	s_cd
+{
+	t_data	*data;
+	t_cmd	*cmd;
+	char	*dir;
+	char	*pwd;
+	char	*oldpwd;
+	char	*home;
+	char	*err;
+	char	*temp_tilde;
+	char	**temp_pwd;
+	char	**temp_path;
 };
 
 #endif

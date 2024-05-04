@@ -53,4 +53,18 @@ int		ft_check_tilde(t_cd *cd);
 int		ft_check_home(t_cd *cd);
 int		ft_check_minus(t_cd *cd);
 
+/*  utils for export : export_utils.c   */
+t_env	*ft_setup_env(char **env);
+void	ft_modify_or_add_env(t_env **head, char *var);
+
+/* prints for export : export_utils2.c  */
+void	ft_print_env(t_env *head);
+
+/* update_env for export : export_utils3.c    */
+void	ft_update_env(t_env *head, t_data *data);
+
+/*  var + data for export : export_utils4.c */
+char	*ft_var(char *s);
+char	*ft_data(char *s);
+
 #endif
