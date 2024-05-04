@@ -19,19 +19,9 @@ void	ft_seek_replace(t_data *data, char *search, char *pwd)
 {
 	int			i;
 	int			found;
-	static char	cwd[PATH_MAX];
 
 	i = 0;
 	found = 0;
-	// if (!pwd)
-	// {
-	// 	printf("ici\n");
-	// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	// 		pwd = cwd;
-	// 	printf("pwd = %s\n", pwd);
-	// }
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		pwd = cwd;
 	while (data->env[i])
 	{
 		if (!ft_strncmp(data->env[i], search, ft_strlen(search)))
@@ -46,67 +36,52 @@ void	ft_seek_replace(t_data *data, char *search, char *pwd)
 }
 
 /*
-**	cd without args/path -> return to path in env var HOME
+**	cd without args/path -> change data for PWD / OLDPWD in env
 */
-void	ft_cd_home(t_data *data, char *pwd)
+void	ft_cd_home(t_cd *cd)
 {
-	char	*new_pwd;
-
-	new_pwd = ft_getenv(data, "HOME=");
-	ft_seek_replace(data, "PWD=", new_pwd + 5);
-	ft_seek_replace(data, "OLDPWD=", pwd + 4);
+	ft_seek_replace(cd->data, PWD, cd->home + 5);
+	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }
 
 /*
 **	cd with absolute path
 */
-void	ft_cd_absolute(t_data *data, t_cmd *cmd, char *pwd)
+void	ft_cd_absolute(t_cd *cd)
 {
 	char	*new_pwd;
 
-	new_pwd = cmd->args[1];
+	new_pwd = cd->dir;
 	if (!(ft_strlen(new_pwd) == 1) && new_pwd[ft_strlen(new_pwd) - 1] == '/')
 		ft_memset(new_pwd + (ft_strlen(new_pwd) - 1), 0, 1);
-	ft_seek_replace(data, "PWD=", cmd->args[1]);
-	ft_seek_replace(data, "OLDPWD=", pwd);
+	ft_seek_replace(cd->data, PWD, new_pwd);
+	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }
 
 /*
 **	cd with relative path
 */
-void	ft_cd_relative(t_data *data, t_cmd *cmd, char *pwd)
+void	ft_cd_relative(t_cd *cd)
 {
-	char	**temp_path;
-	char	**temp_pwd;
 	int		i;
 
-	printf("cest %s\n", pwd);
-	temp_path = ft_split(cmd->args[1], '/');
-	temp_pwd = ft_split(pwd, '/');
-	if (!ft_strncmp(temp_path[0], "~", 1) || !ft_strncmp(temp_path[0], "-", 1))
+	cd->temp_path = ft_split(cd->dir, '/');
+	cd->temp_pwd = ft_split(cd->pwd, '/');
+	if (!ft_strncmp(cd->temp_path[0], TILDE, 1)
+		|| !ft_strncmp(cd->temp_path[0], MINUS, 1))
 	{
-		temp_pwd = ft_replace_pwd(data, temp_path[0]);
-		temp_path = ft_remove_first(temp_path);
+		cd->temp_pwd = ft_replace_pwd(cd, cd->temp_path[0]);
+		cd->temp_path = ft_remove_first(cd->temp_path);
 	}
 	i = 0;
-	while (temp_path[i])
+	while (cd->temp_path[i])
 	{
-		if (!ft_strncmp(temp_path[i], "..", 2))
-			temp_pwd = ft_sup_pwd(temp_pwd);
-		else if (ft_strncmp(temp_path[i], ".", 2) != 0)
-			temp_pwd = ft_append_pwd(temp_pwd, temp_path[i]);
+		if (!ft_strncmp(cd->temp_path[i], PARENT, 2))
+			cd->temp_pwd = ft_sup_pwd(cd->temp_pwd);
+		else if (ft_strncmp(cd->temp_path[i], CURRENT, 2) != 0)
+			cd->temp_pwd = ft_append_pwd(cd->temp_pwd, cd->temp_path[i]);
 		i++;
 	}
-	i = 0;
-	while (temp_pwd[i])
-	{
-		printf("temp_pwd = %s\n", temp_pwd[i]);
-		i++;
-	}
-	ft_seek_replace(data, "PWD=", ft_pwdcat(temp_pwd));
-	printf("AV OLD -> pwd = %s\n", pwd);
-	ft_seek_replace(data, "OLDPWD=", pwd);
-	printf("AP OLD -> pwd = %s\n", pwd);
-	ft_free_array(temp_path);
-	//ft_free_array(temp_pwd);
+	ft_seek_replace(cd->data, PWD, ft_pwdcat(cd->temp_pwd));
+	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }

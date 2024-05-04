@@ -15,24 +15,14 @@
 /*
 **	change pwd in env according to path type (without arg; absolute; relative)
 */
-static void	ft_change_pwd(t_data *data, t_cmd *cmd)
+static void	ft_change_pwd(t_cd *cd)
 {
-	char	*pwd;
-	// static char	cwd[PATH_MAX];
-
-	pwd = ft_getenv(data, "PWD");
-	// if (!pwd)
-	// {
-	// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	// 		pwd = cwd;
-	// 	printf("start pwd = %s\n", cwd);
-	// }
-	if (!cmd->args[1])
-		ft_cd_home(data, pwd);
-	else if (cmd->args[1][0] == '/')
-		ft_cd_absolute(data, cmd, pwd);
+	if (!cd->dir)
+		ft_cd_home(cd);
+	else if (cd->dir[0] == '/')
+		ft_cd_absolute(cd);
 	else
-		ft_cd_relative(data, cmd, pwd);
+		ft_cd_relative(cd);
 }
 
 /*
@@ -45,20 +35,23 @@ static int	ft_check_dir(t_cd *cd)
 	rv = 0;
 	if (cd->dir)
 	{
-		// if (!ft_strncmp(cd->dir, "-", 1))
-		// 	return (rv = ft_check_minus(cd));
-		if (!ft_strncmp(cd->dir, "~", 1))
+		if (!ft_strncmp(cd->dir, MINUS, 1))
+			return (rv = ft_check_minus(cd));
+		if (!ft_strncmp(cd->dir, TILDE, 1))
 			rv = ft_check_tilde(cd);
-		// else if (chdir(cmd->args[1]) == 0)
-		// 	rv = 1;
-		// else
-		// 	ft_errno(cmd->args[1], 1, data, false);
+		else if (!chdir(cd->dir))
+			rv = 1;
+		else
+			ft_errno(cd->dir, 1, cd->data, false);
 	}
 	if (!cd->dir)
 		rv = ft_check_home(cd);
 	return (rv);
 }
 
+/*
+**	initialize the cd struct
+*/
 t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 {
 	t_cd		*cd;
@@ -70,13 +63,31 @@ t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	cd->dir = cmd->args[1];
 	cd->pwd = getcwd(cwd, sizeof(cwd));
 	if (!cd->pwd)
-		perror("pwd"); // determiner la sortie d'erreur
-	cd->oldpwd = ft_getenv(data, "OLDPWD=");
-	cd->home = ft_getenv(data, "HOME=");
+		ft_errno("cd", 1, data, false);
+	cd->oldpwd = ft_getenv(data, OLDPWD);
+	cd->home = ft_getenv(data, HOME);
+	cd->err = NULL;
+	cd->temp_tilde = NULL;
+	cd->temp_pwd = NULL;
+	cd->temp_path = NULL;
 	return (cd);
 }
-// a determiner suivant ce que j'ai besoin
-// void	ft_cd_error(t_cd *cd, char *s, int flag)
+
+/*
+**	clean all the cd struct
+*/
+static void	ft_free_cd(t_cd *cd)
+{
+	if (cd->err)
+		free(cd->err);
+	if (cd->temp_tilde)
+		free(cd->temp_tilde);
+	// if (cd->temp_pwd)
+	// 	ft_free_array(cd->temp_pwd); // EXPLOSION -> clear 1 trop loin
+	if (cd->temp_path)
+		ft_free_array(cd->temp_path);
+	free(cd);
+}
 
 /*
 **	if the direction works -> we change pwd + oldpwd
@@ -87,5 +98,6 @@ void	ft_cd(t_data *data, t_cmd *cmd)
 
 	cd = ft_init_cd(data, cmd);
 	if (ft_check_dir(cd))
-		ft_change_pwd(data, cmd);
+		ft_change_pwd(cd);
+	ft_free_cd(cd);
 }

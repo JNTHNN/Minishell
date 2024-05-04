@@ -143,6 +143,10 @@ struct	s_cd
 	char	*pwd;
 	char	*oldpwd;
 	char	*home;
+	char	*err;
+	char	*temp_tilde;
+	char	**temp_pwd;
+	char	**temp_path;
 };
 
 #endif

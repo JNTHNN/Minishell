@@ -81,9 +81,14 @@ void	ft_errno(char *s, int code, t_data *data, int flag)
 {
 	if (s)
 	{
-		ft_putstr_fd("❌\033[0;31mminibash: ", 2);
-		perror(s);
-		ft_putstr_fd("\033[0m", 2);
+		if (errno != 0)
+		{
+			ft_putstr_fd("❌\033[0;31m minibash: ", 2);
+			perror(s);
+			ft_putstr_fd("\033[0m", 2);
+		}
+		else
+			ft_putstr_fd(s, 2);
 	}
 	if (code)
 		g_exit_code = code;

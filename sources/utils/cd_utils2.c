@@ -60,20 +60,19 @@ char	**ft_append_pwd(char **pwd, char *path)
 /*
 **	replaces the shortcut with the corresponding path
 */
-char	**ft_replace_pwd(t_data *data, char *shortcut)
+char	**ft_replace_pwd(t_cd *cd, char *shortcut)
 {
 	char	*temp_pwd;
 	char	**pwd;
 
-	temp_pwd = NULL;
 	if (shortcut && !ft_strncmp(shortcut, "-", 1))
 	{
-		temp_pwd = ft_getenv(data, "OLDPWD=");
+		temp_pwd = cd->oldpwd;
 		if (temp_pwd)
 			printf("%s\n", temp_pwd + 7);
 	}
 	else
-		temp_pwd = ft_getenv(data, "HOME=");
+		temp_pwd = cd->home;
 	pwd = ft_split(temp_pwd, '/');
 	return (pwd);
 }
@@ -111,20 +110,10 @@ char	*ft_pwdcat(char **pwd)
 	char	*temp;
 	int		i;
 	int		size;
-	static char	cwd[PATH_MAX];
 
 	size = ft_tablen(pwd);
 	i = 0;
-	if (pwd == NULL || *pwd == NULL)
-	{
-		printf("HELLO\n");
-		if (getcwd(cwd, sizeof(cwd)) != NULL)
-		{
-			printf("pwdcat pwd = %s\n", cwd);
-			return(cwd);
-		}
-	}
-	if (!ft_strncmp(pwd[0], "PWD=", 4))
+	if (!ft_strncmp(pwd[0], HOME, 5) || !ft_strncmp(pwd[0], OLDPWD, 7))
 		i = 1;
 	new_pwd = ft_strdup("");
 	while (i < size)
@@ -132,6 +121,7 @@ char	*ft_pwdcat(char **pwd)
 		temp = ft_strjoin(new_pwd, "/");
 		free(new_pwd);
 		new_pwd = ft_strjoin(temp, pwd[i]);
+		free(temp);
 		i++;
 	}
 	return (new_pwd);

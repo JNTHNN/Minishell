@@ -17,16 +17,13 @@
 */
 int	ft_check_tilde(t_cd *cd)
 {
+	cd->temp_tilde = ft_strjoin(cd->home + 5, cd->dir + 1);
 	if (!cd->home)
+		return (ft_errno(ERR_HOME, 1, cd->data, false), 0);
+	if (chdir(cd->temp_tilde) == -1)
 	{
-		ft_putstr_fd(ERR_HOME, 2);
-		ft_errno(NULL, 1, cd->data, false);
-		return (0);
-	}
-	if (chdir(ft_strjoin(cd->home + 5, cd->dir + 1)) == -1)
-	{
-		ft_errno("cd", 1, cd->data, false);
-		return (0);
+		cd->err = ft_strjoin("cd: ", cd->temp_tilde);
+		return (ft_errno(cd->err, 1, cd->data, false), 0);
 	}
 	return (1);
 }
@@ -37,15 +34,11 @@ int	ft_check_tilde(t_cd *cd)
 int	ft_check_home(t_cd *cd)
 {
 	if (!cd->home)
-	{
-		ft_putstr_fd(ERR_HOME, 2);
-		ft_errno(NULL, 1, cd->data, false);
-		return (0);
-	}
+		return (ft_errno(ERR_HOME, 1, cd->data, false), 0);
 	if (chdir(cd->home + 5) == -1)
 	{
-		ft_errno("cd", 1, cd->data, false);
-		return (0);
+		cd->err = ft_strjoin("cd: ", cd->home + 5);
+		return (ft_errno(cd->err, 1, cd->data, false), 0);
 	}
 	return (1);
 }
@@ -56,15 +49,11 @@ int	ft_check_home(t_cd *cd)
 int	ft_check_minus(t_cd *cd)
 {
 	if (!cd->oldpwd)
-	{
-		ft_putstr_fd(ERR_OLDPWD, 2);
-		ft_errno(NULL, 1, cd->data, false);
-		return (0);
-	}
+		return (ft_errno(ERR_OLDPWD, 1, cd->data, false), 0);
 	if (chdir(cd->oldpwd + 7) == -1)
 	{
-		ft_errno("cd", 1, cd->data, false);
-		return (0);
+		cd->err = ft_strjoin("cd: ", cd->oldpwd + 7);
+		return (ft_errno(cd->err, 1, cd->data, false), 0);
 	}
 	return (1);
 }
