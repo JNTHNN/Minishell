@@ -12,18 +12,10 @@
 
 #include "../../includes/minishell.h"
 
-/*
-**	La fonction getcwd() copie le chemin d'accès absolu du répertoire de 
-**	travail courant dans la chaîne pointée par buf, qui est de longueur size.
-*/
-
-/*	(void)data for the moment	*/
-
 void	ft_pwd(t_data *data)
 {
 	static char	cwd[PATH_MAX];
 
-	(void)data;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
