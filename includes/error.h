@@ -26,6 +26,9 @@
 # define ERR_VAR "❌\033[0;31m minibash: export: not valid in this context\033[0m\n"
 # define ERR_VAR_ID "❌\033[0;31m minibash: export: not an identifier\033[0m\n"
 # define ERR_VAR_EQ "❌\033[0;31m minibash: export: not a valid identifier\033[0m\n"
+# define ERR_U_VAR "❌\033[0;31m minibash: unset: not valid in this context\033[0m\n"
+# define ERR_U_VAR_ID "❌\033[0;31m minibash: unset: not an identifier\033[0m\n"
+# define ERR_U_VAR_EQ "❌\033[0;31m minibash: unset: not a valid identifier\033[0m\n"
 
 typedef enum e_err_codes
 {

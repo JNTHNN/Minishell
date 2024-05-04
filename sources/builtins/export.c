@@ -39,7 +39,7 @@ static int	ft_check_var(char *str)
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]))
-			return (ft_errno(ERR_HOME, 1, NULL, false), 0);
+			return (ft_errno(ERR_VAR_EQ, 1, NULL, false), 0);
 		i++;
 	}
 	return (1);
