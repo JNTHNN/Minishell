@@ -12,6 +12,9 @@
 
 #include "../../includes/minishell.h"
 
+/*
+**	strdup with size parameter
+*/
 static char	*ft_strndup(char *s1, int size)
 {
 	int		i;
@@ -28,6 +31,9 @@ static char	*ft_strndup(char *s1, int size)
 	return (dst);
 }
 
+/*
+**	extract the var name from string
+*/
 char	*ft_var(char *s)
 {
 	char	*equal_sign;
@@ -45,6 +51,9 @@ char	*ft_var(char *s)
 	return (ft_strdup(s));
 }
 
+/*
+**	extract the data from string
+*/
 char	*ft_data(char *s)
 {
 	char	*equal_sign;

@@ -16,6 +16,9 @@
 **  Print env (via export) in ascii sort
 */
 
+/*
+**	swap nodes a to b
+*/
 static void	ft_swap_nodes(t_env *a, t_env *b)
 {
 	char	*temp_var;
@@ -29,6 +32,9 @@ static void	ft_swap_nodes(t_env *a, t_env *b)
 	b->data = temp_data;
 }
 
+/*
+**	sorts env list nodes in ascending order ascii
+*/
 static void	ft_sort_env(t_env *head)
 {
 	int		swapped;
@@ -57,6 +63,9 @@ static void	ft_sort_env(t_env *head)
 	sorted = unsort;
 }
 
+/*
+**	print env from export
+*/
 void	ft_print_env(t_env *head)
 {
 	t_env	*node;

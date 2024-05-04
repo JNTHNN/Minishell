@@ -16,6 +16,9 @@
 **  Initialize env in linked list
 */
 
+/*
+**	add env node to the end list
+*/
 static void	ft_envadd_back(t_env **lst, t_env *new)
 {
 	if (!lst)
@@ -25,6 +28,9 @@ static void	ft_envadd_back(t_env **lst, t_env *new)
 	*lst = new;
 }
 
+/*
+**	add the new node with var + data in env list
+*/
 static void	ft_add_env(t_env **head, char *var, char *data)
 {
 	t_env	*new_node;
@@ -38,6 +44,9 @@ static void	ft_add_env(t_env **head, char *var, char *data)
 	ft_envadd_back(head, new_node);
 }
 
+/*
+**	create new node for env list
+*/
 static t_env	*ft_new_node(char *var)
 {
 	t_env	*node;
@@ -54,6 +63,9 @@ static t_env	*ft_new_node(char *var)
 	return (node);
 }
 
+/*
+**	create the env list from env tab
+*/
 t_env	*ft_setup_env(char **env)
 {
 	t_env	*head;

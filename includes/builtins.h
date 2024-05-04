@@ -23,6 +23,17 @@
 # define TPLUS "~+"
 # define TMINUS "~-"
 
+/* Handle all builtins : builtins.c	*/
+bool	ft_is_builtin(char *name);
+int		ft_builtin(t_data *data, t_cmd *cmd);
+
+void	ft_echo(t_data *data, t_cmd *cmd);
+void	ft_cd(t_data *data, t_cmd *cmd);
+void	ft_pwd(t_data *data);
+int		ft_export(t_data *data, t_cmd *cmd);
+void	ft_env(t_data *data);
+int		ft_exit(t_data *data, t_cmd *cmd);
+void	ft_unset(t_data *data, t_cmd *cmd);
 
 /*  utils for cd : cd_utils.c   */
 void	ft_seek_replace(t_data *data, char *search, char *pwd);

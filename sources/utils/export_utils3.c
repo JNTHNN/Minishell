@@ -12,6 +12,9 @@
 
 #include "../../includes/minishell.h"
 
+/*
+**	free the env list
+*/
 static void	ft_free_lst(t_env *head)
 {
 	t_env	*next_node;
@@ -28,6 +31,9 @@ static void	ft_free_lst(t_env *head)
 	head = NULL;
 }
 
+/*
+**	measures the size of the env list
+*/
 static int	ft_envsize(t_env *lst)
 {
 	int	size;
@@ -44,6 +50,9 @@ static int	ft_envsize(t_env *lst)
 	return (size);
 }
 
+/*
+**	converts env list to **tab
+*/
 static char	**ft_ltoa(t_env *head)
 {
 	t_env	*temp;
@@ -72,6 +81,9 @@ static char	**ft_ltoa(t_env *head)
 	return (new_env);
 }
 
+/*
+**	replaces the old env with the new
+*/
 void	ft_update_env(t_env *head, t_data *data)
 {
 	data->env = ft_ltoa(head);

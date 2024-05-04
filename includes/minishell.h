@@ -55,18 +55,6 @@ int		ft_init_signal(void);
 void	rl_replace_line(const char *text, int clear_undo);
 void	ft_get_ctrl_d(t_data *data);
 
-/* Handle all builtins : builtins.c	*/
-bool	ft_is_builtin(char *name);
-int		ft_builtin(t_data *data, t_cmd *cmd);
-
-void	ft_echo(t_data *data, t_cmd *cmd);
-void	ft_cd(t_data *data, t_cmd *cmd);
-void	ft_pwd(t_data *data);
-int		ft_export(t_data *data, t_cmd *cmd);
-void	ft_env(t_data *data);
-int		ft_exit(t_data *data, t_cmd *cmd);
-void	ft_unset(t_data *data, t_cmd *cmd);
-
 /*  utils for export : export_utils.c   */
 t_env	*ft_setup_env(char **env);
 void	ft_modify_or_add_env(t_env **head, char *var);
