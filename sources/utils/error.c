@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/03 18:17:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:17:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	ft_print_redir_error(int err_code)
 		ft_putstr_fd("`|'\n\033[0m", STDERR_FILENO);
 	else
 		ft_putstr_fd("`newline'\n\033[0m", STDERR_FILENO);
+	g_exit_code = 2;
 }
 
 static void	ft_print_error(int err_code, t_data *data)
@@ -39,6 +40,7 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_print_redir_error(err_code);
 	else if (err_code == E_OPEN)
 	{
+		g_exit_code = EXIT_FAILURE;
 		ft_printf("❌\033[0;31m %s:", data->err_info);
 		ft_putstr_fd(ERR_OPEN, STDERR_FILENO);
 	}
@@ -51,7 +53,7 @@ static void	ft_print_error(int err_code, t_data *data)
 static void	ft_throw_error(t_data *data, int err_code)
 {
 	ft_print_error(err_code, data);
-	g_exit_code = err_code;
+	// g_exit_code = err_code;
 	ft_free_if_error(data);
 }
 
@@ -75,8 +77,6 @@ void	ft_handle_arg_error(int argc, char **argv)
 	}
 }
 
-
-
 void	ft_errno(char *s, int code, t_data *data, int flag)
 {
 	if (s)
@@ -91,7 +91,10 @@ void	ft_errno(char *s, int code, t_data *data, int flag)
 			ft_putstr_fd(s, 2);
 	}
 	if (code)
+	{
 		g_exit_code = code;
+		printf("EXITCODE APRES = %d\n", g_exit_code);
+	}
 	if (flag)
 	{
 		ft_free_if_error(data);

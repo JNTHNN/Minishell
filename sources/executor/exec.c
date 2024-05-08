@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/30 12:32:44 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:36:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,22 @@ int	ft_cmd_exec(t_data *data)
 
 	pid = fork();
 	status = 0;
-	if (pid == -1)
+	if (pid == F_ERROR)
+	// {
+	// 	perror("fork");
+	// 	return (EXIT_FAILURE);
+	// }
+		return (ft_errno("fork", 1, data, false), EXIT_FAILURE);
+	else if (pid == FORKED_CHILD)
 	{
-		perror("fork");
-		return (EXIT_FAILURE);
+		ft_signal(SIG_DFL);
+		execute_command(data, data->cmd);
 	}
-	else if (pid > 0)
+	else
 	{
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
 			printf("^\\Quit: %d\n", SIGQUIT);
-	}
-	else
-	{
-		ft_signal(SIG_DFL);
-		execute_command(data, data->cmd);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -177,6 +178,25 @@ int	ft_init_pipes(t_data *data, t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
+void	ft_close_pipes(t_data *data, t_exec *exec, int skip)
+{
+	int	i;
+	int	nb_pipes;
+
+	i = 0;
+	nb_pipes = data->nb_of_cmds - 1;
+	while (i < nb_pipes)
+	{
+		if (i == skip)
+			i++;
+		if (i == nb_pipes)
+			break ;
+		close(exec->pipes[i][0]);
+		close(exec->pipes[i][1]);
+		i++;
+	}
+}
+
 int	ft_executor(t_data *data)
 {
 	t_exec		*exec;
@@ -241,12 +261,14 @@ int	ft_executor(t_data *data)
 					if (dup2(exec->pipes[i - 1][0], STDIN_FILENO) == F_ERROR)
 						return (E_DUP);
 					close(exec->pipes[i - 1][1]);
+					ft_close_pipes(data, exec, i);
 				}
 				if (current_cmd->right && exec->fdout == NOT_INIT)
 				{
 					if (dup2(exec->pipes[i][1], STDOUT_FILENO) == F_ERROR)
 						return (E_DUP);
 					close(exec->pipes[i][0]);
+					ft_close_pipes(data, exec, i);
 				}
 				if (!current_cmd->right && exec->fdout == NOT_INIT)
 					dup2(exec->tmpout, STDOUT_FILENO);
@@ -278,9 +300,11 @@ int	ft_executor(t_data *data)
 	while (i--)
 	{
 		exec->child_pid[i] = waitpid(0, &exec->status, 0);
+		if (WIFEXITED(exec->status))
+			g_exit_code = WEXITSTATUS(exec->status);
 	}
-	if (WIFSIGNALED(exec->status))
-		printf("^\\Quit: %d\n", SIGQUIT);
+	// if (WIFSIGNALED(exec->status))
+	// 	printf("^\\Quit: %d\n", SIGQUIT);
 	return (EXIT_SUCCESS);
 }
 

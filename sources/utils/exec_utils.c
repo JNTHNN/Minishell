@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/29 16:18:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:46:43 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,27 @@
 
 void	execute_command(t_data *data, t_cmd *cmd)
 {
+	struct stat s_stat;
+
 	if (cmd->args)
 	{
 		if (!ft_strncmp(cmd->args[0], "/", 1)
 			|| !ft_strncmp(cmd->args[0], "./", 2))
 		{
-			if (execve(cmd->args[0], cmd->args, data->env) == -1)
+			if (lstat(cmd->args[0], &s_stat) < 0)
+				perror("lstat");
+			if (S_ISDIR(s_stat.st_mode))
 			{
-				perror("execve absolu");
-				exit(EXIT_FAILURE);
+				printf("EXITCODE AV = %d\n", g_exit_code);
+				ft_errno("is a directory", 126, data, false);
+			}
+			else
+			{
+				if (execve(cmd->args[0], cmd->args, data->env) == -1)
+				{
+					perror("execve absolu");
+					exit(EXIT_FAILURE);
+				}
 			}
 		}
 		else
