@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/03 20:47:43 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:32:27 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define ERR_U_VAR_ID "❌\033[0;31m minibash: unset: not an identifier\033[0m\n"
 # define ERR_U_VAR_EQ "❌\033[0;31m minibash: unset: not a valid identifier\
 \033[0m\n"
+# define ERR_NUM_ARG ": numeric argument required\033[0m\n"
+# define ERR_TOO_ARG "too many arguments\033[0m\n"
+# define START_EXIT "❌\033[0;31mminibash: exit: "
 
 typedef enum e_err_codes
 {

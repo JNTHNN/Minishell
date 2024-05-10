@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/04 10:30:40 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:07:19 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ char	**ft_replace_pwd(t_cd *cd, char *shortcut);
 int		ft_check_tilde(t_cd *cd);
 int		ft_check_home(t_cd *cd);
 int		ft_check_minus(t_cd *cd);
+
+/*	utils for exit : exit.c		*/
+int64_t	ft_atol(const char *str, int *flag);
+void	ft_print_err_exit(char *arg);
 
 /*  utils for export : export_utils.c   */
 t_env	*ft_setup_env(char **env);
