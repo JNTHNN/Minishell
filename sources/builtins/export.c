@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 16:51:29 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:14:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static int	ft_check_var(char *str)
 	i = 0;
 	var = ft_var(str);
 	if (var[i] == '=')
-		return (ft_errno(ERR_VAR_EQ, 1, NULL, false), 0);
+		return (ft_errno(ERR_VAR_EQ, 1, NULL, true), 0);
 	if (!var || ft_isdigit(var[i]))
-		return (ft_errno(ERR_VAR_ID, 1, NULL, false), 0);
+		return (ft_errno(ERR_VAR_ID, 1, NULL, true), 0);
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]))
-			return (ft_errno(ERR_VAR_EQ, 1, NULL, false), 0);
+			return (ft_errno(ERR_VAR_EQ, 1, NULL, true), 0);
 		i++;
 	}
 	return (1);

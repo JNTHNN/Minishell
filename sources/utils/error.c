@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/13 17:18:25 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 22:27:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,30 +76,5 @@ void	ft_handle_arg_error(int argc, char **argv)
 	{
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(1);
-	}
-}
-
-void	ft_errno(char *s, int code, t_data *data, int flag)
-{
-	if (s)
-	{
-		if (errno != 0)
-		{
-			ft_putstr_fd("❌\033[0;31m minibash: ", 2);
-			perror(s);
-			ft_putstr_fd("\033[0m", 2);
-		}
-		else
-			ft_putstr_fd(s, 2);
-	}
-	if (code)
-	{
-		g_exit_code = code;
-		printf("EXITCODE APRES = %d\n", g_exit_code);
-	}
-	if (flag)
-	{
-		ft_free_if_error(data);
-		exit(g_exit_code);
 	}
 }

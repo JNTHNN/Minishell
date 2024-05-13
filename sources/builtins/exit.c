@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 10:38:18 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:20:54 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 		if (flag)
 		{
 			ft_print_err_exit(cmd->args[1]);
-			g_exit_code = 255;
+			exit_status = 255;
 		}
 	}
 	if (!flag && ft_tablen(cmd->args) > 2)
