@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/08 17:46:43 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:19:53 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ t_exec	*ft_init_exec(t_data *data)
 
 	exec = (t_exec *)malloc(sizeof(t_exec));
 	if (!exec)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, data, true);
 	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	if (!exec->child_pid)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, data, true);
 	exec->status = -1;
 	exec->tmpin = -1;
 	exec->tmpout = -1;

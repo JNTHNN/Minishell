@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/10 17:07:19 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:49:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # define CURRENT "."
 # define TPLUS "~+"
 # define TMINUS "~-"
+# define HEAD 0
+# define CURR 1
+# define NEW 2
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
@@ -42,10 +45,10 @@ void	ft_cd_absolute(t_cd *cd);
 void	ft_cd_relative(t_cd *cd);
 
 /*  manipulate tab for cd : cd_utils2.c */
-char	**ft_append_pwd(char **pwd, char *path);
-char	**ft_sup_pwd(char **pwd);
+char	**ft_append_pwd(char **pwd, char *path, t_cd *cd);
+char	**ft_sup_pwd(char **pwd, t_cd *cd);
 char	*ft_pwdcat(char **pwd);
-char	**ft_remove_first(char **path);
+char	**ft_remove_first(char **path, t_cd *cd);
 char	**ft_replace_pwd(t_cd *cd, char *shortcut);
 
 /*	checker for cd : cd_utils3.c	*/
@@ -59,7 +62,7 @@ void	ft_print_err_exit(char *arg);
 
 /*  utils for export : export_utils.c   */
 t_env	*ft_setup_env(char **env);
-void	ft_modify_or_add_env(t_env **head, char *var);
+void	ft_modify_or_add_env(t_env **head, char *var, t_data *d);
 
 /* prints for export : export_utils2.c  */
 void	ft_print_env(t_env *head);

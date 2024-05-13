@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 23:43:22 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:06:38 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,14 @@ t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	static char	cwd[PATH_MAX];
 
 	cd = (t_cd *)malloc(sizeof(t_cd));
+	if (!cd)
+		ft_errno(ERR_MEM, 2, data, true);
 	cd->data = data;
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
 	cd->pwd = getcwd(cwd, sizeof(cwd));
 	if (!cd->pwd)
-		ft_errno("cd", 1, data, false);
+		ft_errno("cd", 2, data, true);
 	cd->oldpwd = ft_getenv(data, OLDPWD);
 	cd->home = ft_getenv(data, HOME);
 	cd->err = NULL;

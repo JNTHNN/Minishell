@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 14:30:48 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:19:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 **	removes the first path from the path
 */
-char	**ft_remove_first(char **path)
+char	**ft_remove_first(char **path, t_cd *cd)
 {
 	char	**new_path;
 	int		i;
@@ -24,7 +24,7 @@ char	**ft_remove_first(char **path)
 	i = ft_tablen(path);
 	new_path = (char **)malloc(i * sizeof(char *));
 	if (!new_path)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, cd->data, true);
 	j = 1;
 	while (j < i)
 	{
@@ -38,7 +38,7 @@ char	**ft_remove_first(char **path)
 /*
 **	adds the path to the end
 */
-char	**ft_append_pwd(char **pwd, char *path)
+char	**ft_append_pwd(char **pwd, char *path, t_cd *cd)
 {
 	int		i;
 	char	**append_pwd;
@@ -46,7 +46,7 @@ char	**ft_append_pwd(char **pwd, char *path)
 	i = 0;
 	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
 	if (!append_pwd)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, cd->data, true);
 	while (pwd && pwd[i])
 	{
 		append_pwd[i] = ft_strdup(pwd[i]);
@@ -80,7 +80,7 @@ char	**ft_replace_pwd(t_cd *cd, char *shortcut)
 /*
 **	removes the ".." from the path
 */
-char	**ft_sup_pwd(char **pwd)
+char	**ft_sup_pwd(char **pwd, t_cd *cd)
 {
 	char	**new_pwd;
 	int		len;
@@ -90,7 +90,7 @@ char	**ft_sup_pwd(char **pwd)
 	len = ft_tablen(pwd);
 	new_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(pwd)));
 	if (!new_pwd)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, cd->data, true);
 	while (i < len - 1)
 	{
 		new_pwd[i] = ft_strdup(pwd[i]);

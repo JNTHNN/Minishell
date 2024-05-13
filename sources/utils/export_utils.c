@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/03 20:09:20 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:49:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,18 @@ static void	ft_envadd_back(t_env **lst, t_env *new)
 /*
 **	add the new node with var + data in env list
 */
-static void	ft_add_env(t_env **head, char *var, char *data)
+static int	ft_add_env(t_env **head, char *var, char *data)
 {
 	t_env	*new_node;
 
 	new_node = (t_env *)malloc(sizeof(t_env));
 	if (!new_node)
-		return ;
+		return (E_MEM);
 	new_node->var = var;
 	new_node->data = data;
 	new_node->next = NULL;
 	ft_envadd_back(head, new_node);
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -68,41 +69,42 @@ static t_env	*ft_new_node(char *var)
 */
 t_env	*ft_setup_env(char **env)
 {
-	t_env	*head;
-	t_env	*current;
-	t_env	*node;
+	t_env	*node[3];
 
-	head = NULL;
-	current = NULL;
+	node[HEAD] = NULL;
+	node[CURR] = NULL;
 	if (!env || !*env)
 		return (NULL);
 	while (*env)
 	{
-		node = ft_new_node(*env);
-		if (!head)
+		node[NEW] = ft_new_node(*env);
+		if (!node[NEW])
+			return (NULL);
+		if (!node[HEAD])
 		{
-			head = node;
-			current = node;
+			node[HEAD] = node[NEW];
+			node[CURR] = node[NEW];
 		}
 		else
 		{
-			current->next = node;
-			current = node;
+			node[CURR]->next = node[NEW];
+			node[CURR] = node[NEW];
 		}
 		env++;
 	}
-	return (head);
+	return (node[HEAD]);
 }
 
 /*
 **	Check if var env already exist then modify
 **	or just add
 */
-void	ft_modify_or_add_env(t_env **head, char *var)
+void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
 {
 	t_env	*current;
 	char	*name;
 	char	*data;
+	int		ret;
 
 	name = ft_var(var);
 	data = ft_data(var);
@@ -120,5 +122,7 @@ void	ft_modify_or_add_env(t_env **head, char *var)
 			current = current->next;
 		}
 	}
-	ft_add_env(head, name, data);
+	ret = ft_add_env(head, name, data);
+	if (ret)
+		ft_errno(ERR_MEM, 2, d, true);
 }

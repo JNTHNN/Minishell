@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:49:29 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/23 22:26:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:11:31 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define UTILS_H
 
 /* utils.c */
-char	**ft_arrcpy(char **arr);
 void	*free_arr(char **arr);
 char	**ft_envcpy(char **arr);
 char	**ft_create_env(char **arr);

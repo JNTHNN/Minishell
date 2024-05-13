@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/10 17:32:27 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:48:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # define ERR_ARG "❌\033[0;31m  Minishell doesn't accept arguments \033[0m\n"
 # define ERR_QUOTES "❌\033[0;31m Unexpected token : unclosed quote \033[0m\n"
 # define ERR_REDIR "❌\033[0;31m Syntax error near unexpected token "
-# define ERR_MEM "❌\033[0;31m Something went wrong with memory allocation \
-\033[0m\n"
+# define ERR_MEM "❌\033[0;31m readline: out of virtual memory \033[0m\n"
 # define ERR_OPEN " No such file or directory\033[0m\n"
 # define ERR_DUP "❌\033[0;31m Bad file descriptor \033[0m\n"
 # define ERR_UNDEF "❌\033[0;31m Undefined error \033[0m\n"
@@ -34,6 +33,7 @@
 # define ERR_NUM_ARG ": numeric argument required\033[0m\n"
 # define ERR_TOO_ARG "too many arguments\033[0m\n"
 # define START_EXIT "❌\033[0;31mminibash: exit: "
+# define EXEC_FAIL 1
 
 typedef enum e_err_codes
 {
