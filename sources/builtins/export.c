@@ -6,18 +6,40 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:34:34 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:14:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_export(t_data *data, t_cmd *cmd)
+static int	ft_check_var(char *str)
+{
+	int		i;
+	char	*var;
+
+	i = 0;
+	var = ft_var(str);
+	if (var[i] == '=')
+		return (ft_errno(ERR_VAR_EQ, 1, NULL), 0);
+	if (!var || ft_isdigit(var[i]))
+		return (ft_errno(ERR_VAR_ID, 1, NULL), 0);
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]))
+			return (ft_errno(ERR_VAR_EQ, 1, NULL), 0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_export(t_data *data, t_cmd *cmd)
 {
 	t_env	*head;
 	int		i;
 
 	head = ft_setup_env(data->env);
+	if (!head)
+		ft_errno(ERR_MEM, 2, data);
 	i = 1;
 	if (cmd->args)
 	{
@@ -27,9 +49,8 @@ void	ft_export(t_data *data, t_cmd *cmd)
 			{
 				while (cmd->args[i])
 				{
-					ft_modify_or_add_env(&head,
-						cmd->args[i]);
-					i++;
+					if (ft_check_var(cmd->args[i]))
+						ft_modify_or_add_env(&head, cmd->args[i++], data);
 				}
 			}
 			else
@@ -37,4 +58,5 @@ void	ft_export(t_data *data, t_cmd *cmd)
 		}
 	}
 	ft_update_env(head, data);
+	return (EXIT_SUCCESS);
 }

@@ -13,16 +13,6 @@
 #include "../../includes/minishell.h"
 
 /*
-**	Ecrit l'argument dans le terminal, si flag -n (voir si besoin checker ici)
-**	ou sera fait en amont
-**	remplacer *str par *arg et int flg par char *flag
-**	echo ~ = print le HOME
-**	echo ~+ = print le PWD
-**	echo ~+text = PWD + texte.
-**	echo ~- = print le OLD_PWD
-*/
-
-/*
 **	checker for -n | return 0 if not
 */
 static int	ft_check_option(char *option)
@@ -42,17 +32,16 @@ static int	ft_check_option(char *option)
 	return (1);
 }
 
-// static int	ft_check_tilde(char *option)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (option[0] != '~')
-// 		return (0);
-// 	if (option[0] == '~' && !option[1])
-// 		return (1);
-// 	return (0);
-// }
+static char	*ft_extra(t_data *data, char *s)
+{
+	if (!ft_strncmp(s, TILDE, 2) && ft_getenv(data, HOME))
+		s = ft_getenv(data, HOME) + 5;
+	else if (!ft_strncmp(s, TPLUS, 3) && ft_getenv(data, PWD))
+		s = ft_getenv(data, PWD) + 4;
+	else if (!ft_strncmp(s, TMINUS, 3) && ft_getenv(data, OLDPWD))
+		s = ft_getenv(data, OLDPWD) + 7;
+	return (s);
+}
 
 void	ft_echo(t_data *data, t_cmd *cmd)
 {
@@ -70,6 +59,7 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 	}
 	while (cmd->args[i])
 	{
+		cmd->args[i] = ft_extra(data, cmd->args[i]);
 		ft_putstr_fd(cmd->args[i], 1);
 		if (cmd->args[i + 1])
 			ft_putstr_fd(" ", 1);
@@ -78,5 +68,3 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 	if (option == 0)
 		ft_putstr_fd("\n", 1);
 }
-
-/* EXTRA A IMPLEMENTER  = ECHO ~ et ECHO ~+ */

@@ -3,38 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/29 16:18:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/13 22:33:22 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// void	ft_check_exe(char *dir)
+// {
+// 	struct stat	s_stat;
+
+// 	if (lstat(dir, &s_stat) < 0)
+	
+// }
+
+// bash-3.2$ eee
+// bash: eee: command not found
+// bash-3.2$ echo $?
+// 127
+// bash-3.2$ /etc
+// bash: /etc: is a directory
+// bash-3.2$ echo $?
+// 126
+// bash-3.2$ ./minishell_tester/test_files/invalid_permission
+// bash: ./minishell_tester/test_files/invalid_permission: Permission denied
+// bash-3.2$ echo $?
+// 126
+
 void	execute_command(t_data *data, t_cmd *cmd)
 {
+	struct stat	s_stat;
+
 	if (cmd->args)
 	{
 		if (!ft_strncmp(cmd->args[0], "/", 1)
-			|| !ft_strncmp(cmd->args[0], "./", 2))
+			|| !ft_strncmp(cmd->args[0], "./", 2)) // si ca commence par ./exe ou /exe 126
 		{
-			if (execve(cmd->args[0], cmd->args, data->env) == -1)
+			if (lstat(cmd->args[0], &s_stat) < 0)
+				ft_errno(cmd->args[0], 127, data);
+			if (S_ISDIR(s_stat.st_mode))
 			{
-				perror("execve absolu");
-				exit(EXIT_FAILURE);
+				ft_errno(cmd->args[0], 126, data);
+			}
+			else
+			{
+				if (execve(cmd->args[0], cmd->args, data->env) == -1)
+				{
+					perror("execve absolu");
+					exit(EXIT_FAILURE);
+				}
 			}
 		}
-		else
+		else // direct exe
 		{
-			if (ft_create_exec(data, cmd) == EXIT_FAILURE)
-			{
-				perror("command not found");
-				exit(EXIT_FAILURE);
-			}
+			if (ft_create_exec(data, cmd))
+				ft_errno_exec(data, cmd->args[0]);
 		}
 	}
-	exit(EXIT_SUCCESS);
 }
 
 char	**ft_pathiter(char **path, t_cmd *cmd)
@@ -66,25 +94,22 @@ char	**ft_path_abs(t_data *data, t_cmd *cmd)
 int	ft_create_exec(t_data *data, t_cmd *cmd)
 {
 	char	**progpath;
+	int		i;
 
 	progpath = ft_path_abs(data, cmd);
+	i = 0;
 	if (!progpath)
+		return (EXIT_FAILURE);
+	while (progpath[i])
 	{
-		perror("path");
-		exit(EXIT_FAILURE);
-	}
-	while (*progpath)
-	{
-		if (access(*progpath, F_OK) == 0)
+		if (access(progpath[i], F_OK) == 0)
 		{
-			if (execve(*progpath, cmd->args, data->env) == -1)
-			{
-				perror("command");
-				exit(EXIT_FAILURE);
-			}
+			if (execve(progpath[i], cmd->args, data->env) == -1)
+				return (EXIT_FAILURE);
 		}
-		progpath++;
+		i++;
 	}
+	ft_free_array(progpath);
 	return (EXIT_FAILURE);
 }
 
@@ -94,10 +119,10 @@ t_exec	*ft_init_exec(t_data *data)
 
 	exec = (t_exec *)malloc(sizeof(t_exec));
 	if (!exec)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, data);
 	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	if (!exec->child_pid)
-		return (NULL);
+		ft_errno(ERR_MEM, 2, data);
 	exec->status = -1;
 	exec->tmpin = -1;
 	exec->tmpout = -1;

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int ft_isunder(int c)
+static int	ft_isunder(int c)
 {
 	if (c == 95 || c == 61)
 		return (1);

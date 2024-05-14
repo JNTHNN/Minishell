@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:14:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 00:54:45 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:51:38 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,15 @@
 /*
 **	checker for cd ~ | return 0 if error
 */
-int	ft_check_tilde(t_data *data)
+int	ft_check_tilde(t_cd *cd)
 {
-	char	*home;
-
-	home = ft_getenv(data, "HOME=");
-	if (!home)
+	cd->temp_tilde = ft_strjoin(cd->home + 5, cd->dir + 1);
+	if (!cd->home)
+		return (ft_errno(ERR_HOME, 1, cd->data), 0);
+	if (chdir(cd->temp_tilde) == -1)
 	{
-		perror("No HOME, No party");
-		return (0);
-	}
-	if (chdir(ft_strjoin(home + 5, data->cmd->args[1] + 1)) == -1)
-	{
-		perror("cd tilde");
-		return (0);
+		cd->err = ft_strjoin("cd: ", cd->temp_tilde);
+		return (ft_errno(cd->err, 1, cd->data), 0);
 	}
 	return (1);
 }
@@ -36,20 +31,14 @@ int	ft_check_tilde(t_data *data)
 /*
 **	checker for cd | return 0 if error
 */
-int	ft_check_home(t_data *data)
+int	ft_check_home(t_cd *cd)
 {
-	char	*home;
-
-	home = ft_getenv(data, "HOME=");
-	if (!home)
+	if (!cd->home)
+		return (ft_errno(ERR_HOME, 1, cd->data), 0);
+	if (chdir(cd->home + 5) == -1)
 	{
-		perror("No HOME, No party");
-		return (0);
-	}
-	if (chdir(home + 5) == -1)
-	{
-		perror("cd home");
-		return (0);
+		cd->err = ft_strjoin("cd: ", cd->home + 5);
+		return (ft_errno(cd->err, 1, cd->data), 0);
 	}
 	return (1);
 }
@@ -57,20 +46,14 @@ int	ft_check_home(t_data *data)
 /*
 **	checker for cd - | return 0 if error
 */
-int	ft_check_minus(t_data *data)
+int	ft_check_minus(t_cd *cd)
 {
-	char	*oldpwd;
-
-	oldpwd = ft_getenv(data, "OLDPWD=");
-	if (!oldpwd)
+	if (!cd->oldpwd)
+		return (ft_errno(ERR_OLDPWD, 1, cd->data), 0);
+	if (chdir(cd->oldpwd + 7) == -1)
 	{
-		perror("No OLDPWD, No party");
-		return (0);
-	}
-	if (chdir(oldpwd + 7) == -1)
-	{
-		perror("cd minus");
-		return (0);
+		cd->err = ft_strjoin("cd: ", cd->oldpwd + 7);
+		return (ft_errno(cd->err, 1, cd->data), 0);
 	}
 	return (1);
 }

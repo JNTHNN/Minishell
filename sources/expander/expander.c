@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/30 10:15:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:06:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ int	ft_expand(t_data *data)
 
 	ret = ft_expand_cmd_args(data);
 	if (ret)
-		return (ret);
+		return (E_MEM);
 	ret = ft_expand_redir(data);
 	if (ret)
-		return (ret);
+		return (E_MEM);
 	return (EXIT_SUCCESS);
 }

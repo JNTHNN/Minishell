@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 08:42:22 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/29 15:34:14 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/13 11:53:48 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		ft_parse(t_data *data);
 /* parser_utils.c */
 t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id);
 int		ft_add_cmd_node(char ***args, t_data *data, int id);
+t_cmd	*ft_cmd_lstlast(t_cmd *lst);
 
 /* parser_utils2.c */
 int		ft_add_redir_node(t_redir_lst **lst, t_tok_lst *token, int cmd_nb);
