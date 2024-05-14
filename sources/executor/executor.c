@@ -37,83 +37,14 @@ int	ft_cmd_exec(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_open_redir_in(t_data *data, t_cmd *cmd, t_exec *exec)
-{
-	t_redir_lst	*current;
-
-	if (!cmd->redirections)
-		return (EXIT_SUCCESS);
-	current = cmd->redirections;
-	while (current)
-	{
-		if (current->r_type == IN)
-		{
-			exec->fdin = open(current->filename, O_RDONLY);
-			if (exec->fdin == F_ERROR)
-			{
-				exec->fdin = STDIN_FILENO;
-				return (data->err_info = current->filename, E_OPEN);
-			}
-		}
-		else if (current->r_type == HEREDOC)
-		{
-			exec->fdin = open(current->hd_path, O_RDONLY);
-			if (exec->fdin == F_ERROR)
-				return (data->err_info = current->filename, E_OPEN);
-		}
-		current = current->next;
-	}
-	if (exec->fdin != NOT_INIT)
-	{
-		if (dup2(exec->fdin, STDIN_FILENO) == F_ERROR)
-			return (E_DUP);
-		close(exec->fdin);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	ft_open_redir_out(t_data *data, t_cmd *cmd, t_exec *exec)
-{
-	t_redir_lst	*current;
-
-	if (!cmd->redirections)
-		return (EXIT_SUCCESS);
-	current = cmd->redirections;
-	while (current)
-	{
-		if (current->r_type == OUT)
-		{
-			exec->fdout = open(current->filename,
-					O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (exec->fdout == F_ERROR)
-				return (data->err_info = current->filename, E_OPEN);
-		}
-		else if (current->r_type == OUT_T)
-		{
-			exec->fdout = open(current->filename,
-					O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (exec->fdout == F_ERROR)
-				return (data->err_info = current->filename, E_OPEN);
-		}
-		current = current->next;
-	}
-	if (exec->fdout != NOT_INIT)
-	{
-		if (dup2(exec->fdout, STDOUT_FILENO) == F_ERROR)
-			return (E_DUP);
-		close(exec->fdout);
-	}
-	return (EXIT_SUCCESS);
-}
-
 int	ft_handle_heredoc(t_redir_lst *node)
 {
 	char	*line;
 	int		fd;
 
 	fd = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd == -1)
-		return (E_OPEN);
+	if (fd == F_ERROR)
+		return (EXIT_FAILURE);
 	while (true)
 	{
 		line = readline("> ");
@@ -127,10 +58,9 @@ int	ft_handle_heredoc(t_redir_lst *node)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_trigger_heredoc(t_data *data, t_exec *exec)
+int	ft_trigger_heredoc(t_data *data)
 {
 	int			i;
-	int			ret;
 	t_redir_lst	*current;
 
 	i = -1;
@@ -143,15 +73,14 @@ int	ft_trigger_heredoc(t_data *data, t_exec *exec)
 			{
 				if (current->r_type == HEREDOC)
 				{
-					ret = ft_handle_heredoc(current);
-					if (ret)
-						return (ret);
+					if (ft_handle_heredoc(current))
+						return (EXIT_FAILURE);
 				}
 				current = current->next;
 			}
 		}
 	}
-	exec->trigger_hd = true;
+	data->exec->trigger_hd = true;
 	return (EXIT_SUCCESS);
 }
 
@@ -195,67 +124,88 @@ void	ft_close_pipes(t_data *data, t_exec *exec, int skip)
 	}
 }
 
-int	ft_executor(t_data *data)
+int	ft_prepare_execution(t_data *data)
 {
 	t_exec		*exec;
-	t_cmd		*current_cmd;
-	int			i;
 
-	i = 0;
 	exec = ft_init_exec(data);
 	if (!exec)
 		return (E_MEM);
 	ft_init_pipes(data, exec);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
-	if (exec->tmpin == -1 || exec->tmpout == -1)
+	if (exec->tmpin == F_ERROR || exec->tmpout == F_ERROR)
 		return (E_DUP);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_exec_one_cmd(t_data *data)
+{
+	if (ft_trigger_heredoc(data))
+		return (E_OPEN);
+	if (ft_open_redir_in(data, data->cmd) || ft_open_redir_out(data, data->cmd))
+		return (E_OPEN);
+	if (!data->cmd->is_builtin)
+		ft_cmd_exec(data);
+	else
+		ft_builtin(data, data->cmd);
+	if (dup2(data->exec->tmpin, STDIN_FILENO) == F_ERROR)
+		return (E_DUP);
+	if (dup2(data->exec->tmpout, STDOUT_FILENO) == F_ERROR)
+		return (E_DUP);
+	if (close(data->exec->tmpin) == F_ERROR
+		|| close(data->exec->tmpout) == F_ERROR)
+		return (E_CLOSE);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_executor(t_data *data)
+{
+	t_cmd		*current_cmd;
+	int			i;
+	int			ret;
+
+	i = 0;
+	ret = ft_prepare_execution(data);
+	if (ret)
+		return (ret);
 	if (data->nb_of_cmds == 1)
 	{
-		ft_trigger_heredoc(data, exec);
-		if (ft_open_redir_in(data, data->cmd, exec) || ft_open_redir_out(data, data->cmd, exec))
-			return (E_OPEN);
-		if (!data->cmd->is_builtin)
-			ft_cmd_exec(data);
-		else
-			ft_builtin(data, data->cmd);
-		if (dup2(exec->tmpin, STDIN_FILENO) == F_ERROR)
-			return (E_DUP);
-		if (dup2(exec->tmpout, STDOUT_FILENO) == F_ERROR)
-			return (E_DUP);
-		close(exec->tmpin);
-		close(exec->tmpout);
+		ret = ft_exec_one_cmd(data);
+		if (ret)
+			return (ret);
 	}
 	else
 	{
 		current_cmd = data->cmd;
 		while (current_cmd)
 		{
-			if (exec->trigger_hd == false)
-				ft_trigger_heredoc(data, exec);
-			exec->child_pid[i] = fork();
-			exec->status = 0;
-			if (exec->child_pid[i] == F_ERROR)
+			if (data->exec->trigger_hd == false)
+				ft_trigger_heredoc(data);
+			data->exec->child_pid[i] = fork();
+			data->exec->status = 0;
+			if (data->exec->child_pid[i] == F_ERROR)
 				perror("fork");
-			if (exec->child_pid[i] == FORKED_CHILD)
+			if (data->exec->child_pid[i] == FORKED_CHILD)
 			{
-				if (ft_open_redir_in(data, current_cmd, exec) || ft_open_redir_out(data, current_cmd, exec))
+				if (ft_open_redir_in(data, current_cmd)
+					|| ft_open_redir_out(data, current_cmd))
 					return (E_OPEN);
-				if (current_cmd->left && exec->fdin == NOT_INIT)
+				if (current_cmd->left && data->exec->fdin == NOT_INIT)
 				{
-					if (dup2(exec->pipes[i - 1][0], STDIN_FILENO) == F_ERROR)
+					if (dup2(data->exec->pipes[i - 1][0], STDIN_FILENO) == F_ERROR)
 						return (E_DUP);
-					close(exec->pipes[i - 1][1]);
+					close(data->exec->pipes[i - 1][1]);
 				}
-				if (current_cmd->right && exec->fdout == NOT_INIT)
+				if (current_cmd->right && data->exec->fdout == NOT_INIT)
 				{
-					if (dup2(exec->pipes[i][1], STDOUT_FILENO) == F_ERROR)
+					if (dup2(data->exec->pipes[i][1], STDOUT_FILENO) == F_ERROR)
 						return (E_DUP);
-					close(exec->pipes[i][0]);
+					close(data->exec->pipes[i][0]);
 				}
-				if (!current_cmd->right && exec->fdout == NOT_INIT)
-					dup2(exec->tmpout, STDOUT_FILENO);
-				ft_close_pipes(data, exec, i);
+				if (!current_cmd->right && data->exec->fdout == NOT_INIT)
+					dup2(data->exec->tmpout, STDOUT_FILENO);
+				ft_close_pipes(data, data->exec, i);
 				if (!current_cmd->is_builtin)
 				{
 					ft_signal(SIG_DFL);
@@ -269,30 +219,30 @@ int	ft_executor(t_data *data)
 			if (current_cmd->right)
 				g_exit_code = EXIT_SUCCESS;
 			current_cmd = current_cmd->right;
-			exec->fdin = -1;
-			exec->fdout = -1;
+			data->exec->fdin = -1;
+			data->exec->fdout = -1;
 		}
 		// Close all parent pipes ends
 		int j = -1;
 		while (++j < data->nb_of_cmds - 1)
 		{
-			close(exec->pipes[j][0]);
-			close(exec->pipes[j][1]);
+			close(data->exec->pipes[j][0]);
+			close(data->exec->pipes[j][1]);
 		}
 
 		// restore std i/o
-		dup2(exec->tmpin, STDIN_FILENO);
-		dup2(exec->tmpout, STDOUT_FILENO);
-		close(exec->tmpin);
-		close(exec->tmpout);
+		dup2(data->exec->tmpin, STDIN_FILENO);
+		dup2(data->exec->tmpout, STDOUT_FILENO);
+		close(data->exec->tmpin);
+		close(data->exec->tmpout);
 	}
 	bool one = false; // a mieux init
 	while (i--)
 	{
-		exec->child_pid[i] = waitpid(0, &exec->status, 0);
-		if (WIFEXITED(exec->status))
-			g_exit_code = WEXITSTATUS(exec->status);
-		if (WIFSIGNALED(exec->status) && exec->status != SIGPIPE && !one)
+		data->exec->child_pid[i] = waitpid(0, &data->exec->status, 0);
+		if (WIFEXITED(data->exec->status))
+			g_exit_code = WEXITSTATUS(data->exec->status);
+		if (WIFSIGNALED(data->exec->status) && data->exec->status != SIGPIPE && !one)
 		{
 			ft_putendl_fd("^\\Quit: 3", STDERR_FILENO);
 			one = true;
@@ -300,5 +250,3 @@ int	ft_executor(t_data *data)
 	}
 	return (EXIT_SUCCESS);
 }
-
-// FREE PIPES HERE OR IN CLEAN, ETC.

@@ -43,6 +43,8 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_errno(data->err_info, EXEC_FAIL, data);
 	else if (err_code == E_DUP)
 		ft_errno(NULL, EX_MISCERROR, data);
+	else if (err_code == E_CLOSE)
+		ft_errno(NULL, EX_MISCERROR, data);
 	else
 		ft_putstr_fd(ERR_UNDEF, STDERR_FILENO);
 }

@@ -43,11 +43,11 @@ LEXER_SRC		:= lexer
 UTILS_SRC		:= error error2 utils utils2 lexer_utils lexer_utils2 lexer_utils3 \
 parser_utils parser_utils2 parser_utils3 parser_utils4 clean clean2 exit_utils \
 export_utils export_utils2 export_utils3 export_utils4 expander_utils exec_utils \
-expander_utils2 expander_utils3 expander_utils4 expander_utils5 history \
+exec_utils2 expander_utils2 expander_utils3 expander_utils4 expander_utils5 history \
 cd_utils cd_utils2 cd_utils3
 PARSER_SRC		:= parser
 EXPAND_SRC		:= expander
-EXEC_SRC		:= exec
+EXEC_SRC		:= executor
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
 SRC 			+= $(addprefix $(SRC_DIR)builtins/, $(addsuffix .c, $(BUILTINS_SRC)))

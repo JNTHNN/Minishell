@@ -50,7 +50,8 @@ typedef enum e_err_codes
 	E_DUP = -11,
 	E_PATH = -12,
 	E_EXECVE = -13,
-	E_VAR = -14
+	E_VAR = -14,
+	E_CLOSE = -15
 }	t_err_codes;
 
 void	ft_errno(char *s, int code, t_data *data);
