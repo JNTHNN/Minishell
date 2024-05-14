@@ -43,10 +43,10 @@ void	execute_command(t_data *data, t_cmd *cmd)
 			|| !ft_strncmp(cmd->args[0], "./", 2)) // si ca commence par ./exe ou /exe 126
 		{
 			if (lstat(cmd->args[0], &s_stat) < 0)
-				ft_errno(cmd->args[0], 127, data, true);
+				ft_errno(cmd->args[0], 127, data);
 			if (S_ISDIR(s_stat.st_mode))
 			{
-				ft_errno(cmd->args[0], 126, data, true);
+				ft_errno(cmd->args[0], 126, data);
 			}
 			else
 			{
@@ -119,10 +119,10 @@ t_exec	*ft_init_exec(t_data *data)
 
 	exec = (t_exec *)malloc(sizeof(t_exec));
 	if (!exec)
-		ft_errno(ERR_MEM, 2, data, true);
+		ft_errno(ERR_MEM, 2, data);
 	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	if (!exec->child_pid)
-		ft_errno(ERR_MEM, 2, data, true);
+		ft_errno(ERR_MEM, 2, data);
 	exec->status = -1;
 	exec->tmpin = -1;
 	exec->tmpout = -1;

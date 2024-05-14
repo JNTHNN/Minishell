@@ -19,5 +19,5 @@ void	ft_pwd(t_data *data)
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
-		ft_errno("pwd", 1, data, false);
+		ft_errno("pwd", 1, data);
 }

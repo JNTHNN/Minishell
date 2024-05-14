@@ -14,6 +14,7 @@
 
 static void	ft_print_redir_error(int err_code)
 {
+	g_exit_code = 258;
 	ft_putstr_fd(ERR_REDIR, STDERR_FILENO);
 	if (err_code == E_REDIR_OUT)
 		ft_putstr_fd("`>'\n\033[0m", STDERR_FILENO);
@@ -35,20 +36,13 @@ static void	ft_print_error(int err_code, t_data *data)
 	if (err_code == E_QUOTES)
 		ft_putstr_fd(ERR_QUOTES, STDERR_FILENO);
 	else if (err_code == E_MEM)
-		ft_errno(ERR_MEM, 2, data, true);
+		ft_errno(ERR_MEM, EX_MISCERROR, data);
 	else if (err_code <= E_REDIR && err_code >= E_REDIR_OUT_T)
-	{
 		ft_print_redir_error(err_code);
-		g_exit_code = 258;
-	}
 	else if (err_code == E_OPEN)
-	{
-		g_exit_code = EXIT_FAILURE;
-		ft_printf("❌\033[0;31m %s:", data->err_info);
-		ft_putstr_fd(ERR_OPEN, STDERR_FILENO);
-	}
+		ft_errno(data->err_info, EXEC_FAIL, data);
 	else if (err_code == E_DUP)
-		ft_putstr_fd(ERR_DUP, STDERR_FILENO);
+		ft_errno(NULL, EX_MISCERROR, data);
 	else
 		ft_putstr_fd(ERR_UNDEF, STDERR_FILENO);
 }
@@ -56,7 +50,6 @@ static void	ft_print_error(int err_code, t_data *data)
 static void	ft_throw_error(t_data *data, int err_code)
 {
 	ft_print_error(err_code, data);
-	// g_exit_code = err_code;
 	ft_free_if_error(data);
 }
 
@@ -75,6 +68,6 @@ void	ft_handle_arg_error(int argc, char **argv)
 	if (argc != 1 || argv[1])
 	{
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }

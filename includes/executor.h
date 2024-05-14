@@ -19,9 +19,12 @@ enum	e_pipe_end
 	WRITE_END
 };
 
+# define PREV(i)(i - 1)
 # define FORKED_CHILD 0
 # define F_ERROR -1
 # define NOT_INIT -1
+# define EX_MISCERROR 2
+# define EXEC_FAIL 1
 
 void	execute_command(t_data *data, t_cmd *cmd);
 char	**ft_pathiter(char **path, t_cmd *cmd);

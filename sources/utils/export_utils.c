@@ -124,5 +124,5 @@ void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
 	}
 	ret = ft_add_env(head, name, data);
 	if (ret)
-		ft_errno(ERR_MEM, 2, d, true);
+		ft_errno(ERR_MEM, 2, d);
 }

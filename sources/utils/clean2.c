@@ -12,19 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_free_if_error(t_data *data)
-{
-	if (data)
-	{
-		if (data->input)
-			free(data->input);
-		if (data->tokens)
-			ft_free_tokens(&data->tokens);
-		if (data->cmd)
-			ft_free_cmds(&data->cmd);
-	}
-}
-
 void	ft_free_exec(t_data *data)
 {
 	t_exec	*exec;
@@ -53,4 +40,18 @@ void	ft_free_exec(t_data *data)
 			close(exec->tmpout);
 	}
 	free(exec);
+}
+
+void	ft_free_if_error(t_data *data)
+{
+	if (data)
+	{
+		if (data->input)
+			free(data->input);
+		if (data->tokens)
+			ft_free_tokens(&data->tokens);
+		if (data->cmd)
+			ft_free_cmds(&data->cmd);
+		ft_free_exec(data);
+	}
 }

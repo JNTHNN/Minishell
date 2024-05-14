@@ -42,7 +42,7 @@ static int	ft_check_dir(t_cd *cd)
 		else if (!chdir(cd->dir))
 			rv = 1;
 		else
-			ft_errno(cd->dir, 1, cd->data, false);
+			ft_errno(cd->dir, 1, cd->data);
 	}
 	if (!cd->dir)
 		rv = ft_check_home(cd);
@@ -59,13 +59,13 @@ t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 
 	cd = (t_cd *)malloc(sizeof(t_cd));
 	if (!cd)
-		ft_errno(ERR_MEM, 2, data, true);
+		ft_errno(ERR_MEM, 2, data);
 	cd->data = data;
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
 	cd->pwd = getcwd(cwd, sizeof(cwd));
 	if (!cd->pwd)
-		ft_errno("cd", 2, data, true);
+		ft_errno("cd", 2, data);
 	cd->oldpwd = ft_getenv(data, OLDPWD);
 	cd->home = ft_getenv(data, HOME);
 	cd->err = NULL;

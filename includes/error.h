@@ -13,6 +13,7 @@
 #ifndef ERROR_H
 # define ERROR_H
 
+# define EMPTY ""
 # define ERR_ARG "❌\033[0;31m  Minishell doesn't accept arguments \033[0m\n"
 # define ERR_QUOTES "❌\033[0;31m Unexpected token : unclosed quote \033[0m\n"
 # define ERR_REDIR "❌\033[0;31m Syntax error near unexpected token "
@@ -33,7 +34,6 @@
 # define ERR_NUM_ARG ": numeric argument required\033[0m\n"
 # define ERR_TOO_ARG "too many arguments\033[0m\n"
 # define START_EXIT "❌\033[0;31mminibash: exit: "
-# define EXEC_FAIL 1
 
 typedef enum e_err_codes
 {
@@ -53,6 +53,7 @@ typedef enum e_err_codes
 	E_VAR = -14
 }	t_err_codes;
 
-void	ft_errno(char *s, int code, t_data *data, int flag);
+void	ft_errno(char *s, int code, t_data *data);
+void	ft_errno_exec(t_data *data, char *arg);
 
 #endif

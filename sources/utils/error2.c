@@ -12,25 +12,21 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_errno(char *s, int code, t_data *data, int flag)
+void	ft_errno(char *s, int code, t_data *data)
 {
-	if (s)
+	if (errno != 0)
 	{
-		if (errno != 0)
-		{
-			ft_putstr_fd("❌\033[0;31m minibash: ", STDERR_FILENO);
-			perror(s);
-			ft_putstr_fd("\033[0m", STDERR_FILENO);
-		}
-		else
-			ft_putstr_fd(s, STDERR_FILENO);
+		ft_putstr_fd("❌\033[0;31m minibash: ", STDERR_FILENO);
+		perror(s);
+		ft_putstr_fd("\033[0m", STDERR_FILENO);
 	}
+	else
+		ft_putstr_fd(s, STDERR_FILENO);
 	if (code)
-	{
 		g_exit_code = code;
-		// printf("EXITCODE APRES = %d\n", g_exit_code);
-	}
-	if (flag)
+	if (code == E_MEM)
+		ft_free_data(data);
+	if (data->nb_of_cmds != 1)
 	{
 		ft_free_if_error(data);
 		exit(g_exit_code);
@@ -43,5 +39,5 @@ void    ft_errno_exec(t_data *data, char *arg)
     ft_putstr_fd(arg, STDERR_FILENO);
     ft_putstr_fd(": command not found\n", STDERR_FILENO);
     ft_putstr_fd("\033[0m", STDERR_FILENO);
-    ft_errno(NULL, 127, data, true);
+    ft_errno(NULL, 127, data);
 }

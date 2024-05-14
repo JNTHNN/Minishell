@@ -20,13 +20,13 @@ static int	ft_check_var(char *str)
 	i = 0;
 	var = ft_var(str);
 	if (var[i] == '=')
-		return (ft_errno(ERR_VAR_EQ, 1, NULL, true), 0);
+		return (ft_errno(ERR_VAR_EQ, 1, NULL), 0);
 	if (!var || ft_isdigit(var[i]))
-		return (ft_errno(ERR_VAR_ID, 1, NULL, true), 0);
+		return (ft_errno(ERR_VAR_ID, 1, NULL), 0);
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]))
-			return (ft_errno(ERR_VAR_EQ, 1, NULL, true), 0);
+			return (ft_errno(ERR_VAR_EQ, 1, NULL), 0);
 		i++;
 	}
 	return (1);
@@ -39,7 +39,7 @@ int	ft_export(t_data *data, t_cmd *cmd)
 
 	head = ft_setup_env(data->env);
 	if (!head)
-		ft_errno(ERR_MEM, 2, data, true);
+		ft_errno(ERR_MEM, 2, data);
 	i = 1;
 	if (cmd->args)
 	{
