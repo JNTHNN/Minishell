@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:26:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/14 18:06:38 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:40:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	ft_errno(char *s, int code, t_data *data)
 {
 	if (errno != 0)
 	{
-		ft_putstr_fd("❌\033[0;31m minibash: ", STDERR_FILENO);
+		ft_putstr_fd(START_ERR, STDERR_FILENO);
 		perror(s);
-		ft_putstr_fd("\033[0m", STDERR_FILENO);
+		ft_putstr_fd(END_RST, STDERR_FILENO);
 	}
 	else
 		ft_putstr_fd(s, STDERR_FILENO);
@@ -33,11 +33,11 @@ void	ft_errno(char *s, int code, t_data *data)
 	}
 }
 
-void    ft_errno_exec(t_data *data, char *arg)
+void	ft_handle_arg_error(int argc, char **argv)
 {
-    ft_putstr_fd("❌\033[0;31m minibash: ", STDERR_FILENO);
-    ft_putstr_fd(arg, STDERR_FILENO);
-    ft_putstr_fd(": command not found\n", STDERR_FILENO);
-    ft_putstr_fd("\033[0m", STDERR_FILENO);
-    ft_errno(NULL, 127, data);
+	if (argc != 1 || argv[1])
+	{
+		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 }

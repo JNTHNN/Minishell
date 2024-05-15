@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 11:01:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:34:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,16 @@ int	ft_cmd_exec(t_data *data)
 	else
 	{
 		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) || WIFSIGNALED(status))
+		{
 			g_exit_code = WEXITSTATUS(status);
-		if (WIFSIGNALED(status))
-			ft_putendl_fd("^\\Quit: 3", STDERR_FILENO);
+			printf ("exit = %d\n", g_exit_code);
+			if (WIFSIGNALED(status))
+			{
+				g_exit_code = 131;
+				ft_putendl_fd("^\\Quit: 3", STDERR_FILENO);
+			}
+		}
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 16:06:38 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:41:49 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ static void	ft_free_cd(t_cd *cd)
 		free(cd->err);
 	if (cd->temp_tilde)
 		free(cd->temp_tilde);
-	// if (cd->temp_pwd)
-	// 	ft_free_array(cd->temp_pwd); // EXPLOSION -> clear 1 trop loin
+	if (cd->temp_pwd)
+		ft_free_array(cd->temp_pwd);
 	if (cd->temp_path)
 		ft_free_array(cd->temp_path);
 	free(cd);

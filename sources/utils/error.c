@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/15 10:40:28 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:40:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 	}
 	else if (err_code == E_NOTF)
 	{
-		ft_putstr_fd("❌\033[0;31m minibash: ", STDERR_FILENO);
+		ft_putstr_fd(START_ERR, STDERR_FILENO);
 		ft_putstr_fd(data->err_info, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		ft_putstr_fd("\033[0m", STDERR_FILENO);
+		ft_putstr_fd(ERR_CMD, STDERR_FILENO);
 		errno = 0;
 		ft_errno(NULL, 127, data);
 	}
@@ -85,13 +84,4 @@ int	ft_handle_error(t_data *data, int ret)
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
-}
-
-void	ft_handle_arg_error(int argc, char **argv)
-{
-	if (argc != 1 || argv[1])
-	{
-		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
 }

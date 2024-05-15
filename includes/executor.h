@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:16:59 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 11:11:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:04:30 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ enum	e_pipe_end
 	WRITE_END
 };
 
-# define PREV(i)(i - 1)
 # define FORKED_CHILD 0
 # define F_ERROR -1
 # define NOT_INIT -1

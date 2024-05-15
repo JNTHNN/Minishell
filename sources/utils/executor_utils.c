@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 11:10:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:36:53 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ static void	ft_check_type(char *cmd, t_data *data, int flag)
 
 	if (!lstat(cmd, &s_stat) && S_ISDIR(s_stat.st_mode))
 	{
-		data->err_info = cmd;
-		ft_handle_error(data, E_DIR);
+		if (S_ISDIR(s_stat.st_mode))
+		{
+			data->err_info = cmd;
+			ft_handle_error(data, E_DIR);
+		}
 	}
 	if (flag == EXEC_ABS)
 	{
@@ -41,8 +44,9 @@ static void	ft_handle_exec_error(char *cmd, int code, t_data *data)
 
 static int	ft_create_exec(t_data *data, t_cmd *cmd)
 {
-	char	**progpath;
-	int		i;
+	char		**progpath;
+	int			i;
+	struct stat	s_stat;
 
 	progpath = ft_path_abs(data, cmd);
 	i = 0;
@@ -58,6 +62,8 @@ static int	ft_create_exec(t_data *data, t_cmd *cmd)
 		i++;
 	}
 	ft_free_array(progpath);
+	if (!lstat(cmd->args[0], &s_stat) && S_ISDIR(s_stat.st_mode))
+		return (E_NOTF);
 	return (EXIT_SUCCESS);
 }
 
@@ -105,3 +111,30 @@ t_exec	*ft_init_exec(t_data *data)
 	data->exec = exec;
 	return (exec);
 }
+
+char	**ft_pathiter(char **path, t_cmd *cmd)
+{
+	char	*new_cmd;
+	char	*temp;
+
+	new_cmd = ft_strjoin("/", cmd->args[0]);
+	while (path && *path)
+	{
+		temp = ft_strjoin(*path, new_cmd);
+		*path = temp;
+		path++;
+	}
+	return (path);
+}
+
+char	**ft_path_abs(t_data *data, t_cmd *cmd)
+{
+	char	*path;
+	char	**my_path;
+
+	path = ft_getenv(data, "PATH");
+	my_path = ft_split(path, ':');
+	ft_pathiter(my_path, cmd);
+	return (my_path);
+}
+

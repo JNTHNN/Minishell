@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/14 17:17:32 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:49:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ int	ft_export(t_data *data, t_cmd *cmd)
 				while (cmd->args[i])
 				{
 					if (ft_check_var(cmd->args[i], data))
-						ft_modify_or_add_env(&head, cmd->args[i++], data);
-					else
-						i++;
+						ft_modify_or_add_env(&head, cmd->args[i], data);
+					i++;
 				}
 			}
 			else
 				ft_print_env(head);
 		}
 	}
-	ft_update_env(head, data);
-	return (EXIT_SUCCESS);
+	return (ft_update_env(head, data), EXIT_SUCCESS);
 }

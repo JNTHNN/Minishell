@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 16:19:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:41:00 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ char	*ft_pwdcat(char **pwd)
 		free(temp);
 		i++;
 	}
+	pwd[i] = NULL;
 	return (new_pwd);
 }

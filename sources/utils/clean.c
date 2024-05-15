@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:21:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/24 13:53:58 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:54:17 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,20 @@ void	ft_free_cmds(t_cmd **cmd)
 	*cmd = NULL;
 }
 
+void	ft_free_hist(t_hist *hist)
+{
+	if (hist->newline)
+	{
+		free(hist->newline);
+		hist->newline = NULL;
+	}
+	if (hist->lastline)
+	{
+		free(hist->lastline);
+		hist->lastline = NULL;
+	}
+}
+
 void	ft_free_data(t_data *data)
 {
 	if (data)
@@ -74,16 +88,17 @@ void	ft_free_data(t_data *data)
 			free(data->input);
 		if (data->hist)
 		{
-			if (data->hist->newline)
-			{
-				free(data->hist->newline);
-				data->hist->newline = NULL;
-			}
-			if (data->hist->lastline)
-			{
-				free(data->hist->lastline);
-				data->hist->lastline = NULL;
-			}
+			// if (data->hist->newline)
+			// {
+			// 	free(data->hist->newline);
+			// 	data->hist->newline = NULL;
+			// }
+			// if (data->hist->lastline)
+			// {
+			// 	free(data->hist->lastline);
+			// 	data->hist->lastline = NULL;
+			// }
+			ft_free_hist(data->hist); // voir si c'est good
 			free(data->hist);
 			data->hist = NULL;
 		}
