@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/13 15:48:40 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:36:19 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ typedef enum e_err_codes
 	E_REDIR_OUT_T = -9,
 	E_OPEN = -10,
 	E_DUP = -11,
-	E_PATH = -12,
-	E_EXECVE = -13,
-	E_VAR = -14
+	E_EXECVE = -12,
+	E_DIR = -13,
+	E_NOTF = -14,
+	E_EXECVE_2 = -15
 }	t_err_codes;
 
 void	ft_errno(char *s, int code, t_data *data);

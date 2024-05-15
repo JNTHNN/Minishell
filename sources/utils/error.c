@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/13 22:27:45 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:40:28 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,28 @@ static void	ft_print_redir_error(int err_code)
 		ft_putstr_fd("`newline'\n\033[0m", STDERR_FILENO);
 }
 
+static void	ft_print_exec_error(int err_code, t_data *data)
+{
+	if (err_code == E_EXECVE)
+		ft_errno(data->err_info, 126, data);
+	else if (err_code == E_DIR)
+	{
+		errno = EISDIR;
+		ft_errno(data->err_info, 126, data);
+	}
+	else if (err_code == E_NOTF)
+	{
+		ft_putstr_fd("❌\033[0;31m minibash: ", STDERR_FILENO);
+		ft_putstr_fd(data->err_info, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		ft_putstr_fd("\033[0m", STDERR_FILENO);
+		errno = 0;
+		ft_errno(NULL, 127, data);
+	}
+	else
+		ft_errno(data->err_info, 127, data);
+}
+
 static void	ft_print_error(int err_code, t_data *data)
 {
 	g_exit_code = 2;
@@ -43,6 +65,8 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_errno(data->err_info, EXEC_FAIL, data);
 	else if (err_code == E_DUP)
 		ft_errno(NULL, EX_MISCERROR, data);
+	else if (err_code <= E_EXECVE && err_code >= E_EXECVE_2)
+		ft_print_exec_error(err_code, data);
 	else
 		ft_putstr_fd(ERR_UNDEF, STDERR_FILENO);
 }

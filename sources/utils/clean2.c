@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:29:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/24 14:27:28 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:29:43 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_free_if_error(t_data *data)
 			ft_free_tokens(&data->tokens);
 		if (data->cmd)
 			ft_free_cmds(&data->cmd);
-		ft_free_exec(data);
+		if (data->nb_of_cmds != 1)
+			ft_free_exec(data);
 	}
 }

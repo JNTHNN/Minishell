@@ -6,35 +6,16 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 22:33:22 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:49:08 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// void	ft_check_exe(char *dir)
-// {
-// 	struct stat	s_stat;
-
-// 	if (lstat(dir, &s_stat) < 0)
-	
-// }
-
-// bash-3.2$ eee
-// bash: eee: command not found
-// bash-3.2$ echo $?
-// 127
-// bash-3.2$ /etc
-// bash: /etc: is a directory
-// bash-3.2$ echo $?
-// 126
-// bash-3.2$ ./minishell_tester/test_files/invalid_permission
-// bash: ./minishell_tester/test_files/invalid_permission: Permission denied
-// bash-3.2$ echo $?
-// 126
 
 void	execute_command(t_data *data, t_cmd *cmd)
 {
+	int			ret;
 	struct stat	s_stat;
 
 	if (cmd->args)
@@ -42,26 +23,45 @@ void	execute_command(t_data *data, t_cmd *cmd)
 		if (!ft_strncmp(cmd->args[0], "/", 1)
 			|| !ft_strncmp(cmd->args[0], "./", 2)) // si ca commence par ./exe ou /exe 126
 		{
-			if (lstat(cmd->args[0], &s_stat) < 0)
-				ft_errno(cmd->args[0], 127, data);
-			if (S_ISDIR(s_stat.st_mode))
+			if (!lstat(cmd->args[0], &s_stat) && S_ISDIR(s_stat.st_mode))
 			{
-				ft_errno(cmd->args[0], 126, data);
+				data->err_info = cmd->args[0];
+				ft_handle_error(data, E_DIR);
+			}
+			if (access(cmd->args[0], F_OK | X_OK))
+			{
+				data->err_info = cmd->args[0];
+				if (errno == ENOENT)
+					ft_handle_error(data, E_EXECVE_2);
+				ft_handle_error(data, E_EXECVE);
 			}
 			else
 			{
 				if (execve(cmd->args[0], cmd->args, data->env) == -1)
 				{
-					perror("execve absolu");
-					exit(EXIT_FAILURE);
+					data->err_info = cmd->args[0];
+					ft_handle_error(data, E_EXECVE);
 				}
 			}
 		}
 		else // direct exe
 		{
-			if (ft_create_exec(data, cmd))
-				ft_errno_exec(data, cmd->args[0]);
+			// check path
+			ret = ft_create_exec(data, cmd);
+			if (ret)
+			{
+				data->err_info = cmd->args[0];
+				ft_handle_error(data, ret);
+			}
+			// check si doss
+			if (!lstat(cmd->args[0], &s_stat) && S_ISDIR(s_stat.st_mode))
+			{
+				data->err_info = cmd->args[0];
+				ft_handle_error(data, E_DIR);
+			}
 		}
+		data->err_info = cmd->args[0];
+		ft_handle_error(data, E_NOTF);
 	}
 }
 
@@ -102,15 +102,15 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 		return (EXIT_FAILURE);
 	while (progpath[i])
 	{
-		if (access(progpath[i], F_OK) == 0)
+		if (!access(progpath[i], F_OK | X_OK))
 		{
 			if (execve(progpath[i], cmd->args, data->env) == -1)
-				return (EXIT_FAILURE);
+				return (E_EXECVE);
 		}
 		i++;
 	}
 	ft_free_array(progpath);
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 t_exec	*ft_init_exec(t_data *data)
@@ -132,49 +132,3 @@ t_exec	*ft_init_exec(t_data *data)
 	data->exec = exec;
 	return (exec);
 }
-
-/*	On fork	
-**	PID == -1 : ERROR
-**	SI LE FORK REUSSIT, LE PROCESSUS PERE ATTEND LE PROCESSUS FILS
-**	PID > 0 :  ON BLOCK LE PROCESSUS PERE JUSQU'A QUE L'ENFANT TERMINE (WAITPID)
-**	PUIS ON KILL LE PROCESSUS ENFANT
-**	ELSE (PID == 0) : LE PROCESSUS ENFANT EXECUTE LA COMMANDE
-*/
-
-/*	CREER UN FLAG POUR CREAT_EXEC SI -1 DNC PAS DE COMMANDE
-**	-> EXIT POUR KILL LE PROCESSUS
-*/
-
-/*	REDIRECTION '>'
-**	CHECKER LE FICHIER INDIQUE APRES LA REDIR
-**	SI N'EXISTE PAS -> CREER
-**	SI EXISTE -> CHECKER LES DROITS
-**	OPEN LE FICHIER
-**	REMPLACER LE FD STDOUT PAR LE FD DU FICHIER
-**	ECRASE LES DONNEES EXISTANTES
-**	CASE : echo A >B>C>D -> CREE B C D ET ECRIT QUE DANS D
-**	echo test >file test1 -> ECRIT test test1 DANS FILE
-*/
-
-/*	REDIRECTION '>>'
-**	CHECKER LE FICHIER INDIQUE APRES LA REDIR
-**	SI N'EXISTE PAS -> CREER
-**	SI EXISTE -> CHECKER LES DROITS
-**	OPEN LE FICHIER
-**	REMPLACER LE FD STDOUT PAR LE FD DU FICHIER
-**	ECRIT A LA SUITE DES DONNEES SI IL Y'EN A	
-*/
-
-/*	REDIRECTION '<'
-**	CHECKER LE FICHIER INDIQUE APRES LA REDIR
-**	SI N'EXISTE PAS -> ERROR
-**	SI EXISTE -> CHECKER LES DROITS
-**	OPEN LE FICHIER
-**	REMPLACER LE FD STDIN PAR LE FD DU FICHIER
-*/
-
-/*	REDIRECTION '<<'
-**	UTILISATION DU HEREDOC
-**	L'ARG APRES LA REDIR EST LE 'DELIMITEUR'
-**	
-*/

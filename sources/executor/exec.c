@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 15:51:18 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:37:08 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	ft_open_redir_in(t_data *data, t_cmd *cmd, t_exec *exec)
 			exec->fdin = open(current->filename, O_RDONLY);
 			if (exec->fdin == F_ERROR)
 			{
-				exec->fdin = STDIN_FILENO;
+				if (data->nb_of_cmds != 1)
+					exec->fdin = STDIN_FILENO;
 				return (data->err_info = current->filename, E_OPEN);
 			}
 		}
