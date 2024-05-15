@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/14 15:37:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:01:24 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_cmd_exec(t_data *data)
 	else if (pid == FORKED_CHILD)
 	{
 		ft_signal(SIG_DFL);
-		execute_command(data, data->cmd);
+		ft_execute_command(data, data->cmd);
 	}
 	else
 	{
@@ -260,7 +260,7 @@ int	ft_executor(t_data *data)
 				if (!current_cmd->is_builtin)
 				{
 					ft_signal(SIG_DFL);
-					execute_command(data, current_cmd);
+					ft_execute_command(data, current_cmd);
 				}
 				else
 					ft_builtin(data, current_cmd);
