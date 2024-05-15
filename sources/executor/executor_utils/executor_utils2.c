@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_open_in_loop(t_data *data, t_exec *exec, t_redir_lst	*current)
 {

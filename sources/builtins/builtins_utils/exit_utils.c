@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 static void	ft_secure(int64_t resu, int64_t temp, int sign, int *flag)
 {
