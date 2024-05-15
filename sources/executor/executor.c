@@ -12,6 +12,30 @@
 
 #include "../../includes/minishell.h"
 
+void	ft_restore_signals(void)
+{
+	struct termios	term;
+
+	ft_signal(SIG_DFL);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+void	ft_print_signals(int status)
+{
+	if (status == SIGQUIT)
+	{
+		ft_putendl_fd(STR_QUIT, STDERR_FILENO);
+		g_exit_code = 131;
+	}
+	else
+	{
+		printf(CLEAR_LINE);
+		g_exit_code = 130;
+	}
+}
+
 int	ft_cmd_exec(t_data *data)
 {
 	pid_t	pid;
@@ -23,7 +47,7 @@ int	ft_cmd_exec(t_data *data)
 		return (ft_errno("fork", EXEC_FAIL, data), EXIT_FAILURE);
 	else if (pid == FORKED_CHILD)
 	{
-		ft_signal(SIG_DFL);
+		ft_restore_signals();
 		execute_command(data, data->cmd);
 	}
 	else
@@ -32,7 +56,7 @@ int	ft_cmd_exec(t_data *data)
 		if (WIFEXITED(status))
 			g_exit_code = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
-			ft_putendl_fd("^\\Quit: 3", STDERR_FILENO);
+			ft_print_signals(status);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -105,7 +129,7 @@ int	ft_init_pipes(t_data *data, t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_close_pipes(t_data *data, t_exec *exec, int skip)
+int	ft_close_pipes(t_data *data, t_exec *exec, int skip)
 {
 	int	i;
 	int	nb_pipes;
@@ -118,10 +142,16 @@ void	ft_close_pipes(t_data *data, t_exec *exec, int skip)
 			i++;
 		if (i == nb_pipes)
 			break ;
-		close(exec->pipes[i][0]);
-		close(exec->pipes[i][1]);
+		if (close(exec->pipes[i][0]) == F_ERROR)
+			return (E_CLOSE);
+		if (i != skip - 1)
+		{
+			if (close(exec->pipes[i][1]) == F_ERROR)
+				return (E_CLOSE);
+		}
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }
 
 int	ft_prepare_execution(t_data *data)
@@ -139,7 +169,7 @@ int	ft_prepare_execution(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_exec_one_cmd(t_data *data)
+int	ft_exec_simple_cmd(t_data *data)
 {
 	if (ft_trigger_heredoc(data))
 		return (E_OPEN);
@@ -159,9 +189,150 @@ int	ft_exec_one_cmd(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+void	ft_wait_children(t_data * data, int *children_nb)
+{
+	bool	first_child;
+	t_exec	*exec;
+
+	first_child = false;
+	exec = data->exec;
+	while ((*children_nb)--)
+	{
+		exec->child_pid[*children_nb] = waitpid(0, &exec->status, 0);
+		if (WIFEXITED(exec->status))
+			g_exit_code = WEXITSTATUS(data->exec->status);
+		if (WIFSIGNALED(exec->status) && exec->status
+			!= SIGPIPE && !first_child)
+		{
+			ft_print_signals(exec->status);
+			first_child = true;
+		}
+	}
+}
+
+int	ft_close_pipes_in_parent(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nb_of_cmds - 1)
+	{
+		if (close(data->exec->pipes[i][0]) == F_ERROR
+			|| close(data->exec->pipes[i][1]) == F_ERROR)
+			return (E_CLOSE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_reset_stdio(t_data *data)
+{
+	if (dup2(data->exec->tmpin, STDIN_FILENO) == F_ERROR
+		|| dup2(data->exec->tmpout, STDOUT_FILENO) == F_ERROR)
+		return (E_DUP);
+	if (close(data->exec->tmpin) == F_ERROR
+		|| close(data->exec->tmpout) == F_ERROR)
+		return (E_CLOSE);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
+{
+	if (cmd->left && data->exec->fdin == NOT_INIT)
+	{
+		if (dup2(data->exec->pipes[(*nb) - 1][0], STDIN_FILENO) == F_ERROR)
+			return (E_DUP);
+		if (close(data->exec->pipes[(*nb) - 1][1]) == F_ERROR)
+			return (E_CLOSE);
+	}
+	if (cmd->right && data->exec->fdout == NOT_INIT)
+	{
+		if (dup2(data->exec->pipes[*nb][1], STDOUT_FILENO) == F_ERROR)
+			return (E_DUP);
+		if (close(data->exec->pipes[*nb][0]) == F_ERROR)
+			return (E_CLOSE);
+	}
+	if (!cmd->right && data->exec->fdout == NOT_INIT)
+	{
+		if (dup2(data->exec->tmpout, STDOUT_FILENO) == F_ERROR)
+			return (E_DUP);
+	}
+	if (ft_close_pipes(data, data->exec, *nb) == E_CLOSE)
+		return (E_CLOSE);
+	return (EXIT_SUCCESS);
+}
+
+int ft_child_process(t_data *data, t_cmd *cmd, int *nb)
+{
+	int	ret;
+
+	if (ft_open_redir_in(data, cmd) || ft_open_redir_out(data, cmd))
+		return (E_OPEN);
+	ret = ft_handle_pipes(data, cmd, nb);
+	if (ret)
+		return (ret);
+	if (!cmd->is_builtin)
+	{
+		ft_restore_signals();
+		execute_command(data, cmd);
+	}
+	else
+		ft_builtin(data, cmd);
+	return (exit(EXIT_SUCCESS), EXIT_SUCCESS);
+}
+
+void ft_reset_fdio(t_data *data, t_cmd *cmd)
+{
+	if (cmd->right)
+		g_exit_code = EXIT_SUCCESS;
+	data->exec->fdin = -1;
+	data->exec->fdout = -1;
+}
+
+int ft_exec_cmds_loop(t_data * data, int *nb)
+{
+	t_cmd	*current_cmd;
+	int		ret;
+
+	current_cmd = data->cmd;
+	while (current_cmd)
+	{
+		if (data->exec->trigger_hd == false)
+			ft_trigger_heredoc(data);
+		data->exec->child_pid[*nb] = fork();
+		data->exec->status = 0;
+		if (data->exec->child_pid[*nb] == F_ERROR)
+			ft_errno(ERR_FORK, EXEC_FAIL, data);
+		if (data->exec->child_pid[*nb] == FORKED_CHILD)
+		{
+			ret = ft_child_process(data, current_cmd, nb);
+			if (ret)
+				return (ret);
+		}
+		ft_reset_fdio(data, current_cmd);
+		(*nb)++;
+		current_cmd = current_cmd->right;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_exec_multiple_cmds(t_data *data, int *cmd_nb)
+{
+	int	ret;
+
+	ret = ft_exec_cmds_loop(data, cmd_nb);
+	if (ret)
+		return (ret);
+	ret = ft_close_pipes_in_parent(data);
+	if (ret)
+		return (ret);
+	ret = ft_reset_stdio(data);
+	if (ret)
+		return (ret);
+	return (EXIT_SUCCESS);
+}
+
 int	ft_executor(t_data *data)
 {
-	t_cmd		*current_cmd;
 	int			i;
 	int			ret;
 
@@ -171,82 +342,16 @@ int	ft_executor(t_data *data)
 		return (ret);
 	if (data->nb_of_cmds == 1)
 	{
-		ret = ft_exec_one_cmd(data);
+		ret = ft_exec_simple_cmd(data);
 		if (ret)
 			return (ret);
 	}
 	else
 	{
-		current_cmd = data->cmd;
-		while (current_cmd)
-		{
-			if (data->exec->trigger_hd == false)
-				ft_trigger_heredoc(data);
-			data->exec->child_pid[i] = fork();
-			data->exec->status = 0;
-			if (data->exec->child_pid[i] == F_ERROR)
-				perror("fork");
-			if (data->exec->child_pid[i] == FORKED_CHILD)
-			{
-				if (ft_open_redir_in(data, current_cmd)
-					|| ft_open_redir_out(data, current_cmd))
-					return (E_OPEN);
-				if (current_cmd->left && data->exec->fdin == NOT_INIT)
-				{
-					if (dup2(data->exec->pipes[i - 1][0], STDIN_FILENO) == F_ERROR)
-						return (E_DUP);
-					close(data->exec->pipes[i - 1][1]);
-				}
-				if (current_cmd->right && data->exec->fdout == NOT_INIT)
-				{
-					if (dup2(data->exec->pipes[i][1], STDOUT_FILENO) == F_ERROR)
-						return (E_DUP);
-					close(data->exec->pipes[i][0]);
-				}
-				if (!current_cmd->right && data->exec->fdout == NOT_INIT)
-					dup2(data->exec->tmpout, STDOUT_FILENO);
-				ft_close_pipes(data, data->exec, i);
-				if (!current_cmd->is_builtin)
-				{
-					ft_signal(SIG_DFL);
-					execute_command(data, current_cmd);
-				}
-				else
-					ft_builtin(data, current_cmd);
-				exit(EXIT_SUCCESS);
-			}
-			i++;
-			if (current_cmd->right)
-				g_exit_code = EXIT_SUCCESS;
-			current_cmd = current_cmd->right;
-			data->exec->fdin = -1;
-			data->exec->fdout = -1;
-		}
-		// Close all parent pipes ends
-		int j = -1;
-		while (++j < data->nb_of_cmds - 1)
-		{
-			close(data->exec->pipes[j][0]);
-			close(data->exec->pipes[j][1]);
-		}
-
-		// restore std i/o
-		dup2(data->exec->tmpin, STDIN_FILENO);
-		dup2(data->exec->tmpout, STDOUT_FILENO);
-		close(data->exec->tmpin);
-		close(data->exec->tmpout);
+		ret = ft_exec_multiple_cmds(data, &i);
+		if (ret)
+			return (ret);
 	}
-	bool one = false; // a mieux init
-	while (i--)
-	{
-		data->exec->child_pid[i] = waitpid(0, &data->exec->status, 0);
-		if (WIFEXITED(data->exec->status))
-			g_exit_code = WEXITSTATUS(data->exec->status);
-		if (WIFSIGNALED(data->exec->status) && data->exec->status != SIGPIPE && !one)
-		{
-			ft_putendl_fd("^\\Quit: 3", STDERR_FILENO);
-			one = true;
-		}
-	}
+	ft_wait_children(data, &i);
 	return (EXIT_SUCCESS);
 }

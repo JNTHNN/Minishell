@@ -13,27 +13,30 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-# define EMPTY ""
 # define ERR_ARG "❌\033[0;31m  Minishell doesn't accept arguments \033[0m\n"
 # define ERR_QUOTES "❌\033[0;31m Unexpected token : unclosed quote \033[0m\n"
 # define ERR_REDIR "❌\033[0;31m Syntax error near unexpected token "
 # define ERR_MEM "❌\033[0;31m readline: out of virtual memory \033[0m\n"
 # define ERR_OPEN " No such file or directory\033[0m\n"
 # define ERR_DUP "❌\033[0;31m Bad file descriptor \033[0m\n"
-# define ERR_UNDEF "❌\033[0;31m Undefined error \033[0m\n"
+# define ERR_FORK "❌\033[0;31m minibash: fork: Resource temporarily unavailable \
+\033[0m\n"
 # define ERR_OLDPWD "❌\033[0;31m minibash: cd: OLDPWD not set\033[0m\n"
 # define ERR_HOME "❌\033[0;31m minibash: cd: HOME not set\033[0m\n"
-# define ERR_VAR "❌\033[0;31m minibash: export: not valid in this context\033[0m\n"
+# define ERR_VAR "❌\033[0;31m minibash: export: not valid in this context \
+\033[0m\n"
 # define ERR_VAR_ID "❌\033[0;31m minibash: export: not an identifier\033[0m\n"
-# define ERR_VAR_EQ "❌\033[0;31m minibash: export: not a valid identifier\033[0m\n"
+# define ERR_VAR_EQ "❌\033[0;31m minibash: export: not a valid identifier \
+\033[0m\n"
 # define ERR_U_VAR "❌\033[0;31m minibash: unset: not valid in this context\
 \033[0m\n"
 # define ERR_U_VAR_ID "❌\033[0;31m minibash: unset: not an identifier\033[0m\n"
-# define ERR_U_VAR_EQ "❌\033[0;31m minibash: unset: not a valid identifier\
+# define ERR_U_VAR_EQ "❌\033[0;31m minibash: unset: not a valid identifier \
 \033[0m\n"
 # define ERR_NUM_ARG ": numeric argument required\033[0m\n"
 # define ERR_TOO_ARG "too many arguments\033[0m\n"
 # define START_EXIT "❌\033[0;31mminibash: exit: "
+# define ERR_UNDEF "❌\033[0;31m Undefined error \033[0m\n"
 
 typedef enum e_err_codes
 {

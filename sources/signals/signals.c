@@ -23,7 +23,10 @@ void	ft_sigint(int sig)
 
 void	ft_signal(void *type)
 {
-	signal(SIGINT, ft_sigint);
+	if (type != SIG_DFL)
+		signal(SIGINT, ft_sigint);
+	else
+		signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, type);
 }
 
@@ -33,7 +36,7 @@ void	ft_get_ctrl_d(t_data *data)
 	{
 		printf("\033[A\033[2K");
 		printf("%s", PROMPT "exit\n");
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 }
 
