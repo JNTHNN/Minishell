@@ -19,8 +19,6 @@ enum	e_pipe_end
 	WRITE_END
 };
 
-# define EXEC_REL 0
-# define EXEC_ABS 1
 # define FORKED_CHILD 0
 # define F_ERROR -1
 # define NOT_INIT -1
@@ -28,9 +26,11 @@ enum	e_pipe_end
 # define EXEC_FAIL 1
 # define STR_QUIT "Quit: 3"
 # define CLEAR_LINE "\033[2K\033[1G"
+# define EXEC_REL 0
+# define EXEC_ABS 1
 
 /* exec_utils.c */
-void	execute_command(t_data *data, t_cmd *cmd);
+void	ft_execute_command(t_data *data, t_cmd *cmd);
 char	**ft_pathiter(char **path, t_cmd *cmd);
 char	**ft_path_abs(t_data *data, t_cmd *cmd);
 int		ft_create_exec(t_data *data, t_cmd *cmd);

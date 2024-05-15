@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 15:51:18 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:23:31 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_cmd_exec(t_data *data)
 	else if (pid == FORKED_CHILD)
 	{
 		ft_restore_signals();
-		execute_command(data, data->cmd);
+		ft_execute_command(data, data->cmd);
 	}
 	else
 	{
@@ -273,7 +273,7 @@ int ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 	if (!cmd->is_builtin)
 	{
 		ft_restore_signals();
-		execute_command(data, cmd);
+		ft_execute_command(data, cmd);
 	}
 	else
 		ft_builtin(data, cmd);
