@@ -51,6 +51,7 @@ static int	ft_minishell_loop(t_data *data)
 
 	while (true)
 	{
+		ft_init_signal();
 		ret = ft_get_input(data);
 		if (ft_handle_error(data, ret))
 			continue ;
@@ -80,7 +81,6 @@ int	main(int argc, char **argv, char **envp)
 
 	ft_handle_arg_error(argc, argv);
 	ft_init_data(&data, envp);
-	ft_init_signal();
 	ft_minishell_loop(&data);
 	ft_free_data(&data);
 	return (EXIT_SUCCESS);

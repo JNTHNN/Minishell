@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
 {
