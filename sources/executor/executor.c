@@ -19,7 +19,6 @@ int	ft_prepare_execution(t_data *data)
 	exec = ft_init_exec(data);
 	if (!exec)
 		return (E_MEM);
-	ft_init_pipes(data, exec);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
 	if (exec->tmpin == F_ERROR || exec->tmpout == F_ERROR)
@@ -101,6 +100,7 @@ int	ft_executor(t_data *data)
 	}
 	else
 	{
+		ft_init_pipes(data, data->exec);
 		ret = ft_exec_multiple_cmds(data, &i);
 		if (ret)
 			return (ret);
