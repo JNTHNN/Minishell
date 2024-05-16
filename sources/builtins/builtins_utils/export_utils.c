@@ -6,15 +6,11 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/13 16:49:57 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:47:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-**  Initialize env in linked list
-*/
 
 /*
 **	add env node to the end list
@@ -124,5 +120,5 @@ void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
 	}
 	ret = ft_add_env(head, name, data);
 	if (ret)
-		ft_errno(ERR_MEM, 2, d);
+		ft_errno(ERR_MEM, EX_MISCERROR, d);
 }

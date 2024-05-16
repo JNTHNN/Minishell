@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/13 17:11:25 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:22:25 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**ft_create_env(char **arr)
 	if (!arr)
 		return (NULL);
 	if (getcwd(temp, sizeof(temp)))
-		arr[0] = ft_strjoin("PWD=", temp);
+		arr[0] = ft_strjoin(PWD, temp);
 	arr[1] = ft_strdup("SHLVL=1");
 	arr[2] = ft_strdup("/usr/bin/env");
 	arr[3] = NULL;

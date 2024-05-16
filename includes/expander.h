@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/30 10:15:33 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:10:08 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		ft_count_sgl_quotes(char *str);
 int		ft_count_dbl_quotes(char *str);
 int		ft_count_dollars(char *str);
 int		ft_count_all_quotes(char *str);
-void	ft_process_character(char **old, char **cursor, bool state[2]);
+bool	ft_is_not_valid_variable_char(char c);
 
 /* expander_utils2.c */
 char	*ft_get_env_value(char **env, char *var_name);
@@ -48,19 +48,19 @@ void	ft_adjust_length_for_quotes(char *str, int *length);
 bool	ft_should_expand_var(char *str, char *chr);
 
 /* expander_utils3.c */
-bool	ft_is_not_valid_variable_char(char c);
 bool	ft_is_valid_var_char(char c);
 void	ft_increment(int *idx, int *len);
 void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len);
 void	ft_create_var_val(t_data *data, char **str, char **cursor,
 			size_t space_left);
+void	ft_process_character(char **old, char **cursor, bool state[2]);
 
 /* expander_utils4.c */
 int		ft_resplit_first_arg(char ***args);
 void	ft_should_resplit(char *arg, t_data *data);
 
 /* expander_utils5.c */
-int		ft_expand_cmd_args(t_data *data);
 int		ft_expand_redir(t_data *data);
+int		ft_expand_cmd_args(t_data *data);
 
 #endif

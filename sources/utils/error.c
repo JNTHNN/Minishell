@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/15 18:17:48 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:57:07 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 
 static void	ft_print_error(int err_code, t_data *data)
 {
-	g_exit_code = 2;
+	g_exit_code = EX_MISCERROR;
 	if (err_code == E_QUOTES)
 		ft_putstr_fd(ERR_QUOTES, STDERR_FILENO);
 	else if (err_code == E_MEM)

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/15 18:23:07 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:56:50 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ typedef enum e_err_codes
 	E_CLOSE = -16
 }	t_err_codes;
 
+/*		Handle errors : error.c		*/
+int		ft_handle_error(t_data *data, int ret);
+
+/*		Handle errors : error2.c		*/
+void	ft_handle_arg_error(int argc, char **argv);
 void	ft_errno(char *s, int code, t_data *data);
 
 #endif

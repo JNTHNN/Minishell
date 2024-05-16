@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 09:30:54 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/03/26 22:37:06 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:15:46 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_tok_lstsize(t_tok_lst *lst)
+static int	ft_tok_lstsize(t_tok_lst *lst)
 {
 	int	size;
 
@@ -28,16 +28,8 @@ int	ft_tok_lstsize(t_tok_lst *lst)
 	return (size);
 }
 
-t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
-}
 
-void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
+static void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
 {
 	t_tok_lst	*last;
 
@@ -56,7 +48,7 @@ void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
 	}
 }
 
-t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
+static t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
 {
 	t_tok_lst	*new_node;
 
@@ -70,6 +62,15 @@ t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);
+}
+
+t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
 }
 
 int	ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data)
