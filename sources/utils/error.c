@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/16 11:57:07 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:58:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	ft_print_redir_error(int err_code)
 {
-	g_exit_code = 258;
+	g_exit_code = EX_USAGE;
 	ft_putstr_fd(ERR_REDIR, STDERR_FILENO);
 	if (err_code == E_REDIR_OUT)
 		ft_putstr_fd("`>'\n\033[0m", STDERR_FILENO);
@@ -33,11 +33,11 @@ static void	ft_print_redir_error(int err_code)
 static void	ft_print_exec_error(int err_code, t_data *data)
 {
 	if (err_code == E_EXECVE)
-		ft_errno(data->err_info, 126, data);
+		ft_errno(data->err_info, EX_NOEXEC, data);
 	else if (err_code == E_DIR)
 	{
 		errno = EISDIR;
-		ft_errno(data->err_info, 126, data);
+		ft_errno(data->err_info, EX_NOEXEC, data);
 	}
 	else if (err_code == E_NOTF)
 	{
@@ -45,10 +45,10 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 		ft_putstr_fd(data->err_info, STDERR_FILENO);
 		ft_putstr_fd(ERR_CMD, STDERR_FILENO);
 		errno = 0;
-		ft_errno(NULL, 127, data);
+		ft_errno(NULL, EX_NOTFOUND, data);
 	}
 	else
-		ft_errno(data->err_info, 127, data);
+		ft_errno(data->err_info, EX_NOTFOUND, data);
 }
 
 static void	ft_print_error(int err_code, t_data *data)
@@ -68,6 +68,14 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_print_exec_error(err_code, data);
 	else if (err_code == E_CLOSE)
 		ft_errno(NULL, EX_MISCERROR, data);
+	else if (err_code == E_ENV)
+	{
+		ft_putstr_fd(START_ERR, STDERR_FILENO);
+		ft_putstr_fd(data->err_info, STDERR_FILENO);
+		ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
+		errno = 0;
+		ft_errno(NULL, EX_NOTFOUND, data);
+	}
 	else
 		ft_putstr_fd(ERR_UNDEF, STDERR_FILENO);
 }

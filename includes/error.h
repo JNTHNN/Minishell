@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/16 11:56:50 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:58:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define START_ERR "❌\033[0;31m minibash: "
 # define ERR_CMD ": command not found\033[0m\n"
 # define END_RST "\033[0m"
+# define ERR_ENV_OPEN ": No such file or directory\033[0m\n"
 
 typedef enum e_err_codes
 {
@@ -58,7 +59,8 @@ typedef enum e_err_codes
 	E_DIR = -13,
 	E_NOTF = -14,
 	E_EXECVE_2 = -15,
-	E_CLOSE = -16
+	E_CLOSE = -16,
+	E_ENV = -17
 }	t_err_codes;
 
 /*		Handle errors : error.c		*/

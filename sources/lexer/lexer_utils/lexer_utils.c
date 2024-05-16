@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 09:30:54 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/16 12:15:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:36:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	ft_tok_lstsize(t_tok_lst *lst)
 	}
 	return (size);
 }
-
 
 static void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
 {

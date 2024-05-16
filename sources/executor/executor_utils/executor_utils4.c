@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/16 12:05:22 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:08:17 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	ft_print_signals(int status)
 	if (status == SIGQUIT)
 	{
 		ft_putendl_fd(STR_QUIT, STDERR_FILENO);
-		g_exit_code = 131;
+		g_exit_code = 128 + SIGQUIT;
 	}
 	else
 	{
 		printf(CLEAR_LINE);
-		g_exit_code = 130;
+		g_exit_code = 128 + SIGINT;
 	}
 }
 
