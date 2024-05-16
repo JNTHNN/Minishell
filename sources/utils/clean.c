@@ -88,17 +88,7 @@ void	ft_free_data(t_data *data)
 			free(data->input);
 		if (data->hist)
 		{
-			// if (data->hist->newline)
-			// {
-			// 	free(data->hist->newline);
-			// 	data->hist->newline = NULL;
-			// }
-			// if (data->hist->lastline)
-			// {
-			// 	free(data->hist->lastline);
-			// 	data->hist->lastline = NULL;
-			// }
-			ft_free_hist(data->hist); // voir si c'est good
+			ft_free_hist(data->hist);
 			free(data->hist);
 			data->hist = NULL;
 		}
@@ -114,18 +104,4 @@ void	ft_free_data(t_data *data)
 		}
 		ft_free_exec(data);
 	}
-}
-
-void	ft_reset_data(t_data *data)
-{
-	if (data->tokens)
-		ft_free_tokens(&data->tokens);
-	ft_free_cmds(&data->cmd);
-	if (data->redirections)
-	{
-		free(data->redirections);
-		data->redirections = NULL;
-	}
-	ft_free_exec(data);
-	data->nb_of_cmds = 0;
 }

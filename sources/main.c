@@ -38,6 +38,7 @@ static void	ft_init_data(t_data *data, char **envp)
 
 static int	ft_get_input(t_data *data)
 {
+	ft_init_signal();
 	data->input = readline(PROMPT);
 	ft_get_ctrl_d(data);
 	if (ft_trim_input(&data->input))
@@ -51,7 +52,6 @@ static int	ft_minishell_loop(t_data *data)
 
 	while (true)
 	{
-		ft_init_signal();
 		ret = ft_get_input(data);
 		if (ft_handle_error(data, ret))
 			continue ;

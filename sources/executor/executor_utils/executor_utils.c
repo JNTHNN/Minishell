@@ -99,6 +99,7 @@ t_exec	*ft_init_exec(t_data *data)
 	exec = (t_exec *)malloc(sizeof(t_exec));
 	if (!exec)
 		ft_errno(ERR_MEM, 2, data);
+	exec->pipes = NULL;
 	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
 	if (!exec->child_pid)
 		ft_errno(ERR_MEM, 2, data);
@@ -111,30 +112,3 @@ t_exec	*ft_init_exec(t_data *data)
 	data->exec = exec;
 	return (exec);
 }
-
-char	**ft_pathiter(char **path, t_cmd *cmd)
-{
-	char	*new_cmd;
-	char	*temp;
-
-	new_cmd = ft_strjoin("/", cmd->args[0]);
-	while (path && *path)
-	{
-		temp = ft_strjoin(*path, new_cmd);
-		*path = temp;
-		path++;
-	}
-	return (path);
-}
-
-char	**ft_path_abs(t_data *data, t_cmd *cmd)
-{
-	char	*path;
-	char	**my_path;
-
-	path = ft_getenv(data, "PATH");
-	my_path = ft_split(path, ':');
-	ft_pathiter(my_path, cmd);
-	return (my_path);
-}
-

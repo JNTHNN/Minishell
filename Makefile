@@ -50,7 +50,8 @@ EXPAND_SRC			:= expander
 EXPAND_UTILS_SRC	:= expander_utils expander_utils2 expander_utils3 \
 					expander_utils4 expander_utils5
 EXEC_SRC			:= executor
-EXEC_UTILS_SRC		:= executor_utils executor_utils2
+EXEC_UTILS_SRC		:= executor_utils executor_utils2 executor_utils3 \
+					executor_utils4 executor_utils5 
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
 SRC 			+= $(addprefix $(SRC_DIR)builtins/, $(addsuffix .c, $(BUILTINS_SRC)))
