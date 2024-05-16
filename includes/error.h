@@ -57,8 +57,8 @@ typedef enum e_err_codes
 	E_EXECVE = -12,
 	E_DIR = -13,
 	E_NOTF = -14,
-	E_CLOSE = -15, // a changer
-	E_EXECVE_2 = -15
+	E_EXECVE_2 = -15,
+	E_CLOSE = -16
 }	t_err_codes;
 
 void	ft_errno(char *s, int code, t_data *data);
