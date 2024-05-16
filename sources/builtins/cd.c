@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 17:41:49 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:32:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	ft_check_dir(t_cd *cd)
 /*
 **	initialize the cd struct
 */
-t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
+static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 {
 	t_cd		*cd;
 	static char	cwd[PATH_MAX];

@@ -3,42 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:16:05 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/17 16:39:49 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:14:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_check_quotes(char *input)
-{
-	int		quote_char;
-	bool	in_quotes;
-
-	quote_char = 0;
-	in_quotes = false;
-	while (*input)
-	{
-		if (ft_is_quote(*input))
-		{
-			if (!in_quotes)
-			{
-				in_quotes = true;
-				quote_char = *input;
-			}
-			else if (*input == quote_char)
-				in_quotes = false;
-		}
-		input++;
-	}
-	if (in_quotes)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
-
-int	ft_store_operator(t_data *data, char *str, int *token_nb)
+static int	ft_store_operator(t_data *data, char *str, int *token_nb)
 {
 	char	*token;
 	int		length;
@@ -58,7 +32,7 @@ int	ft_store_operator(t_data *data, char *str, int *token_nb)
 	return (length);
 }
 
-int	ft_store_word(t_data *data, char *str, int *token_nb)
+static int	ft_store_word(t_data *data, char *str, int *token_nb)
 {
 	char	quote_char;
 	char	*start;
@@ -81,7 +55,7 @@ int	ft_store_word(t_data *data, char *str, int *token_nb)
 	return (str - start);
 }
 
-int	ft_get_tokens(t_data *data)
+static int	ft_get_tokens(t_data *data)
 {
 	char	*str;
 	int		token_nb;
@@ -107,6 +81,32 @@ int	ft_get_tokens(t_data *data)
 			str += ret;
 		}
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_check_quotes(char *input)
+{
+	int		quote_char;
+	bool	in_quotes;
+
+	quote_char = 0;
+	in_quotes = false;
+	while (*input)
+	{
+		if (ft_is_quote(*input))
+		{
+			if (!in_quotes)
+			{
+				in_quotes = true;
+				quote_char = *input;
+			}
+			else if (*input == quote_char)
+				in_quotes = false;
+		}
+		input++;
+	}
+	if (in_quotes)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

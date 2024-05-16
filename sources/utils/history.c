@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 14:06:19 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/16 14:11:12 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:10:32 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_hist	*ft_create_hist(void)
-{
-	t_hist	*hist;
-
-	hist = malloc(sizeof(t_hist));
-	if (!hist)
-		return (NULL);
-	hist->newline = NULL;
-	hist->lastline = NULL;
-	return (hist);
-}
 
 static void	ft_fill_local_history(t_data *data)
 {
@@ -39,6 +27,18 @@ static void	ft_fill_local_history(t_data *data)
 		free(hist->newline);
 	}
 	hist->newline = ft_strdup(data->input);
+}
+
+t_hist	*ft_create_hist(void)
+{
+	t_hist	*hist;
+
+	hist = malloc(sizeof(t_hist));
+	if (!hist)
+		return (NULL);
+	hist->newline = NULL;
+	hist->lastline = NULL;
+	return (hist);
 }
 
 void	ft_handle_history(t_data *data)

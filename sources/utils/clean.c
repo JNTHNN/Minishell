@@ -6,11 +6,42 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:21:25 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/15 14:54:17 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:52:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	ft_free_redirections(t_redir_lst **lst)
+{
+	t_redir_lst	*current;
+
+	if (!*lst)
+		return ;
+	while (*lst)
+	{
+		current = (*lst)->next;
+		free((*lst)->filename);
+		free((*lst)->hd_path);
+		free(*lst);
+		*lst = current;
+	}
+	*lst = NULL;
+}
+
+static void	ft_free_hist(t_hist *hist)
+{
+	if (hist->newline)
+	{
+		free(hist->newline);
+		hist->newline = NULL;
+	}
+	if (hist->lastline)
+	{
+		free(hist->lastline);
+		hist->lastline = NULL;
+	}
+}
 
 void	ft_free_tokens(t_tok_lst **tokens)
 {
@@ -32,23 +63,6 @@ void	ft_free_tokens(t_tok_lst **tokens)
 	*tokens = NULL;
 }
 
-void	ft_free_redirections(t_redir_lst **lst)
-{
-	t_redir_lst	*current;
-
-	if (!*lst)
-		return ;
-	while (*lst)
-	{
-		current = (*lst)->next;
-		free((*lst)->filename);
-		free((*lst)->hd_path);
-		free(*lst);
-		*lst = current;
-	}
-	*lst = NULL;
-}
-
 void	ft_free_cmds(t_cmd **cmd)
 {
 	t_cmd	*current;
@@ -64,20 +78,6 @@ void	ft_free_cmds(t_cmd **cmd)
 		*cmd = current;
 	}
 	*cmd = NULL;
-}
-
-void	ft_free_hist(t_hist *hist)
-{
-	if (hist->newline)
-	{
-		free(hist->newline);
-		hist->newline = NULL;
-	}
-	if (hist->lastline)
-	{
-		free(hist->lastline);
-		hist->lastline = NULL;
-	}
 }
 
 void	ft_free_data(t_data *data)

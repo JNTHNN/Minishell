@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/14 15:05:21 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:02:25 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
+static int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
 {
 	if (cmd->left && data->exec->fdin == NOT_INIT)
 	{
@@ -38,7 +38,7 @@ int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
+static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 {
 	int	ret;
 
@@ -57,7 +57,7 @@ int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 	return (exit(EXIT_SUCCESS), EXIT_SUCCESS);
 }
 
-void	ft_reset_fdio(t_data *data, t_cmd *cmd)
+static void	ft_reset_fdio(t_data *data, t_cmd *cmd)
 {
 	if (cmd->right)
 		g_exit_code = EXIT_SUCCESS;

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 17:41:00 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:43:05 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**ft_remove_first(char **path, t_cd *cd)
 	i = ft_tablen(path);
 	new_path = (char **)malloc(i * sizeof(char *));
 	if (!new_path)
-		ft_errno(ERR_MEM, 2, cd->data);
+		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	j = 1;
 	while (j < i)
 	{
@@ -46,7 +46,7 @@ char	**ft_append_pwd(char **pwd, char *path, t_cd *cd)
 	i = 0;
 	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
 	if (!append_pwd)
-		ft_errno(ERR_MEM, 2, cd->data);
+		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (pwd && pwd[i])
 	{
 		append_pwd[i] = ft_strdup(pwd[i]);
@@ -90,7 +90,7 @@ char	**ft_sup_pwd(char **pwd, t_cd *cd)
 	len = ft_tablen(pwd);
 	new_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(pwd)));
 	if (!new_pwd)
-		ft_errno(ERR_MEM, 2, cd->data);
+		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (i < len - 1)
 	{
 		new_pwd[i] = ft_strdup(pwd[i]);

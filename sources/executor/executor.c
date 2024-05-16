@@ -6,13 +6,13 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 18:23:31 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:06:24 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_prepare_execution(t_data *data)
+static int	ft_prepare_execution(t_data *data)
 {
 	t_exec		*exec;
 
@@ -26,7 +26,7 @@ int	ft_prepare_execution(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_exec_simple_cmd(t_data *data)
+static int	ft_exec_simple_cmd(t_data *data)
 {
 	if (ft_trigger_heredoc(data))
 		return (E_OPEN);
@@ -46,7 +46,7 @@ int	ft_exec_simple_cmd(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_wait_children(t_data *data, int *children_nb)
+static void	ft_wait_children(t_data *data, int *children_nb)
 {
 	bool	first_child;
 	t_exec	*exec;
@@ -67,7 +67,7 @@ void	ft_wait_children(t_data *data, int *children_nb)
 	}
 }
 
-int	ft_exec_multiple_cmds(t_data *data, int *cmd_nb)
+static int	ft_exec_multiple_cmds(t_data *data, int *cmd_nb)
 {
 	int	ret;
 

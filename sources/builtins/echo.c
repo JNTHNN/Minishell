@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/21 02:10:57 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:35:09 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ static int	ft_check_option(char *option)
 	return (1);
 }
 
+/*
+**	shortcuts for ~ -> $HOME | ~+ -> $PWD | ~- -> $OLDPWD
+*/
 static char	*ft_extra(t_data *data, char *s)
 {
 	if (!ft_strncmp(s, TILDE, 2) && ft_getenv(data, HOME))
@@ -48,7 +51,6 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 	int	i;
 	int	option;
 
-	(void)data;
 	i = 1;
 	option = 0;
 	while (cmd->args && cmd->args[i] != NULL

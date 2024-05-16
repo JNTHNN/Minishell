@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/14 15:05:21 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:08:17 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	ft_handle_heredoc(t_redir_lst *node)
+{
+	char	*line;
+	int		fd;
+
+	fd = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd == F_ERROR)
+		return (EXIT_FAILURE);
+	while (true)
+	{
+		line = readline("> ");
+		if (ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
+			break ;
+		ft_putendl_fd(line, fd);
+		free(line);
+	}
+	free(line);
+	close(fd);
+	return (EXIT_SUCCESS);
+}
 
 int	ft_cmd_exec(t_data *data)
 {
@@ -52,34 +73,13 @@ void	ft_print_signals(int status)
 	if (status == SIGQUIT)
 	{
 		ft_putendl_fd(STR_QUIT, STDERR_FILENO);
-		g_exit_code = 131;
+		g_exit_code = 128 + SIGQUIT;
 	}
 	else
 	{
 		printf(CLEAR_LINE);
-		g_exit_code = 130;
+		g_exit_code = 128 + SIGINT;
 	}
-}
-
-int	ft_handle_heredoc(t_redir_lst *node)
-{
-	char	*line;
-	int		fd;
-
-	fd = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd == F_ERROR)
-		return (EXIT_FAILURE);
-	while (true)
-	{
-		line = readline("> ");
-		if (ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
-			break ;
-		ft_putendl_fd(line, fd);
-		free(line);
-	}
-	free(line);
-	close(fd);
-	return (EXIT_SUCCESS);
 }
 
 int	ft_trigger_heredoc(t_data *data)

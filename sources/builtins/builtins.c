@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/25 10:00:04 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:02:42 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <string.h>
 
 /*
 ** checker for builtin | return true if it's a builtin
@@ -42,17 +41,17 @@ int	ft_builtin(t_data *data, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->args[0], "echo", 4))
 		ft_echo(data, cmd);
-	if (!ft_strncmp(cmd->args[0], "cd", 2))
+	else if (!ft_strncmp(cmd->args[0], "cd", 2))
 		ft_cd(data, cmd);
-	if (!ft_strncmp(cmd->args[0], "pwd", 3))
+	else if (!ft_strncmp(cmd->args[0], "pwd", 3))
 		ft_pwd(data);
-	if (!ft_strncmp(cmd->args[0], "export", 6))
+	else if (!ft_strncmp(cmd->args[0], "export", 6))
 		ft_export(data, cmd);
-	if (!ft_strncmp(cmd->args[0], "unset", 5))
+	else if (!ft_strncmp(cmd->args[0], "unset", 5))
 		ft_unset(data, cmd);
-	if (!ft_strncmp(cmd->args[0], "env", 3))
-		ft_env(data);
-	if (!ft_strncmp(cmd->args[0], "exit", 4))
+	else if (!ft_strncmp(cmd->args[0], "env", 3))
+		ft_env(data, cmd);
+	else if (!ft_strncmp(cmd->args[0], "exit", 4))
 		ft_exit(data, cmd);
 	return (EXIT_SUCCESS);
 }
