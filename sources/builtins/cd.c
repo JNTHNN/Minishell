@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:32:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:25:43 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,19 @@
 /*
 **	change pwd in env according to path type (without arg; absolute; relative)
 */
-static void	ft_change_pwd(t_cd *cd)
+static int	ft_change_pwd(t_cd *cd)
 {
 	if (!cd->dir)
 		ft_cd_home(cd);
 	else if (cd->dir[0] == '/')
 		ft_cd_absolute(cd);
 	else
+	{
+		if (!cd->pwd)
+			return (ft_handle_error(cd->data, E_CWD), EXEC_FAIL);
 		ft_cd_relative(cd);
+	}
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -64,8 +69,6 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
 	cd->pwd = getcwd(cwd, sizeof(cwd));
-	if (!cd->pwd)
-		ft_errno("cd", 2, data);
 	cd->oldpwd = ft_getenv(data, OLDPWD);
 	cd->home = ft_getenv(data, HOME);
 	cd->err = NULL;
@@ -100,6 +103,9 @@ void	ft_cd(t_data *data, t_cmd *cmd)
 
 	cd = ft_init_cd(data, cmd);
 	if (ft_check_dir(cd))
-		ft_change_pwd(cd);
+	{
+		if (ft_change_pwd(cd))
+			return ;
+	}
 	ft_free_cd(cd);
 }

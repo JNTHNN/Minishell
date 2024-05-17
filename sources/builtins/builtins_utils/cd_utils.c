@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 17:41:12 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:43:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ void	ft_seek_replace(t_data *data, char *search, char *pwd)
 		i++;
 	}
 	if (!found)
+	{
+		if (!ft_strncmp(search, OLDPWD, ft_strlen(search)) && !pwd)
+			pwd = ft_strdup("");
 		data->env = ft_add_to_env(data->env, ft_strjoin(search, pwd));
+	}
 }
 
 /*
@@ -64,6 +68,7 @@ void	ft_cd_absolute(t_cd *cd)
 void	ft_cd_relative(t_cd *cd)
 {
 	int		i;
+	char	*new_pwd;
 
 	cd->temp_path = ft_split(cd->dir, '/');
 	cd->temp_pwd = ft_split(cd->pwd, '/');
@@ -82,6 +87,7 @@ void	ft_cd_relative(t_cd *cd)
 			cd->temp_pwd = ft_append_pwd(cd->temp_pwd, cd->temp_path[i], cd);
 		i++;
 	}
-	ft_seek_replace(cd->data, PWD, ft_pwdcat(cd->temp_pwd));
+	new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	ft_seek_replace(cd->data, PWD, new_pwd);
 	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }

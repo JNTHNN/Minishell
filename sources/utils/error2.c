@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:26:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 15:40:40 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:46:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ void	ft_errno(char *s, int code, t_data *data)
 		ft_free_if_error(data);
 		exit(g_exit_code);
 	}
+}
+
+void	ft_print_env_error(t_data *data)
+{
+	ft_putstr_fd(START_ERR, STDERR_FILENO);
+	ft_putstr_fd(data->err_info, STDERR_FILENO);
+	ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
+	errno = 0;
+	ft_errno(NULL, EX_NOTFOUND, data);
 }
 
 void	ft_handle_arg_error(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:43:05 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 12:28:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	**ft_sup_pwd(char **pwd, t_cd *cd)
 /*
 **	concat pwd for relative
 */
-char	*ft_pwdcat(char **pwd)
+char	*ft_pwdcat(char **pwd, t_cd *cd)
 {
 	char	*new_pwd;
 	char	*temp;
@@ -113,6 +113,8 @@ char	*ft_pwdcat(char **pwd)
 
 	size = ft_tablen(pwd);
 	i = 0;
+	if (!pwd[0])
+		ft_handle_error(cd->data, E_CWD);
 	if (!ft_strncmp(pwd[0], HOME, 5) || !ft_strncmp(pwd[0], OLDPWD, 7))
 		i = 1;
 	new_pwd = ft_strdup("");
