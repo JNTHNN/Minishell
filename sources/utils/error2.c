@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:26:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/17 20:27:45 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:55:30 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	ft_errno(char *s, int code, t_data *data)
 		ft_putstr_fd(s, STDERR_FILENO);
 	if (code)
 		g_exit_code = code;
-	else if (code == E_MEM)
+	if (code == E_MEM)
 		ft_free_data(data);
-	else if (data->nb_of_cmds != 1 || \
+	if (data->nb_of_cmds != 1 || \
 		(!data->cmd->is_builtin && code != EXEC_FAIL))
 	{
 		ft_free_if_error(data);
@@ -50,4 +50,11 @@ void	ft_handle_arg_error(int argc, char **argv)
 		ft_putstr_fd(ERR_ARG, STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
+}
+
+void	ft_print_unset_error(char *err, t_data *data)
+{
+	ft_putstr_fd(START_UNSET, STDERR_FILENO);
+	ft_putstr_fd(data->err_info, STDERR_FILENO);
+	ft_putstr_fd(err, STDERR_FILENO);
 }

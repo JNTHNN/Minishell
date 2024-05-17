@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/17 13:45:55 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:35:26 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_print_env_error(data);
 	else if (err_code == E_CWD)
 		ft_putstr_fd(ERR_CWD, STDERR_FILENO);
+	else if (err_code == E_VAR_ID)
+		ft_print_unset_error(ERR_UNSET_VAR_ID, data);
 	else
 		ft_putstr_fd(ERR_UNDEF, STDERR_FILENO);
 }

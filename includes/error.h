@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/17 13:46:22 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:38:11 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@
 # define ERR_ENV_OPEN ": No such file or directory\033[0m\n"
 # define ERR_CWD "❌\033[0;31m minibash: cd: error retrieving current directory:\
  getcwd: cannot access parent directories: No such file or directory\033[0m\n"
+# define START_UNSET "❌\033[0;31m minibash: unset: "
+# define ERR_UNSET_VAR_ID ": not a valid identifier\033[0m\n"
 
 typedef enum e_err_codes
 {
@@ -63,7 +65,8 @@ typedef enum e_err_codes
 	E_EXECVE_2 = -15,
 	E_CLOSE = -16,
 	E_ENV = -17,
-	E_CWD = -18
+	E_CWD = -18,
+	E_VAR_ID = -19,
 }	t_err_codes;
 
 /*		Handle errors : error.c		*/
@@ -73,5 +76,6 @@ int		ft_handle_error(t_data *data, int ret);
 void	ft_handle_arg_error(int argc, char **argv);
 void	ft_print_env_error(t_data *data);
 void	ft_errno(char *s, int code, t_data *data);
+void	ft_print_unset_error(char *err, t_data *data);
 
 #endif
