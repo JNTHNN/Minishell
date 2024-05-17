@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 15:02:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:24:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	ft_is_builtin(char *name)
 	{
 		while (builtin_tab[i])
 		{
-			if (!ft_strncmp(name, builtin_tab[i], ft_strlen(name)))
+			if (!ft_strncmp(name, builtin_tab[i], ft_strlen(builtin_tab[i])))
 				return (true);
 			i++;
 		}
@@ -53,5 +53,5 @@ int	ft_builtin(t_data *data, t_cmd *cmd)
 		ft_env(data, cmd);
 	else if (!ft_strncmp(cmd->args[0], "exit", 4))
 		ft_exit(data, cmd);
-	return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }

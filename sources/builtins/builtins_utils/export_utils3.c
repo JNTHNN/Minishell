@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:33:05 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:52:54 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 19:15:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static char	**ft_ltoa(t_env *head)
 */
 void	ft_update_env(t_env *head, t_data *data)
 {
+	ft_free_array(data->env);
 	data->env = ft_ltoa(head);
 	ft_free_lst(head);
 }
