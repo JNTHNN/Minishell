@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:26:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/18 17:46:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:01:46 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_handle_arg_error(int argc, char **argv)
 
 void	ft_print_unset_error(char *err, t_data *data)
 {
+	g_exit_code = EXEC_FAIL;
 	ft_putstr_fd(START_UNSET, STDERR_FILENO);
 	ft_putstr_fd(data->err_info, STDERR_FILENO);
 	ft_putstr_fd(err, STDERR_FILENO);
