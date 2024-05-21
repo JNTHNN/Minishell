@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:33:05 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/17 19:15:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:30:23 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,27 @@
 static void	ft_free_lst(t_env *head)
 {
 	t_env	*next_node;
+	t_env	*temp;
 
-	while (head)
+	temp = head;
+	while (temp)
 	{
-		next_node = head->next;
-		if (head->var)
-			free(head->var);
-		else if (head->data)
-			free(head->data);
-		head = next_node;
+		next_node = temp->next;
+		if (temp->var)
+		{
+			free(temp->var);
+			temp->var = NULL;
+		}
+		if (temp->data)
+		{
+			free(temp->data);
+			temp->data = NULL;
+		}
+		free(temp);
+		temp = NULL;
+		temp = next_node;
 	}
-	head = NULL;
+	temp = NULL;
 }
 
 /*
@@ -66,7 +76,6 @@ static char	**ft_ltoa(t_env *head)
 	new_env = malloc(sizeof(char *) * (count + 1));
 	if (!new_env)
 		return (NULL);
-	temp = head;
 	while (i < count)
 	{
 		if (temp->data)

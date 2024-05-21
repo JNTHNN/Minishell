@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:47:37 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:22:01 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,9 @@ static void	ft_envadd_back(t_env **lst, t_env *new)
 }
 
 /*
-**	add the new node with var + data in env list
-*/
-static int	ft_add_env(t_env **head, char *var, char *data)
-{
-	t_env	*new_node;
-
-	new_node = (t_env *)malloc(sizeof(t_env));
-	if (!new_node)
-		return (E_MEM);
-	new_node->var = var;
-	new_node->data = data;
-	new_node->next = NULL;
-	ft_envadd_back(head, new_node);
-	return (EXIT_SUCCESS);
-}
-
-/*
 **	create new node for env list
 */
-static t_env	*ft_new_node(char *var)
+static t_env	*ft_new_node(char *var, char *data)
 {
 	t_env	*node;
 
@@ -54,10 +37,25 @@ static t_env	*ft_new_node(char *var)
 	if (node)
 	{
 		node->var = ft_var(var);
-		node->data = ft_data(var);
+		if (data)
+			node->data = ft_strdup(data);
+		else
+			node->data = ft_data(var);
 		node->next = NULL;
 	}
 	return (node);
+}
+
+/*
+**	add the new node with var + data in env list
+*/
+static int	ft_add_env(t_env **head, char *var, char *data)
+{
+	t_env	*new_node;
+
+	new_node = ft_new_node(var, data);
+	ft_envadd_back(head, new_node);
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -73,7 +71,7 @@ t_env	*ft_setup_env(char **env)
 		return (NULL);
 	while (*env)
 	{
-		node[NEW] = ft_new_node(*env);
+		node[NEW] = ft_new_node(*env, NULL);
 		if (!node[NEW])
 			return (NULL);
 		if (!node[HEAD])
@@ -111,14 +109,20 @@ void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
 		{
 			if (!ft_strncmp(current->var, name, ft_strlen(name)))
 			{
+				free(name);
 				free(current->data);
 				current->data = ft_strdup(data);
+				free(data);
 				return ;
 			}
 			current = current->next;
 		}
 	}
 	ret = ft_add_env(head, name, data);
+	free(name);
+	name = NULL;
+	free(data);
+	data = NULL;
 	if (ret)
 		ft_errno(ERR_MEM, EX_MISCERROR, d);
 }

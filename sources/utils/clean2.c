@@ -24,6 +24,8 @@ void	ft_free_pipes(t_data *data, t_exec *exec)
 		free(exec->pipes[i]);
 		exec->pipes[i] = NULL;
 	}
+	free(exec->pipes);
+	exec->pipes = NULL;
 }
 
 void	ft_free_exec(t_data *data)
@@ -33,17 +35,18 @@ void	ft_free_exec(t_data *data)
 	if (data && data->exec)
 	{
 		exec = data->exec;
-		ft_free_pipes(data, exec);
 		if (exec && exec->pipes)
+			ft_free_pipes(data, exec);
+		if (exec && exec->child_pid)
 		{
-			free(exec->pipes);
-			exec->pipes = NULL;
+			free(exec->child_pid);
+			exec->child_pid = NULL;
 		}
-		if (exec->fdin != -1)
+		if (exec->fdin != NOT_INIT)
 			close(exec->fdin);
-		if (exec->fdout != -1)
+		if (exec->fdout != NOT_INIT)
 			close(exec->fdout);
-		if (exec->tmpin != -1)
+		if (exec->tmpin != NOT_INIT)
 			close(exec->tmpin);
 		if (exec->tmpout)
 			close(exec->tmpout);
