@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:43:30 by anvoets           #+#    #+#             */
-/*   Updated: 2024/04/16 12:46:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:07:38 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	ft_get_ctrl_d(t_data *data)
 	{
 		printf("\033[A\033[2K");
 		printf("%s", PROMPT "exit\n");
+		ft_free_data(data);
 		exit(EXIT_SUCCESS);
 	}
 }

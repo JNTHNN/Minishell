@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:32:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:15:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,19 @@
 /*
 **	change pwd in env according to path type (without arg; absolute; relative)
 */
-static void	ft_change_pwd(t_cd *cd)
+static int	ft_change_pwd(t_cd *cd)
 {
 	if (!cd->dir)
 		ft_cd_home(cd);
-	else if (cd->dir[0] == '/')
+	else if (cd->dir[0] == '/' || cd->temp_tilde || cd->temp_minus)
 		ft_cd_absolute(cd);
 	else
+	{
+		if (!cd->pwd)
+			return (ft_handle_error(cd->data, E_CWD), EXEC_FAIL);
 		ft_cd_relative(cd);
+	}
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -36,7 +41,7 @@ static int	ft_check_dir(t_cd *cd)
 	if (cd->dir)
 	{
 		if (!ft_strncmp(cd->dir, MINUS, 1))
-			return (rv = ft_check_minus(cd));
+			return (printf("%s\n", cd->oldpwd), rv = ft_check_minus(cd));
 		if (!ft_strncmp(cd->dir, TILDE, 1))
 			rv = ft_check_tilde(cd);
 		else if (!chdir(cd->dir))
@@ -64,14 +69,14 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
 	cd->pwd = getcwd(cwd, sizeof(cwd));
-	if (!cd->pwd)
-		ft_errno("cd", 2, data);
 	cd->oldpwd = ft_getenv(data, OLDPWD);
 	cd->home = ft_getenv(data, HOME);
-	cd->err = NULL;
 	cd->temp_tilde = NULL;
+	cd->temp_minus = NULL;
 	cd->temp_pwd = NULL;
 	cd->temp_path = NULL;
+	cd->new_pwd = NULL;
+	cd->temp = NULL;
 	return (cd);
 }
 
@@ -80,14 +85,25 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 */
 static void	ft_free_cd(t_cd *cd)
 {
-	if (cd->err)
-		free(cd->err);
 	if (cd->temp_tilde)
+	{
 		free(cd->temp_tilde);
+		cd->temp_tilde = NULL;
+	}
 	if (cd->temp_pwd)
 		ft_free_array(cd->temp_pwd);
 	if (cd->temp_path)
 		ft_free_array(cd->temp_path);
+	if (cd->new_pwd)
+	{
+		free(cd->new_pwd);
+		cd->new_pwd = NULL;
+	}
+	if (cd->temp_minus)
+	{
+		free(cd->temp_minus);
+		cd->temp_minus = NULL;
+	}
 	free(cd);
 }
 
@@ -100,6 +116,9 @@ void	ft_cd(t_data *data, t_cmd *cmd)
 
 	cd = ft_init_cd(data, cmd);
 	if (ft_check_dir(cd))
-		ft_change_pwd(cd);
+	{
+		if (ft_change_pwd(cd))
+			return ;
+	}
 	ft_free_cd(cd);
 }

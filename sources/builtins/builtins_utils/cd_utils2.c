@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:43:05 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:21:10 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	**ft_remove_first(char **path, t_cd *cd)
 		j++;
 	}
 	new_path[i - 1] = NULL;
+	ft_free_array(path);
 	return (new_path);
 }
 
@@ -44,7 +45,7 @@ char	**ft_append_pwd(char **pwd, char *path, t_cd *cd)
 	char	**append_pwd;
 
 	i = 0;
-	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
+	append_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(pwd) + 2));
 	if (!append_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (pwd && pwd[i])
@@ -74,6 +75,7 @@ char	**ft_replace_pwd(t_cd *cd, char *shortcut)
 	else
 		temp_pwd = cd->home;
 	pwd = ft_split(temp_pwd, '/');
+	free(temp_pwd);
 	return (pwd);
 }
 
@@ -104,7 +106,7 @@ char	**ft_sup_pwd(char **pwd, t_cd *cd)
 /*
 **	concat pwd for relative
 */
-char	*ft_pwdcat(char **pwd)
+char	*ft_pwdcat(char **pwd, t_cd *cd)
 {
 	char	*new_pwd;
 	char	*temp;
@@ -112,10 +114,15 @@ char	*ft_pwdcat(char **pwd)
 	int		size;
 
 	size = ft_tablen(pwd);
+	temp = NULL;
 	i = 0;
+	if (!pwd[0])
+		ft_handle_error(cd->data, E_CWD);
 	if (!ft_strncmp(pwd[0], HOME, 5) || !ft_strncmp(pwd[0], OLDPWD, 7))
 		i = 1;
 	new_pwd = ft_strdup("");
+	if (!new_pwd)
+		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (i < size)
 	{
 		temp = ft_strjoin(new_pwd, "/");

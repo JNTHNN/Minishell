@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:39:29 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:25:06 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static int	ft_check_var(char *str, t_data *data)
 	i = 0;
 	var = ft_var(str);
 	if (var[i] == '=')
-		return (ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), 0);
+		return (free(var), ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), false);
 	if (!var || ft_isdigit(var[i]))
-		return (ft_errno(ERR_VAR_ID, EXEC_FAIL, data), 0);
+		return (free(var), ft_errno(ERR_VAR_ID, EXEC_FAIL, data), false);
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]))
-			return (ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), 0);
+			return (free(var), ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), false);
 		i++;
 	}
-	return (1);
+	return (free(var), true);
 }
 
 int	ft_export(t_data *data, t_cmd *cmd)
