@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:15:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:28:24 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 
 	cd = (t_cd *)malloc(sizeof(t_cd));
 	if (!cd)
-		ft_errno(ERR_MEM, 2, data);
+		ft_errno(ERR_MEM, EX_MISCERROR, data);
 	cd->data = data;
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
