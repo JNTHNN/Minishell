@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/21 16:23:47 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:39:05 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ char	**ft_pathiter(char **path, t_cmd *cmd)
 	while (path && *path)
 	{
 		temp = ft_strjoin(*path, new_cmd);
-		*path = temp;
+		free(*path);
+		*path = ft_strdup(temp);
+		free(temp);
 		path++;
 	}
 	free(new_cmd);
