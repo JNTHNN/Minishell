@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:36:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 22:09:48 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	ft_cd_absolute(t_cd *cd)
 		cd->new_pwd = ft_strdup(cd->temp_tilde);
 	else if (cd->temp_minus)
 		cd->new_pwd = ft_strdup(cd->temp_minus);
+	else if (!ft_getenv(cd->data, PWD))
+		cd->new_pwd = ft_strdup(cd->pwd);
 	else
 		cd->new_pwd = ft_strdup(cd->dir);
 	if (!(ft_strlen(cd->new_pwd) == 1)
@@ -74,6 +76,7 @@ void	ft_cd_relative(t_cd *cd)
 {
 	int		i;
 
+	printf(" dir %s pwd %s\n", cd->dir, cd->pwd);
 	cd->temp_path = ft_split(cd->dir, '/');
 	cd->temp_pwd = ft_split(cd->pwd, '/');
 	if (!ft_strncmp(cd->temp_path[0], TILDE, 1)
@@ -86,14 +89,30 @@ void	ft_cd_relative(t_cd *cd)
 	i = 0;
 	while (cd->temp_path[i])
 	{
+		printf("av %s\n", cd->temp_path[i]);
 		if (!ft_strncmp(cd->temp_path[i], PARENT, 2))
+		{
+			printf("gang\n");
 			cd->temp = ft_sup_pwd(cd->temp_pwd, cd);
+		}
 		else if (ft_strncmp(cd->temp_path[i], CURRENT, 2) != 0)
+		{
+			printf("shit\n");
 			cd->temp_pwd = ft_append_pwd(cd->temp, cd->temp_path[i], cd);
+		}
+		printf("ap %s\n", cd->temp_path[i]);
 		i++;
 	}
 	ft_free_array(cd->temp);
-	cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	// int j = 0;
+	// while (cd->temp_pwd[j])
+	// 	printf("%s\n", cd->temp_pwd[j++]);
+	printf("eee %s\n", cd->new_pwd);
+	if (!cd->new_pwd)
+		cd->new_pwd = ft_strdup(cd->pwd);
+	else
+		cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	ft_free_array(cd->temp_pwd);
 	ft_seek_replace(cd->data, PWD, cd->new_pwd);
 	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }

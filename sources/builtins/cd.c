@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 17:28:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 21:47:13 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ static int	ft_change_pwd(t_cd *cd)
 {
 	if (!cd->dir)
 		ft_cd_home(cd);
-	else if (cd->dir[0] == '/' || cd->temp_tilde || cd->temp_minus)
+	else if (cd->dir[0] == '/' || cd->temp_tilde
+		|| cd->temp_minus || (cd->pwd && !ft_getenv(cd->data, PWD)))
 		ft_cd_absolute(cd);
 	else
 	{
 		if (!cd->pwd)
 			return (ft_handle_error(cd->data, E_CWD), EXEC_FAIL);
-		ft_cd_relative(cd);
+		else
+			ft_cd_relative(cd);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -41,7 +43,7 @@ static int	ft_check_dir(t_cd *cd)
 	if (cd->dir)
 	{
 		if (!ft_strncmp(cd->dir, MINUS, 1))
-			return (printf("%s\n", cd->oldpwd), rv = ft_check_minus(cd));
+			return (printf("%s\n", cd->oldpwd + 7), rv = ft_check_minus(cd));
 		if (!ft_strncmp(cd->dir, TILDE, 1))
 			rv = ft_check_tilde(cd);
 		else if (!chdir(cd->dir))
