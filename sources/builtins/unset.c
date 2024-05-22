@@ -6,13 +6,13 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:40:55 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/18 17:58:13 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_check_var(char *str)
+static int	ft_check_var(char *str, t_data *data)
 {
 	int		i;
 	char	*var;
@@ -20,11 +20,13 @@ static int	ft_check_var(char *str)
 	i = 0;
 	var = ft_var(str);
 	if (!var || ft_isdigit(var[i]))
-		return (ft_errno(ERR_U_VAR_ID, EXEC_FAIL, NULL), 0);
+		return (data->err_info = str,
+			ft_print_unset_error(ERR_UNSET_VAR_ID, data), 0);
 	while (var[i])
 	{
-		if (!ft_isalnum(var[i]) || var[i] == '=')
-			return (ft_errno(ERR_U_VAR_EQ, EXEC_FAIL, NULL), 0);
+		if (!ft_isalnum(var[i]) || var[i] == '=' || !var[0])
+			return (data->err_info = str,
+				ft_print_unset_error(ERR_UNSET_VAR_ID, data), 0);
 		i++;
 	}
 	return (1);
@@ -41,7 +43,7 @@ void	ft_unset(t_data *data, t_cmd *cmd)
 		j = -1;
 		while (data->env[++j])
 		{
-			if (!ft_check_var(cmd->args[i]))
+			if (!ft_check_var(cmd->args[i], data))
 				break ;
 			if (ft_strncmp(cmd->args[i], data->env[j],
 					ft_strlen(cmd->args[i])) == 0)

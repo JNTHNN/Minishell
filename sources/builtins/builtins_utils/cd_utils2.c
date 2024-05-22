@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:43:05 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:30:11 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**ft_append_pwd(char **pwd, char *path, t_cd *cd)
 	char	**append_pwd;
 
 	i = 0;
-	append_pwd = (char **)malloc(sizeof(char *) * ft_tablen(pwd) + 2);
+	append_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(pwd) + 2));
 	if (!append_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (pwd && pwd[i])
@@ -104,7 +104,7 @@ char	**ft_sup_pwd(char **pwd, t_cd *cd)
 /*
 **	concat pwd for relative
 */
-char	*ft_pwdcat(char **pwd)
+char	*ft_pwdcat(char **pwd, t_cd *cd)
 {
 	char	*new_pwd;
 	char	*temp;
@@ -112,7 +112,10 @@ char	*ft_pwdcat(char **pwd)
 	int		size;
 
 	size = ft_tablen(pwd);
+	temp = NULL;
 	i = 0;
+	if (!pwd[0])
+		ft_handle_error(cd->data, E_CWD);
 	if (!ft_strncmp(pwd[0], HOME, 5) || !ft_strncmp(pwd[0], OLDPWD, 7))
 		i = 1;
 	new_pwd = ft_strdup("");
