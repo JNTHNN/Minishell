@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/22 11:12:20 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/22 11:23:17 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,24 @@ void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 
 int	ft_handle_expansion(char ***args, int idx, t_data *data)
 {
-	char	*str;
-	char	*cursor;
-	int		new_length;
+	char		*str;
+	char		*cursor;
+	t_tok_lst	*origin;
+	int			new_length;
 
 	str = ft_strdup((*args)[idx]);
 	if (ft_count_all_quotes(str) || ft_count_dollars(str))
 	{
-		// Find the équivalent token node
-		t_tok_lst *current_node;
-		current_node = data->tokens;
-		while (current_node)
-		{
-			if (current_node->token == (*args)[idx])
-				break ;
-			current_node = current_node->next;
-		}
-		// END OF FINDING
-		free(current_node->token);
-		current_node->token = NULL;
-
+		origin = ft_find_origin_tok(args, idx, data);
+		free(origin->token);
+		origin->token = NULL;
 		new_length = ft_calculate_new_length(str, data);
 		(*args)[idx] = (char *)malloc(new_length + 1);
 		if (!(*args)[idx])
 			return (E_MEM);
 		cursor = (*args)[idx];
 		ft_create_new_str(str, cursor, data, (new_length + 2));
-		current_node->token = (*args)[idx];
+		origin->token = (*args)[idx];
 	}
 	free(str);
 	return (EXIT_SUCCESS);
