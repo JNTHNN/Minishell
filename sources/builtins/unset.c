@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/18 17:58:13 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 18:05:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static int	ft_check_var(char *str, t_data *data)
 	i = 0;
 	var = ft_var(str);
 	if (!var || ft_isdigit(var[i]))
-		return (data->err_info = str,
-			ft_print_unset_error(ERR_UNSET_VAR_ID, data), 0);
+		return (free(var), data->err_info = str,
+			ft_print_unset_error(ERR_UNSET_VAR_ID, data), false);
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]) || var[i] == '=' || !var[0])
-			return (data->err_info = str,
-				ft_print_unset_error(ERR_UNSET_VAR_ID, data), 0);
+			return (free(var), data->err_info = str,
+				ft_print_unset_error(ERR_UNSET_VAR_ID, data), false);
 		i++;
 	}
-	return (1);
+	return (free(var), true);
 }
 
 void	ft_unset(t_data *data, t_cmd *cmd)
