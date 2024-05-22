@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:30:17 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/29 15:15:52 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:11:49 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,12 @@ struct	s_cd
 	char	*pwd;
 	char	*oldpwd;
 	char	*home;
-	char	*err;
 	char	*temp_tilde;
+	char	*temp_minus;
 	char	**temp_pwd;
 	char	**temp_path;
+	char	*new_pwd;
+	char	**temp;
 };
 
 #endif

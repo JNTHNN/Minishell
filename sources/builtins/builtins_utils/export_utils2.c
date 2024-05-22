@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:27:48 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/04/15 22:45:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:47:00 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,20 @@ static void	ft_sort_env(t_env *head)
 		}
 	}
 	sorted = unsort;
+}
+
+void	ft_reset_env_var(char *name, char *data)
+{
+	if (name)
+	{
+		free(name);
+		name = NULL;
+	}
+	if (data)
+	{
+		free(data);
+		data = NULL;
+	}
 }
 
 /*

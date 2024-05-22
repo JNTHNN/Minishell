@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/21 16:22:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:47:58 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,20 +109,15 @@ void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
 		{
 			if (!ft_strncmp(current->var, name, ft_strlen(name)))
 			{
-				free(name);
-				free(current->data);
+				ft_reset_env_var(name, current->data);
 				current->data = ft_strdup(data);
-				free(data);
-				return ;
+				return (free(data));
 			}
 			current = current->next;
 		}
 	}
 	ret = ft_add_env(head, name, data);
-	free(name);
-	name = NULL;
-	free(data);
-	data = NULL;
 	if (ret)
 		ft_errno(ERR_MEM, EX_MISCERROR, d);
+	ft_reset_env_var(name, data);
 }

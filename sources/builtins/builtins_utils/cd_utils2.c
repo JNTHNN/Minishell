@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/17 18:30:11 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:21:10 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	**ft_remove_first(char **path, t_cd *cd)
 		j++;
 	}
 	new_path[i - 1] = NULL;
+	ft_free_array(path);
 	return (new_path);
 }
 
@@ -74,6 +75,7 @@ char	**ft_replace_pwd(t_cd *cd, char *shortcut)
 	else
 		temp_pwd = cd->home;
 	pwd = ft_split(temp_pwd, '/');
+	free(temp_pwd);
 	return (pwd);
 }
 
@@ -119,6 +121,8 @@ char	*ft_pwdcat(char **pwd, t_cd *cd)
 	if (!ft_strncmp(pwd[0], HOME, 5) || !ft_strncmp(pwd[0], OLDPWD, 7))
 		i = 1;
 	new_pwd = ft_strdup("");
+	if (!new_pwd)
+		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (i < size)
 	{
 		temp = ft_strjoin(new_pwd, "/");

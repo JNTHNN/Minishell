@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:14:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/15 16:03:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:36:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	ft_check_tilde(t_cd *cd)
 		return (ft_errno(ERR_HOME, EXEC_FAIL, cd->data), 0);
 	if (chdir(cd->temp_tilde) == -1)
 	{
-		cd->err = ft_strjoin("cd: ", cd->temp_tilde);
-		return (ft_errno(cd->err, EXEC_FAIL, cd->data), 0);
+		cd->data->err_info = ft_strjoin("cd: ", cd->temp_tilde);
+		return (ft_errno(cd->data->err_info, EXEC_FAIL, cd->data), 0);
 	}
 	return (1);
 }
@@ -37,8 +37,8 @@ int	ft_check_home(t_cd *cd)
 		return (ft_errno(ERR_HOME, EXEC_FAIL, cd->data), 0);
 	if (chdir(cd->home + 5) == -1)
 	{
-		cd->err = ft_strjoin("cd: ", cd->home + 5);
-		return (ft_errno(cd->err, EXEC_FAIL, cd->data), 0);
+		cd->data->err_info = ft_strjoin("cd: ", cd->home + 5);
+		return (ft_errno(cd->data->err_info, EXEC_FAIL, cd->data), 0);
 	}
 	return (1);
 }
@@ -52,8 +52,9 @@ int	ft_check_minus(t_cd *cd)
 		return (ft_errno(ERR_OLDPWD, EXEC_FAIL, cd->data), 0);
 	if (chdir(cd->oldpwd + 7) == -1)
 	{
-		cd->err = ft_strjoin("cd: ", cd->oldpwd + 7);
-		return (ft_errno(cd->err, EXEC_FAIL, cd->data), 0);
+		cd->data->err_info = ft_strjoin("cd: ", cd->oldpwd + 7);
+		return (ft_errno(cd->data->err_info, EXEC_FAIL, cd->data), 0);
 	}
+	cd->temp_minus = ft_strdup(cd->oldpwd + 7);
 	return (1);
 }
