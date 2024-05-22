@@ -39,6 +39,8 @@ static void	ft_init_data(t_data *data, char **envp)
 static int	ft_get_input(t_data *data)
 {
 	ft_init_signal();
+	if (data->input)
+		free(data->input);
 	data->input = readline(PROMPT);
 	ft_get_ctrl_d(data);
 	if (ft_trim_input(&data->input))
