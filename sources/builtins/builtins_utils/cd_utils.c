@@ -6,11 +6,24 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:36:42 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:00:55 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+**	setup env var PWD OLDPWD
+*/
+static void	ft_setup_pwd_oldpwd(t_cd *cd)
+{
+	if (cd->pwd)
+		cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	else
+		cd->new_pwd = ft_strdup(cd->pwd);
+	ft_seek_replace(cd->data, PWD, cd->new_pwd);
+	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
+}
 
 /*
 **	searches for variable in env, if doesn't exist -> adds it
@@ -58,6 +71,8 @@ void	ft_cd_absolute(t_cd *cd)
 		cd->new_pwd = ft_strdup(cd->temp_tilde);
 	else if (cd->temp_minus)
 		cd->new_pwd = ft_strdup(cd->temp_minus);
+	else if (!ft_getenv(cd->data, PWD))
+		cd->new_pwd = ft_strdup(cd->pwd);
 	else
 		cd->new_pwd = ft_strdup(cd->dir);
 	if (!(ft_strlen(cd->new_pwd) == 1)
@@ -87,13 +102,11 @@ void	ft_cd_relative(t_cd *cd)
 	while (cd->temp_path[i])
 	{
 		if (!ft_strncmp(cd->temp_path[i], PARENT, 2))
-			cd->temp = ft_sup_pwd(cd->temp_pwd, cd);
+			cd->temp = ft_sup_pwd(cd);
 		else if (ft_strncmp(cd->temp_path[i], CURRENT, 2) != 0)
-			cd->temp_pwd = ft_append_pwd(cd->temp, cd->temp_path[i], cd);
+			cd->temp = ft_append_pwd(i, cd);
 		i++;
+		cd->temp_pwd = cd->temp;
 	}
-	ft_free_array(cd->temp);
-	cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
-	ft_seek_replace(cd->data, PWD, cd->new_pwd);
-	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
+	ft_setup_pwd_oldpwd(cd);
 }
