@@ -14,9 +14,33 @@
 
 int	g_exit_code = 0;
 
+static void	ft_increment_shlvl(char **env)
+{
+	int		i;
+	char	*shlvl_val;
+	int		i_val;
+	char	*new_str;
+
+	i = -1;
+	while (env[++i])
+	{
+		if (!ft_strncmp(env[i], "SHLVL=", 6))
+		{
+			shlvl_val = ft_strdup(ft_strchr(env[i], '=') + 1);
+			i_val = ft_atoi(shlvl_val);
+			free(shlvl_val);
+			i_val++;
+			shlvl_val = ft_itoa(i_val);
+			new_str = ft_strjoin("SHLVL=", shlvl_val);
+			free(shlvl_val);
+			free(env[i]);
+			env[i] = new_str;
+		}
+	}
+}
+
 static void	ft_init_data(t_data *data, char **envp)
 {
-	(void)envp;
 	data->input = NULL;
 	data->tokens = NULL;
 	data->cmd = NULL;
@@ -34,6 +58,7 @@ static void	ft_init_data(t_data *data, char **envp)
 		errno = ENOMEM;
 		exit(errno);
 	}
+	ft_increment_shlvl(data->env);
 }
 
 static int	ft_get_input(t_data *data)

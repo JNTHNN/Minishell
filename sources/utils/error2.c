@@ -26,8 +26,8 @@ void	ft_errno(char *s, int code, t_data *data)
 		g_exit_code = code;
 	if (code == E_MEM)
 		ft_free_data(data);
-	if (data->nb_of_cmds != 1 ||
-		(!data->cmd->is_builtin && code != EXEC_FAIL))
+	if (data->nb_of_cmds != 1
+		|| (!data->cmd->is_builtin && code != EXEC_FAIL))
 	{
 		ft_free_data(data);
 		exit(g_exit_code);
