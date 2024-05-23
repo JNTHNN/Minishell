@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/22 17:39:05 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:56:56 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 {
 	int	ret;
 
-	if (ft_open_redir_in(data, cmd, nb) || ft_open_redir_out(data, cmd, nb))
+	if (ft_open_redir_in(data, cmd) || ft_open_redir_out(data, cmd))
 		return (E_OPEN);
 	ret = ft_handle_pipes(data, cmd, nb);
 	if (ret)
@@ -56,6 +56,7 @@ static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 	}
 	else
 		ft_builtin(data, cmd);
+	ft_free_data(data);
 	return (exit(EXIT_SUCCESS), EXIT_SUCCESS);
 }
 

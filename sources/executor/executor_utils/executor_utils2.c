@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/16 12:01:12 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:41:18 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	ft_open_out_loop(t_data *data, t_exec *exec, t_redir_lst *current)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_open_redir_in(t_data *data, t_cmd *cmd, int *nb)
+int	ft_open_redir_in(t_data *data, t_cmd *cmd)
 {
 	t_redir_lst	*current;
 	t_exec		*exec;
@@ -76,15 +76,11 @@ int	ft_open_redir_in(t_data *data, t_cmd *cmd, int *nb)
 		if (dup2(exec->fdin, STDIN_FILENO) == F_ERROR)
 			return (E_DUP);
 		close(exec->fdin);
-		if (close(data->exec->pipes[*nb][1]) == F_ERROR)
-			return (E_CLOSE);
-		if (close(data->exec->pipes[*nb][0]) == F_ERROR)
-			return (E_CLOSE);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	ft_open_redir_out(t_data *data, t_cmd *cmd, int *nb)
+int	ft_open_redir_out(t_data *data, t_cmd *cmd)
 {
 	t_redir_lst	*current;
 	t_exec		*exec;
@@ -100,10 +96,6 @@ int	ft_open_redir_out(t_data *data, t_cmd *cmd, int *nb)
 		if (dup2(exec->fdout, STDOUT_FILENO) == F_ERROR)
 			return (E_DUP);
 		close(exec->fdout);
-		if (close(data->exec->pipes[*nb][0]) == F_ERROR)
-			return (E_CLOSE);
-		if (close(data->exec->pipes[*nb][1]) == F_ERROR)
-			return (E_CLOSE);
 	}
 	return (EXIT_SUCCESS);
 }
