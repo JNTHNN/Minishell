@@ -54,6 +54,8 @@ int	ft_close_pipes(t_data *data, t_exec *exec, int skip)
 		}
 		i++;
 	}
+	if (close(exec->tmpin) == F_ERROR || close(exec->tmpout))
+		return (E_CLOSE);
 	return (EXIT_SUCCESS);
 }
 

@@ -60,7 +60,7 @@ static int	ft_open_out_loop(t_data *data, t_exec *exec, t_redir_lst *current)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_open_redir_in(t_data *data, t_cmd *cmd)
+int	ft_open_redir_in(t_data *data, t_cmd *cmd, int *nb)
 {
 	t_redir_lst	*current;
 	t_exec		*exec;
@@ -76,11 +76,15 @@ int	ft_open_redir_in(t_data *data, t_cmd *cmd)
 		if (dup2(exec->fdin, STDIN_FILENO) == F_ERROR)
 			return (E_DUP);
 		close(exec->fdin);
+		if (close(data->exec->pipes[*nb][1]) == F_ERROR)
+			return (E_CLOSE);
+		if (close(data->exec->pipes[*nb][0]) == F_ERROR)
+			return (E_CLOSE);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	ft_open_redir_out(t_data *data, t_cmd *cmd)
+int	ft_open_redir_out(t_data *data, t_cmd *cmd, int *nb)
 {
 	t_redir_lst	*current;
 	t_exec		*exec;
@@ -96,6 +100,10 @@ int	ft_open_redir_out(t_data *data, t_cmd *cmd)
 		if (dup2(exec->fdout, STDOUT_FILENO) == F_ERROR)
 			return (E_DUP);
 		close(exec->fdout);
+		if (close(data->exec->pipes[*nb][0]) == F_ERROR)
+			return (E_CLOSE);
+		if (close(data->exec->pipes[*nb][1]) == F_ERROR)
+			return (E_CLOSE);
 	}
 	return (EXIT_SUCCESS);
 }

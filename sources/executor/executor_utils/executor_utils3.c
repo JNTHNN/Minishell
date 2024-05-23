@@ -27,6 +27,8 @@ static int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
 			return (E_DUP);
 		if (close(data->exec->pipes[*nb][0]) == F_ERROR)
 			return (E_CLOSE);
+		if (close(data->exec->pipes[*nb][1]) == F_ERROR)
+			return (E_CLOSE);
 	}
 	if (!cmd->right && data->exec->fdout == NOT_INIT)
 	{
@@ -42,7 +44,7 @@ static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 {
 	int	ret;
 
-	if (ft_open_redir_in(data, cmd) || ft_open_redir_out(data, cmd))
+	if (ft_open_redir_in(data, cmd, nb) || ft_open_redir_out(data, cmd, nb))
 		return (E_OPEN);
 	ret = ft_handle_pipes(data, cmd, nb);
 	if (ret)

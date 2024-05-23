@@ -102,6 +102,7 @@ void	ft_free_data(t_data *data)
 			free(data->redirections);
 			data->redirections = NULL;
 		}
-		ft_free_exec(data);
+		if (data->exec)
+			ft_free_exec(data);
 	}
 }

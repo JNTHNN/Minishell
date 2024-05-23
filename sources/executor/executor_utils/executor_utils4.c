@@ -62,6 +62,7 @@ void	ft_restore_signals(void)
 {
 	struct termios	term;
 
+	ft_memset(&term, 0, sizeof(term));
 	ft_signal(SIG_DFL);
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag |= ECHOCTL;

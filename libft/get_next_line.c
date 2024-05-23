@@ -97,7 +97,7 @@ static char	*read_and_save(int fd, char *bucket)
 char	*get_next_line(int fd)
 {
 	char			*line;
-	char static		*bucket;
+	static char		*bucket;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &bucket, 0) < 0)
 		return (free_elem(&bucket, NULL));

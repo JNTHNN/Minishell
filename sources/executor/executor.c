@@ -19,7 +19,6 @@ static int	ft_prepare_execution(t_data *data)
 	exec = ft_init_exec(data);
 	if (!exec)
 		return (E_MEM);
-	ft_init_pipes(data, exec);
 	exec->tmpin = dup(STDIN_FILENO);
 	exec->tmpout = dup(STDOUT_FILENO);
 	if (exec->tmpin == F_ERROR || exec->tmpout == F_ERROR)
@@ -31,7 +30,8 @@ static int	ft_exec_simple_cmd(t_data *data)
 {
 	if (ft_trigger_heredoc(data))
 		return (E_OPEN);
-	if (ft_open_redir_in(data, data->cmd) || ft_open_redir_out(data, data->cmd))
+	if (ft_open_redir_in(data, data->cmd, NULL)
+		|| ft_open_redir_out(data, data->cmd, NULL))
 		return (E_OPEN);
 	if (!data->cmd->is_builtin)
 		ft_cmd_exec(data);
@@ -101,6 +101,7 @@ int	ft_executor(t_data *data)
 	}
 	else
 	{
+		ft_init_pipes(data, data->exec);
 		ret = ft_exec_multiple_cmds(data, &i);
 		if (ret)
 			return (ret);
