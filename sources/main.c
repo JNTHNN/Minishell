@@ -48,7 +48,7 @@ static int	ft_get_input(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	ft_minishell_loop(t_data *data)
+static void	ft_minishell_loop(t_data *data)
 {
 	int		ret;
 

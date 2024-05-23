@@ -42,8 +42,8 @@ void	ft_execute_command(t_data *data, t_cmd *cmd);
 t_exec	*ft_init_exec(t_data *data);
 
 /* executor_utils2.c */
-int		ft_open_redir_in(t_data *data, t_cmd *cmd);
-int		ft_open_redir_out(t_data *data, t_cmd *cmd);
+int		ft_open_redir_in(t_data *data, t_cmd *cmd, int *nb);
+int		ft_open_redir_out(t_data *data, t_cmd *cmd, int *nb);
 
 /* executor_utils3.c */
 int		ft_exec_cmds_loop(t_data *data, int *nb);

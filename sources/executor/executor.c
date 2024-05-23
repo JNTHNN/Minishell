@@ -30,7 +30,7 @@ static int	ft_exec_simple_cmd(t_data *data)
 {
 	if (ft_trigger_heredoc(data))
 		return (E_OPEN);
-	if (ft_open_redir_in(data, data->cmd) || ft_open_redir_out(data, data->cmd))
+	if (ft_open_redir_in(data, data->cmd, NULL) || ft_open_redir_out(data, data->cmd, NULL))
 		return (E_OPEN);
 	if (!data->cmd->is_builtin)
 		ft_cmd_exec(data);

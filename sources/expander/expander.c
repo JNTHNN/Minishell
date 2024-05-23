@@ -76,6 +76,8 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 	int			new_length;
 
 	str = ft_strdup((*args)[idx]);
+	if (!str)
+		return (E_MEM);
 	if (ft_count_all_quotes(str) || ft_count_dollars(str))
 	{
 		origin = ft_find_origin_tok(args, idx, data);

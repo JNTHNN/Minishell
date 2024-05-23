@@ -48,7 +48,7 @@ void	ft_free_exec(t_data *data)
 			close(exec->fdout);
 		if (exec->tmpin != NOT_INIT)
 			close(exec->tmpin);
-		if (exec->tmpout)
+		if (exec->tmpout != NOT_INIT)
 			close(exec->tmpout);
 		free(exec);
 	}
