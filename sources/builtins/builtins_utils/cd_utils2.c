@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 22:19:33 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:01:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,24 @@ char	**ft_remove_first(char **path, t_cd *cd)
 /*
 **	adds the path to the end
 */
-char	**ft_append_pwd(char **pwd, char *path, t_cd *cd)
+char	**ft_append_pwd(int last, t_cd *cd)
 {
 	int		i;
 	char	**append_pwd;
 
 	i = 0;
-	append_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(pwd) + 2));
+	append_pwd = (char **)malloc(sizeof(char *)
+			* (ft_tablen(cd->temp_pwd) + 2));
 	if (!append_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
-	while (pwd && pwd[i])
+	while (cd->temp_pwd && cd->temp_pwd[i])
 	{
-		append_pwd[i] = ft_strdup(pwd[i]);
+		append_pwd[i] = ft_strdup(cd->temp_pwd[i]);
 		i++;
 	}
-	append_pwd[i] = ft_strdup(path);
+	append_pwd[i] = ft_strdup(cd->temp_path[last]);
 	append_pwd[i + 1] = NULL;
+	ft_free_array(cd->temp);
 	return (append_pwd);
 }
 
@@ -82,24 +84,26 @@ char	**ft_replace_pwd(t_cd *cd, char *shortcut)
 /*
 **	removes the ".." from the path
 */
-char	**ft_sup_pwd(char **pwd, t_cd *cd)
+char	**ft_sup_pwd(t_cd *cd)
 {
 	char	**new_pwd;
 	int		len;
+	char	*temp;
 	int		i;
 
 	i = 0;
-	len = ft_tablen(pwd);
-	new_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(pwd)));
+	len = ft_tablen(cd->temp_pwd);
+	new_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(cd->temp_pwd)));
 	if (!new_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (i < len - 1)
 	{
-		new_pwd[i] = ft_strdup(pwd[i]);
+		temp = ft_strdup(cd->temp_pwd[i]);
+		new_pwd[i] = temp;
 		i++;
 	}
 	new_pwd[i] = NULL;
-	ft_free_array(pwd);
+	ft_free_array(cd->temp_pwd);
 	return (new_pwd);
 }
 
@@ -116,10 +120,8 @@ char	*ft_pwdcat(char **pwd, t_cd *cd)
 	size = ft_tablen(pwd);
 	temp = NULL;
 	i = 0;
-	if (!pwd[0])
-		ft_handle_error(cd->data, E_CWD);
-	if (!ft_strncmp(pwd[0], HOME, 5) || !ft_strncmp(pwd[0], OLDPWD, 7))
-		i = 1;
+	if (!pwd)
+		return (NULL);
 	new_pwd = ft_strdup("");
 	if (!new_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);

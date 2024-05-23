@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 21:47:13 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:00:30 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static int	ft_check_dir(t_cd *cd)
 */
 static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 {
-	t_cd		*cd;
-	static char	cwd[PATH_MAX];
+	t_cd			*cd;
+	static char		cwd[PATH_MAX];
 
 	cd = (t_cd *)malloc(sizeof(t_cd));
 	if (!cd)
@@ -70,7 +70,9 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	cd->data = data;
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
-	cd->pwd = getcwd(cwd, sizeof(cwd));
+	cd->pwd = NULL;
+	if (getcwd(cwd, PATH_MAX))
+		cd->pwd = cwd;
 	cd->oldpwd = ft_getenv(data, OLDPWD);
 	cd->home = ft_getenv(data, HOME);
 	cd->temp_tilde = NULL;

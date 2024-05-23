@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:48:16 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:09:01 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	ft_cd_relative(t_cd *cd);
 
 /*  manipulate tab for cd : cd_utils2.c */
 char	**ft_remove_first(char **path, t_cd *cd);
-char	**ft_append_pwd(char **pwd, char *path, t_cd *cd);
+char	**ft_append_pwd(int last, t_cd *cd);
 char	**ft_replace_pwd(t_cd *cd, char *shortcut);
-char	**ft_sup_pwd(char **pwd, t_cd *cd);
+char	**ft_sup_pwd(t_cd *cd);
 char	*ft_pwdcat(char **pwd, t_cd *cd);
 
 /*	checker for cd : cd_utils3.c	*/

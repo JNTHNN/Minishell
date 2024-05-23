@@ -6,11 +6,24 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 22:09:48 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:00:55 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+**	setup env var PWD OLDPWD
+*/
+static void	ft_setup_pwd_oldpwd(t_cd *cd)
+{
+	if (cd->pwd)
+		cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	else
+		cd->new_pwd = ft_strdup(cd->pwd);
+	ft_seek_replace(cd->data, PWD, cd->new_pwd);
+	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
+}
 
 /*
 **	searches for variable in env, if doesn't exist -> adds it
@@ -76,7 +89,6 @@ void	ft_cd_relative(t_cd *cd)
 {
 	int		i;
 
-	printf(" dir %s pwd %s\n", cd->dir, cd->pwd);
 	cd->temp_path = ft_split(cd->dir, '/');
 	cd->temp_pwd = ft_split(cd->pwd, '/');
 	if (!ft_strncmp(cd->temp_path[0], TILDE, 1)
@@ -89,30 +101,12 @@ void	ft_cd_relative(t_cd *cd)
 	i = 0;
 	while (cd->temp_path[i])
 	{
-		printf("av %s\n", cd->temp_path[i]);
 		if (!ft_strncmp(cd->temp_path[i], PARENT, 2))
-		{
-			printf("gang\n");
-			cd->temp = ft_sup_pwd(cd->temp_pwd, cd);
-		}
+			cd->temp = ft_sup_pwd(cd);
 		else if (ft_strncmp(cd->temp_path[i], CURRENT, 2) != 0)
-		{
-			printf("shit\n");
-			cd->temp_pwd = ft_append_pwd(cd->temp, cd->temp_path[i], cd);
-		}
-		printf("ap %s\n", cd->temp_path[i]);
+			cd->temp = ft_append_pwd(i, cd);
 		i++;
+		cd->temp_pwd = cd->temp;
 	}
-	ft_free_array(cd->temp);
-	// int j = 0;
-	// while (cd->temp_pwd[j])
-	// 	printf("%s\n", cd->temp_pwd[j++]);
-	printf("eee %s\n", cd->new_pwd);
-	if (!cd->new_pwd)
-		cd->new_pwd = ft_strdup(cd->pwd);
-	else
-		cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
-	ft_free_array(cd->temp_pwd);
-	ft_seek_replace(cd->data, PWD, cd->new_pwd);
-	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
+	ft_setup_pwd_oldpwd(cd);
 }
