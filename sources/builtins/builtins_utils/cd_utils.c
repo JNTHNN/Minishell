@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/17 18:16:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:36:42 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,16 @@ void	ft_cd_home(t_cd *cd)
 */
 void	ft_cd_absolute(t_cd *cd)
 {
-	char	*new_pwd;
-
-	new_pwd = cd->dir;
-	if (!(ft_strlen(new_pwd) == 1) && new_pwd[ft_strlen(new_pwd) - 1] == '/')
-		ft_memset(new_pwd + (ft_strlen(new_pwd) - 1), 0, 1);
-	ft_seek_replace(cd->data, PWD, new_pwd);
+	if (cd->temp_tilde)
+		cd->new_pwd = ft_strdup(cd->temp_tilde);
+	else if (cd->temp_minus)
+		cd->new_pwd = ft_strdup(cd->temp_minus);
+	else
+		cd->new_pwd = ft_strdup(cd->dir);
+	if (!(ft_strlen(cd->new_pwd) == 1)
+		&& cd->new_pwd[ft_strlen(cd->new_pwd) - 1] == '/')
+		ft_memset(cd->new_pwd + (ft_strlen(cd->new_pwd) - 1), 0, 1);
+	ft_seek_replace(cd->data, PWD, cd->new_pwd);
 	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }
 
@@ -69,13 +73,13 @@ void	ft_cd_absolute(t_cd *cd)
 void	ft_cd_relative(t_cd *cd)
 {
 	int		i;
-	char	*new_pwd;
 
 	cd->temp_path = ft_split(cd->dir, '/');
 	cd->temp_pwd = ft_split(cd->pwd, '/');
 	if (!ft_strncmp(cd->temp_path[0], TILDE, 1)
 		|| !ft_strncmp(cd->temp_path[0], MINUS, 1))
 	{
+		ft_free_array(cd->temp_path);
 		cd->temp_pwd = ft_replace_pwd(cd, cd->temp_path[0]);
 		cd->temp_path = ft_remove_first(cd->temp_path, cd);
 	}
@@ -83,12 +87,13 @@ void	ft_cd_relative(t_cd *cd)
 	while (cd->temp_path[i])
 	{
 		if (!ft_strncmp(cd->temp_path[i], PARENT, 2))
-			cd->temp_pwd = ft_sup_pwd(cd->temp_pwd, cd);
+			cd->temp = ft_sup_pwd(cd->temp_pwd, cd);
 		else if (ft_strncmp(cd->temp_path[i], CURRENT, 2) != 0)
-			cd->temp_pwd = ft_append_pwd(cd->temp_pwd, cd->temp_path[i], cd);
+			cd->temp_pwd = ft_append_pwd(cd->temp, cd->temp_path[i], cd);
 		i++;
 	}
-	new_pwd = ft_pwdcat(cd->temp_pwd, cd);
-	ft_seek_replace(cd->data, PWD, new_pwd);
+	ft_free_array(cd->temp);
+	cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	ft_seek_replace(cd->data, PWD, cd->new_pwd);
 	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }
