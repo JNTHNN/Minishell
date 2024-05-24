@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:25:22 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/29 15:55:43 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:27:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	ft_hd_path(t_redir_lst *current, int j)
+{
+	char	*nb;
+
+	nb = ft_itoa(j++);
+	current->hd_path = ft_strjoin("/tmp/hd_temp", nb);
+	free(nb);
+	if (!current->hd_path)
+		return (E_MEM);
+	return (EXIT_SUCCESS);
+}
 
 int	ft_build_hd_path(t_data *data)
 {
@@ -29,8 +41,7 @@ int	ft_build_hd_path(t_data *data)
 			{
 				if (current->r_type == HEREDOC)
 				{
-					current->hd_path = ft_strjoin("/tmp/hd_temp", ft_itoa(j++));
-					if (!current->hd_path)
+					if (ft_hd_path(current, j))
 						return (E_MEM);
 				}
 				current = current->next;

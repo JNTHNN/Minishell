@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/23 16:43:14 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:58:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static int	ft_exec_simple_cmd(t_data *data)
 	if (ft_open_redir_in(data, data->cmd)
 		|| ft_open_redir_out(data, data->cmd))
 		return (E_OPEN);
-	if (!data->cmd->is_builtin)
+	if (!data->cmd->is_builtin && data->cmd->args)
 		ft_cmd_exec(data);
-	else
+	else if (data->cmd->is_builtin)
 		ft_builtin(data, data->cmd);
 	if (dup2(data->exec->tmpin, STDIN_FILENO) == F_ERROR)
 		return (E_DUP);
