@@ -16,6 +16,9 @@ static int	ft_open_in_loop(t_data *data, t_exec *exec, t_redir_lst	*current)
 {
 	while (current)
 	{
+		if ((current->r_type == IN || current->r_type == HEREDOC)
+			&& exec->fdin != NOT_INIT)
+			close(exec->fdin);
 		if (current->r_type == IN)
 		{
 			exec->fdin = open(current->filename, O_RDONLY);
@@ -41,6 +44,9 @@ static int	ft_open_out_loop(t_data *data, t_exec *exec, t_redir_lst *current)
 {
 	while (current)
 	{
+		if ((current->r_type == OUT || current->r_type == OUT_T)
+			&& exec->fdout != NOT_INIT)
+			close(exec->fdout);
 		if (current->r_type == OUT)
 		{
 			exec->fdout = open(current->filename,
