@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/17 21:35:26 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:29:44 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 		errno = 0;
 		ft_errno(NULL, EX_NOTFOUND, data);
 	}
+	else if (err_code == E_PATH)
+	{
+		ft_putstr_fd(START_ERR, STDERR_FILENO);
+		ft_putstr_fd(data->err_info, STDERR_FILENO);
+		ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
+		errno = 0;
+		ft_errno(NULL, EX_NOTFOUND, data);
+	}
 	else
 		ft_errno(data->err_info, EX_NOTFOUND, data);
 }
@@ -64,7 +72,8 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_errno(data->err_info, EXEC_FAIL, data);
 	else if (err_code == E_DUP)
 		ft_errno(NULL, EX_MISCERROR, data);
-	else if (err_code <= E_EXECVE && err_code >= E_EXECVE_2)
+	else if ((err_code <= E_EXECVE && err_code >= E_EXECVE_2)
+		|| err_code == E_PATH)
 		ft_print_exec_error(err_code, data);
 	else if (err_code == E_CLOSE)
 		ft_errno(NULL, EX_MISCERROR, data);
