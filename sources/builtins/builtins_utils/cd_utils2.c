@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 21:04:06 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/23 15:01:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:58:09 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ char	**ft_append_pwd(int last, t_cd *cd)
 	}
 	append_pwd[i] = ft_strdup(cd->temp_path[last]);
 	append_pwd[i + 1] = NULL;
-	ft_free_array(cd->temp);
+	if (cd->temp_pwd)
+		ft_free_array(cd->temp_pwd);
 	return (append_pwd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 12:00:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:57:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,29 @@
 */
 static void	ft_free_cd(t_cd *cd)
 {
-	if (cd->temp_tilde)
+	if (cd)
 	{
-		free(cd->temp_tilde);
-		cd->temp_tilde = NULL;
+		if (cd->temp_tilde)
+		{
+			free(cd->temp_tilde);
+			cd->temp_tilde = NULL;
+		}
+		if (cd->temp_pwd)
+			ft_free_array(cd->temp_pwd);
+		if (cd->temp_path)
+			ft_free_array(cd->temp_path);
+		if (cd->new_pwd)
+		{
+			free(cd->new_pwd);
+			cd->new_pwd = NULL;
+		}
+		if (cd->temp_minus)
+		{
+			free(cd->temp_minus);
+			cd->temp_minus = NULL;
+		}
+		free(cd);
 	}
-	if (cd->temp_pwd)
-		ft_free_array(cd->temp_pwd);
-	if (cd->temp_path)
-		ft_free_array(cd->temp_path);
-	if (cd->new_pwd)
-	{
-		free(cd->new_pwd);
-		cd->new_pwd = NULL;
-	}
-	if (cd->temp_minus)
-	{
-		free(cd->temp_minus);
-		cd->temp_minus = NULL;
-	}
-	free(cd);
 }
 
 /*
@@ -47,7 +50,7 @@ static int	ft_change_pwd(t_cd *cd)
 	if (!cd->dir)
 		ft_cd_home(cd);
 	else if (cd->dir[0] == '/' || cd->temp_tilde
-		|| cd->temp_minus || (cd->pwd && !ft_getenv(cd->data, PWD)))
+		|| cd->temp_minus)
 		ft_cd_absolute(cd);
 	else
 	{
