@@ -69,6 +69,7 @@ int	ft_resplit_first_arg(char ***args)
 		return (E_MEM);
 	if (ft_fill_new_args(*args, temp_args, &new_args))
 		return (E_MEM);
+	ft_free_array((temp_args));
 	ft_free_array((*args));
 	(*args) = new_args;
 	return (EXIT_SUCCESS);
