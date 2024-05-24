@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/23 18:25:21 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:00:02 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ static int	ft_check_dir(t_cd *cd)
 	if (cd->dir)
 	{
 		if (!ft_strncmp(cd->dir, MINUS, 1))
-			return (printf("%s\n", cd->oldpwd + 7), rv = ft_check_minus(cd));
+			return (rv = ft_check_minus(cd));
 		if (!ft_strncmp(cd->dir, TILDE, 1))
 			rv = ft_check_tilde(cd);
 		else if (!chdir(cd->dir))
 			rv = 1;
 		else
-			ft_errno(cd->dir, 1, cd->data);
+			ft_errno(cd->dir, EXEC_FAIL, cd->data);
 	}
 	if (!cd->dir)
 		rv = ft_check_home(cd);

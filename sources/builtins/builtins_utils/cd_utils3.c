@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:14:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:36:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:58:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 */
 int	ft_check_tilde(t_cd *cd)
 {
-	cd->temp_tilde = ft_strjoin(cd->home + 5, cd->dir + 1);
 	if (!cd->home)
 		return (ft_errno(ERR_HOME, EXEC_FAIL, cd->data), 0);
+	cd->temp_tilde = ft_strjoin(cd->home + 5, cd->dir + 1);
 	if (chdir(cd->temp_tilde) == -1)
 	{
 		cd->data->err_info = ft_strjoin("cd: ", cd->temp_tilde);
@@ -55,6 +55,7 @@ int	ft_check_minus(t_cd *cd)
 		cd->data->err_info = ft_strjoin("cd: ", cd->oldpwd + 7);
 		return (ft_errno(cd->data->err_info, EXEC_FAIL, cd->data), 0);
 	}
+	printf("%s\n", cd->oldpwd + 7);
 	cd->temp_minus = ft_strdup(cd->oldpwd + 7);
 	return (1);
 }
