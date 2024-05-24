@@ -16,8 +16,7 @@ static int	ft_open_in_loop(t_data *data, t_exec *exec, t_redir_lst	*current)
 {
 	while (current)
 	{
-		if ((current->r_type == IN || current->r_type == HEREDOC)
-			&& exec->fdin != NOT_INIT)
+		if (current->r_type == IN || current->r_type == HEREDOC)
 			close(exec->fdin);
 		if (current->r_type == IN)
 		{
@@ -44,8 +43,7 @@ static int	ft_open_out_loop(t_data *data, t_exec *exec, t_redir_lst *current)
 {
 	while (current)
 	{
-		if ((current->r_type == OUT || current->r_type == OUT_T)
-			&& exec->fdout != NOT_INIT)
+		if (current->r_type == OUT || current->r_type == OUT_T)
 			close(exec->fdout);
 		if (current->r_type == OUT)
 		{
