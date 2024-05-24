@@ -64,7 +64,12 @@ void	ft_free_if_error(t_data *data)
 			ft_free_tokens(&data->tokens);
 		if (data->cmd)
 			ft_free_cmds(&data->cmd);
-		if (data->nb_of_cmds > 1)
+		if (data->redirections)
+		{
+			free(data->redirections);
+			data->redirections = NULL;
+		}
+		if (data->exec)
 			ft_free_exec(data);
 	}
 }
