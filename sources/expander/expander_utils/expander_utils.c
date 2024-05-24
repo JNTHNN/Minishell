@@ -70,7 +70,7 @@ int	ft_count_all_quotes(char *str)
 bool	ft_is_not_valid_variable_char(char c)
 {
 	if (c == '\0' || ft_is_space(c) || ft_is_quote(c)
-		|| c == DOLLAR || !ft_isalnum(c))
+		|| c == DOLLAR || (!ft_isalnum(c) && c != UNDERSCORE))
 		return (true);
 	return (false);
 }

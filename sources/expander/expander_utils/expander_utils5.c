@@ -103,3 +103,10 @@ t_tok_lst	*ft_find_origin_tok(char ***args, int idx, t_data *data)
 	}
 	return (current_node);
 }
+
+bool	ft_is_valid_variable_char(char c)
+{
+	if (ft_isalnum(c) || c == UNDERSCORE)
+		return (true);
+	return (false);
+}

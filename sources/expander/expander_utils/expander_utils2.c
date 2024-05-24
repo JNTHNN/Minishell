@@ -42,7 +42,7 @@ char	*ft_get_var_name(char *str)
 		return (ft_strdup("?"));
 	else if (ft_is_not_valid_variable_char(*str))
 		return (NULL);
-	while (*str && !ft_is_not_valid_variable_char(*str))
+	while (*str && ft_is_valid_variable_char(*str))
 		str++;
 	return (ft_substr(start, 0, str - start));
 }

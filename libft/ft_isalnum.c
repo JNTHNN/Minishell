@@ -12,14 +12,7 @@
 
 #include "libft.h"
 
-static int	ft_isunder(int c)
-{
-	if (c == 95 || c == 61)
-		return (1);
-	return (0);
-}
-
 int	ft_isalnum(int c)
 {
-	return (ft_isalpha(c) || ft_isdigit(c) || ft_isunder(c));
+	return (ft_isalpha(c) || ft_isdigit(c));
 }
