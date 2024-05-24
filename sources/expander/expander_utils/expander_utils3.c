@@ -29,7 +29,6 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 	char	*var_value;
 
 	var_name = ft_get_var_name(&(*str)[*i + 1]);
-	printf("VAR NAME : %s\n", var_name);
 	if (var_name && *var_name)
 	{
 		if (!ft_strncmp(var_name, "?", ft_strlen(var_name)))
