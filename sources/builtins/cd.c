@@ -6,11 +6,38 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/23 15:00:30 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:25:21 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**	clean all the cd struct
+*/
+static void	ft_free_cd(t_cd *cd)
+{
+	if (cd->temp_tilde)
+	{
+		free(cd->temp_tilde);
+		cd->temp_tilde = NULL;
+	}
+	if (cd->temp_pwd)
+		ft_free_array(cd->temp_pwd);
+	if (cd->temp_path)
+		ft_free_array(cd->temp_path);
+	if (cd->new_pwd)
+	{
+		free(cd->new_pwd);
+		cd->new_pwd = NULL;
+	}
+	if (cd->temp_minus)
+	{
+		free(cd->temp_minus);
+		cd->temp_minus = NULL;
+	}
+	free(cd);
+}
 
 /*
 **	change pwd in env according to path type (without arg; absolute; relative)
@@ -25,7 +52,8 @@ static int	ft_change_pwd(t_cd *cd)
 	else
 	{
 		if (!cd->pwd)
-			return (ft_handle_error(cd->data, E_CWD), EXEC_FAIL);
+			return (ft_free_cd(cd),
+				ft_handle_error(cd->data, E_CWD), EXEC_FAIL);
 		else
 			ft_cd_relative(cd);
 	}
@@ -82,33 +110,6 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	cd->new_pwd = NULL;
 	cd->temp = NULL;
 	return (cd);
-}
-
-/*
-**	clean all the cd struct
-*/
-static void	ft_free_cd(t_cd *cd)
-{
-	if (cd->temp_tilde)
-	{
-		free(cd->temp_tilde);
-		cd->temp_tilde = NULL;
-	}
-	if (cd->temp_pwd)
-		ft_free_array(cd->temp_pwd);
-	if (cd->temp_path)
-		ft_free_array(cd->temp_path);
-	if (cd->new_pwd)
-	{
-		free(cd->new_pwd);
-		cd->new_pwd = NULL;
-	}
-	if (cd->temp_minus)
-	{
-		free(cd->temp_minus);
-		cd->temp_minus = NULL;
-	}
-	free(cd);
 }
 
 /*

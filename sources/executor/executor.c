@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 12:06:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:43:14 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static int	ft_exec_simple_cmd(t_data *data)
 {
 	if (ft_trigger_heredoc(data))
 		return (E_OPEN);
-	if (ft_open_redir_in(data, data->cmd, NULL)
-		|| ft_open_redir_out(data, data->cmd, NULL))
+	if (ft_open_redir_in(data, data->cmd)
+		|| ft_open_redir_out(data, data->cmd))
 		return (E_OPEN);
 	if (!data->cmd->is_builtin)
 		ft_cmd_exec(data);
