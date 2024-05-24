@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 15:02:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:41:04 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define CURRENT "."
 # define TPLUS "~+"
 # define TMINUS "~-"
+# define EQUAL "="
 # define HEAD 0
 # define CURR 1
 # define NEW 2

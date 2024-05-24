@@ -6,9 +6,11 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 18:05:02 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:41:38 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 #include "minishell.h"
 
@@ -16,20 +18,24 @@ static int	ft_check_var(char *str, t_data *data)
 {
 	int		i;
 	char	*var;
+	char	*check_var;
 
 	i = 0;
-	var = ft_var(str);
+	var = ft_strdup(str);
+	check_var = ft_strjoin(var, EQUAL);
+	if (!ft_getenv(data, check_var))
+		return (free(check_var), free(var), false);
 	if (!var || ft_isdigit(var[i]))
-		return (free(var), data->err_info = str,
+		return (free(check_var), free(var), data->err_info = str,
 			ft_print_unset_error(ERR_UNSET_VAR_ID, data), false);
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]) || var[i] == '=' || !var[0])
-			return (free(var), data->err_info = str,
+			return (free(check_var), free(var), data->err_info = str,
 				ft_print_unset_error(ERR_UNSET_VAR_ID, data), false);
 		i++;
 	}
-	return (free(var), true);
+	return (free(check_var), free(var), true);
 }
 
 void	ft_unset(t_data *data, t_cmd *cmd)
@@ -45,8 +51,8 @@ void	ft_unset(t_data *data, t_cmd *cmd)
 		{
 			if (!ft_check_var(cmd->args[i], data))
 				break ;
-			if (ft_strncmp(cmd->args[i], data->env[j],
-					ft_strlen(cmd->args[i])) == 0)
+			if (!ft_strncmp(cmd->args[i], data->env[j],
+					ft_strlen(cmd->args[i])))
 			{
 				free(data->env[j]);
 				while (data->env[j])
