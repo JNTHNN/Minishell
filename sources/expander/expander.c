@@ -72,7 +72,6 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 {
 	char		*str;
 	char		*cursor;
-	t_tok_lst	*origin;
 	int			new_length;
 
 	str = ft_strdup((*args)[idx]);
@@ -80,16 +79,13 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 		return (E_MEM);
 	if (ft_count_all_quotes(str) || ft_count_dollars(str))
 	{
-		origin = ft_find_origin_tok(args, idx, data);
-		free(origin->token);
-		origin->token = NULL;
 		new_length = ft_calculate_new_length(str, data);
+		free((*args)[idx]);
 		(*args)[idx] = (char *)malloc(new_length + 1);
 		if (!(*args)[idx])
 			return (E_MEM);
 		cursor = (*args)[idx];
 		ft_create_new_str(str, cursor, data, (new_length + 2));
-		origin->token = (*args)[idx];
 	}
 	free(str);
 	return (EXIT_SUCCESS);

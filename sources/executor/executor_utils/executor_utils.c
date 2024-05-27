@@ -73,7 +73,7 @@ void	ft_execute_command(t_data *data, t_cmd *cmd)
 {
 	int			ret;
 
-	if (cmd->args)
+	if (cmd->args && cmd->args[0])
 	{
 		if (!ft_strncmp(cmd->args[0], "/", 1)
 			|| !ft_strncmp(cmd->args[0], "./", 2))
@@ -102,9 +102,14 @@ t_exec	*ft_init_exec(t_data *data)
 	if (!exec)
 		ft_errno(ERR_MEM, EX_MISCERROR, data);
 	exec->pipes = NULL;
-	exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
-	if (!exec->child_pid)
-		ft_errno(ERR_MEM, EX_MISCERROR, data);
+	if (data->nb_of_cmds)
+	{
+		exec->child_pid = (pid_t *)malloc(sizeof(pid_t) * data->nb_of_cmds);
+		if (!exec->child_pid)
+			ft_errno(ERR_MEM, EX_MISCERROR, data);
+	}
+	else
+		exec->child_pid = NULL;
 	exec->status = NOT_INIT;
 	exec->tmpin = NOT_INIT;
 	exec->tmpout = NOT_INIT;

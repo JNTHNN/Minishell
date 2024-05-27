@@ -72,7 +72,7 @@ void	ft_free_cmds(t_cmd **cmd)
 	while (*cmd)
 	{
 		current = (*cmd)->right;
-		free((*cmd)->args);
+		ft_free_array((*cmd)->args);
 		ft_free_redirections(&(*cmd)->redirections);
 		free(*cmd);
 		*cmd = current;

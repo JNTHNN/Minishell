@@ -23,7 +23,8 @@ static int	ft_handle_heredoc(t_redir_lst *node)
 	while (true)
 	{
 		line = readline("> ");
-		if (line[0] && ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
+		if (!line || ((line && line[0])
+			&& ft_strncmp(line, node->filename, ft_strlen(line)) == 0))
 			break ;
 		ft_putendl_fd(line, fd);
 		free(line);

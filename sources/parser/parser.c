@@ -69,7 +69,9 @@ void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 	{
 		while (!(*start)->token)
 			*start = (*start)->next;
-		(*args)[i] = (*start)->token;
+		(*args)[i] = ft_strdup((*start)->token);
+		free((*start)->token);
+		(*start)->token = NULL;
 		*start = (*start)->next;
 	}
 	(*args)[count] = NULL;
@@ -86,10 +88,15 @@ int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 	{
 		start = *current;
 		arg_count = ft_count_cmd_args(current);
-		*args = (char **)malloc((arg_count + 1) * sizeof(char *));
-		if (!*args)
-			return (E_MEM);
-		ft_fill_cmd_args(arg_count, &(*args), &start);
+		if (arg_count)
+		{
+			*args = (char **)malloc((arg_count + 1) * sizeof(char *));
+			if (!*args)
+				return (E_MEM);
+			ft_fill_cmd_args(arg_count, &(*args), &start);
+		}
+		else
+			*args = NULL;
 		cmd_id++;
 		if (ft_add_cmd_node(&(*args), data, cmd_id))
 			return (E_MEM);

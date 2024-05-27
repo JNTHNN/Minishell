@@ -41,15 +41,15 @@ static int	ft_fill_new_args(char **old, char **temp, char ***new)
 	while (++i < ft_tablen(temp))
 	{
 		(*new)[i] = ft_strdup(temp[i]);
-		if (!new[i])
-			return (E_MEM);
+		if (!(*new)[i])
+			return (free(*new), E_MEM);
 	}
 	j = 1;
 	while (i < ft_tablen(old))
 	{
 		(*new)[i] = ft_strdup((old)[j]);
 		if (!(*new)[i])
-			return (E_MEM);
+			return (free(*new), E_MEM);
 		i++;
 		j++;
 	}

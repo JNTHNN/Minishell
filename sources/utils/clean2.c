@@ -24,33 +24,34 @@ void	ft_free_pipes(t_data *data, t_exec *exec)
 		free(exec->pipes[i]);
 		exec->pipes[i] = NULL;
 	}
-	free(exec->pipes);
-	exec->pipes = NULL;
+	if (exec->pipes)
+	{
+		free(exec->pipes);
+		exec->pipes = NULL;
+	}
 }
 
 void	ft_free_exec(t_data *data)
 {
-	t_exec	*exec;
-
 	if (data && data->exec)
 	{
-		exec = data->exec;
-		if (exec && exec->pipes)
-			ft_free_pipes(data, exec);
-		if (exec && exec->child_pid)
+		if (data->exec && data->exec->pipes)
+			ft_free_pipes(data, data->exec);
+		if (data->exec && data->exec->child_pid)
 		{
-			free(exec->child_pid);
-			exec->child_pid = NULL;
+			free(data->exec->child_pid);
+			data->exec->child_pid = NULL;
 		}
-		if (exec->fdin != NOT_INIT)
-			close(exec->fdin);
-		if (exec->fdout != NOT_INIT)
-			close(exec->fdout);
-		if (exec->tmpin != NOT_INIT)
-			close(exec->tmpin);
-		if (exec->tmpout != NOT_INIT)
-			close(exec->tmpout);
-		free(exec);
+		if (data->exec->fdin != NOT_INIT)
+			close(data->exec->fdin);
+		if (data->exec->fdout != NOT_INIT)
+			close(data->exec->fdout);
+		if (data->exec->tmpin != NOT_INIT)
+			close(data->exec->tmpin);
+		if (data->exec->tmpout != NOT_INIT)
+			close(data->exec->tmpout);
+		free(data->exec);
+		data->exec = NULL;
 	}
 }
 
@@ -59,7 +60,10 @@ void	ft_free_if_error(t_data *data)
 	if (data)
 	{
 		if (data->input)
+		{
 			free(data->input);
+			data->input = NULL;
+		}
 		if (data->tokens)
 			ft_free_tokens(&data->tokens);
 		if (data->cmd)

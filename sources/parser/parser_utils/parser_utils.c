@@ -64,7 +64,7 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 	if (!new_node)
 		return (NULL);
 	new_node->id = id;
-	if (!**args)
+	if (!*args)
 	{
 		new_node->args = NULL;
 		new_node->is_builtin = false;

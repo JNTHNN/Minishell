@@ -90,20 +90,6 @@ int	ft_expand_cmd_args(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-t_tok_lst	*ft_find_origin_tok(char ***args, int idx, t_data *data)
-{
-	t_tok_lst	*current_node;
-
-	current_node = data->tokens;
-	while (current_node)
-	{
-		if (current_node->token == (*args)[idx])
-			break ;
-		current_node = current_node->next;
-	}
-	return (current_node);
-}
-
 bool	ft_is_valid_variable_char(char c)
 {
 	if (ft_isalnum(c) || c == UNDERSCORE)

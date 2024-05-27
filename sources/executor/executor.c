@@ -17,12 +17,13 @@ static int	ft_prepare_execution(t_data *data)
 	t_exec		*exec;
 
 	exec = ft_init_exec(data);
-	if (!exec)
-		return (E_MEM);
-	exec->tmpin = dup(STDIN_FILENO);
-	exec->tmpout = dup(STDOUT_FILENO);
-	if (exec->tmpin == F_ERROR || exec->tmpout == F_ERROR)
-		return (E_DUP);
+	if (exec)
+	{
+		exec->tmpin = dup(STDIN_FILENO);
+		exec->tmpout = dup(STDOUT_FILENO);
+		if (exec->tmpin == F_ERROR || exec->tmpout == F_ERROR)
+			return (E_DUP);
+	}
 	return (EXIT_SUCCESS);
 }
 

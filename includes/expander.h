@@ -63,7 +63,6 @@ void		ft_should_resplit(char *arg, t_data *data);
 /* expander_utils5.c */
 int			ft_expand_redir(t_data *data);
 int			ft_expand_cmd_args(t_data *data);
-t_tok_lst	*ft_find_origin_tok(char ***args, int idx, t_data *data);
 bool		ft_is_valid_variable_char(char c);
 
 #endif
