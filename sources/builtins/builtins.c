@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:12:21 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 17:53:28 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:57:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,10 @@ int	ft_builtin(t_data *data, t_cmd *cmd)
 		ft_env(data, cmd);
 	else if (!ft_strncmp(cmd->args[0], "exit", 4))
 		ft_exit(data, cmd);
+	else
+	{
+		data->err_info = data->cmd->args[0];
+		ft_handle_error(data, E_NOTF);
+	}
 	return (EXIT_FAILURE);
 }
