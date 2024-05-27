@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** Handles quoted words in the string,
+advancing the pointer past the quoted section.
+*/
 void	ft_handle_quoted_word(char **str, char *quote_c)
 {
 	if (ft_is_quote(**str))
@@ -27,6 +31,10 @@ void	ft_handle_quoted_word(char **str, char *quote_c)
 		(*str)++;
 }
 
+/*
+** Checks for improper pipe usage, such as pipes
+at the start, end, or consecutive pipes.
+*/
 bool	ft_check_pipes(t_tok_lst *lst)
 {
 	t_tok_lst	*last;
@@ -45,6 +53,9 @@ bool	ft_check_pipes(t_tok_lst *lst)
 	return (false);
 }
 
+/*
+** Determines the type of redirection based on the token and its type.
+*/
 t_redirect_type	ft_find_redir_type(char *token, t_tok_type type)
 {
 	size_t	size;

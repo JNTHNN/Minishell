@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** Print an error message for redirection errors 
+based on the error code.
+*/
 static void	ft_print_redir_error(int err_code)
 {
 	g_exit_code = EX_USAGE;
@@ -30,6 +34,10 @@ static void	ft_print_redir_error(int err_code)
 		ft_putstr_fd("`newline'\n\033[0m", STDERR_FILENO);
 }
 
+/*
+** Print an error message for execution errors 
+based on the error code.
+*/
 static void	ft_print_exec_error(int err_code, t_data *data)
 {
 	if (err_code == E_EXECVE)
@@ -59,6 +67,9 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 		ft_errno(data->err_info, EX_NOTFOUND, data);
 }
 
+/*
+** Print a general error message based on the error code.
+*/
 static void	ft_print_error(int err_code, t_data *data)
 {
 	g_exit_code = EX_MISCERROR;
@@ -87,12 +98,20 @@ static void	ft_print_error(int err_code, t_data *data)
 		ft_putstr_fd(ERR_UNDEF, STDERR_FILENO);
 }
 
+/*
+** Print and handle an error based on the error code,
+then free resources.
+*/
 static void	ft_throw_error(t_data *data, int err_code)
 {
 	ft_print_error(err_code, data);
 	ft_free_if_error(data);
 }
 
+/*
+** Handle errors by printing and managing resources,
+returning status.
+*/
 int	ft_handle_error(t_data *data, int ret)
 {
 	if (ret)

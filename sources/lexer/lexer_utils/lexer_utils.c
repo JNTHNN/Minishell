@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Returns the size of the token list.
+*/
 static int	ft_tok_lstsize(t_tok_lst *lst)
 {
 	int	size;
@@ -28,6 +31,9 @@ static int	ft_tok_lstsize(t_tok_lst *lst)
 	return (size);
 }
 
+/*
+** Adds a new token node to the end of the token list.
+*/
 static void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
 {
 	t_tok_lst	*last;
@@ -47,6 +53,9 @@ static void	ft_tok_lstadd_back(t_tok_lst **lst, t_tok_lst *new)
 	}
 }
 
+/*
+** Creates a new token node with the given string, id, and type.
+*/
 static t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
 {
 	t_tok_lst	*new_node;
@@ -63,6 +72,9 @@ static t_tok_lst	*ft_create_new_tok(char *str, int id, t_tok_type type)
 	return (new_node);
 }
 
+/*
+** Returns the last node in the token list.
+*/
 t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst)
 {
 	if (!lst)
@@ -72,6 +84,9 @@ t_tok_lst	*ft_tok_lstlast(t_tok_lst *lst)
 	return (lst);
 }
 
+/*
+** Adds a new token node to the token list.
+*/
 int	ft_add_tok_node(char *str, int id, t_tok_type type, t_data *data)
 {
 	t_tok_lst	*node;

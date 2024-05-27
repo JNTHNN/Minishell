@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Calculate the length of a string array.
+*/
 int	ft_tablen(char **str)
 {
 	int	i;
@@ -25,6 +28,9 @@ int	ft_tablen(char **str)
 	return (i);
 }
 
+/*
+** Add a new environment variable to the existing environment array.
+*/
 char	**ft_add_to_env(char **env, char *new_var)
 {
 	char	**new_env;
@@ -49,6 +55,9 @@ char	**ft_add_to_env(char **env, char *new_var)
 	return (new_env);
 }
 
+/*
+** Retrieve the value of an environment variable by its name.
+*/
 char	*ft_getenv(t_data *data, char *search)
 {
 	int	i;

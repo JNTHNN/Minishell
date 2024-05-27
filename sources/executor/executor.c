@@ -29,8 +29,13 @@ static int	ft_prepare_execution(t_data *data)
 
 static int	ft_exec_simple_cmd(t_data *data)
 {
-	if (ft_trigger_heredoc(data))
+	int	ret;
+
+	ret = ft_trigger_heredoc(data);
+	if (ret == E_OPEN)
 		return (E_OPEN);
+	if (ret == EXIT_HD)
+		return (EXIT_SUCCESS);
 	if (ft_open_redir_in(data, data->cmd)
 		|| ft_open_redir_out(data, data->cmd))
 		return (E_OPEN);

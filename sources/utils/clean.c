@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Free memory allocated for the redirections linked list.
+*/
 static void	ft_free_redirections(t_redir_lst **lst)
 {
 	t_redir_lst	*current;
@@ -29,6 +32,9 @@ static void	ft_free_redirections(t_redir_lst **lst)
 	*lst = NULL;
 }
 
+/*
+** Free memory allocated for the local history (with !! command).
+*/
 static void	ft_free_hist(t_hist *hist)
 {
 	if (hist->newline)
@@ -41,8 +47,13 @@ static void	ft_free_hist(t_hist *hist)
 		free(hist->lastline);
 		hist->lastline = NULL;
 	}
+	free(hist);
+	hist = NULL;
 }
 
+/*
+** Free memory allocated for the tokens linked list used in the lexer.
+*/
 void	ft_free_tokens(t_tok_lst **tokens)
 {
 	t_tok_lst	*current;
@@ -63,6 +74,9 @@ void	ft_free_tokens(t_tok_lst **tokens)
 	*tokens = NULL;
 }
 
+/*
+** Free memory allocated for the commands linked list.
+*/
 void	ft_free_cmds(t_cmd **cmd)
 {
 	t_cmd	*current;
@@ -80,18 +94,20 @@ void	ft_free_cmds(t_cmd **cmd)
 	*cmd = NULL;
 }
 
+/*
+** Free all memory allocated in the data structure.
+*/
 void	ft_free_data(t_data *data)
 {
 	if (data)
 	{
 		if (data->input)
-			free(data->input);
-		if (data->hist)
 		{
-			ft_free_hist(data->hist);
-			free(data->hist);
-			data->hist = NULL;
+			free(data->input);
+			data->input = NULL;
 		}
+		if (data->hist)
+			ft_free_hist(data->hist);
 		ft_free_array(data->env);
 		if (data->tokens)
 			ft_free_tokens(&data->tokens);

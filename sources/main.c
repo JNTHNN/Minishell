@@ -12,8 +12,15 @@
 
 #include "../includes/minishell.h"
 
+/*
+** Unique global variable declaration.
+*/
 int	g_exit_code = 0;
 
+/*
+** Increment the SHLVL environment variable by 1 
+each time a minishell is launched.
+*/
 static void	ft_increment_shlvl(char **env)
 {
 	int		i;
@@ -39,6 +46,9 @@ static void	ft_increment_shlvl(char **env)
 	}
 }
 
+/*
+** Initialize the data structure with all useful variables ans structures.
+*/
 static void	ft_init_data(t_data *data, char **envp)
 {
 	data->input = NULL;
@@ -61,6 +71,9 @@ static void	ft_init_data(t_data *data, char **envp)
 	ft_increment_shlvl(data->env);
 }
 
+/*
+** Read input from the user and handle end-of-file conditions.
+*/
 static int	ft_get_input(t_data *data)
 {
 	ft_init_signal();
@@ -76,6 +89,9 @@ static int	ft_get_input(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/* 
+** Main execution loop that processes user input and handles commands. 
+*/
 static void	ft_minishell_loop(t_data *data)
 {
 	int		ret;
@@ -105,6 +121,9 @@ static void	ft_minishell_loop(t_data *data)
 	}
 }
 
+/* 
+**  Program initialization and entry point for the minishell.
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;

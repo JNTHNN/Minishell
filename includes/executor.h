@@ -32,6 +32,7 @@ enum	e_pipe_end
 # define EX_NOTFOUND 127
 # define EX_BADSYNTAX 257
 # define EX_USAGE	2
+# define EXIT_HD -1
 
 /* executor.c */
 int		ft_executor(t_data *data);

@@ -56,7 +56,7 @@ static int	ft_change_pwd(t_cd *cd)
 	{
 		if (!cd->pwd)
 			return (ft_free_cd(cd),
-				ft_handle_error(cd->data, E_CWD), EXEC_FAIL);
+				ft_handle_error(NULL, E_CWD), EXEC_FAIL);
 		else
 			ft_cd_relative(cd);
 	}

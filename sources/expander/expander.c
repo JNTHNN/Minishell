@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Calculates the new length of the string after variable expansion.
+*/
 int	ft_calculate_new_length(char *str, t_data *data)
 {
 	int		i;
@@ -37,11 +40,17 @@ int	ft_calculate_new_length(char *str, t_data *data)
 	return (len);
 }
 
+/*
+** Calculates the remaining buffer space left during string expansion.
+*/
 size_t	ft_space_left(size_t buffsize, char *cursor, char *start)
 {
 	return (buffsize - (cursor - start) - 1);
 }
 
+/*
+** Creates a new string with expanded variables from the old string.
+*/
 void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 {
 	char			*cursor;
@@ -68,6 +77,9 @@ void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 	*cursor = '\0';
 }
 
+/*
+** Handles variable expansion for a specific argument.
+*/
 int	ft_handle_expansion(char ***args, int idx, t_data *data)
 {
 	char		*str;
@@ -91,6 +103,9 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Expands variables and quotes in all command arguments and redirections.
+*/
 int	ft_expand(t_data *data)
 {
 	int	ret;

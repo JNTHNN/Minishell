@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** Free a dynamically allocated array of strings
+and set the pointer to NULL.
+*/
 void	*ft_free_array(char **arr)
 {
 	int	i;
@@ -30,6 +34,9 @@ void	*ft_free_array(char **arr)
 	return (NULL);
 }
 
+/*
+** Create a minimal environment array with PWD, SHLVL, and /usr/bin/env.
+*/
 char	**ft_create_env(char **arr)
 {
 	char	temp[PATH_MAX];
@@ -45,6 +52,10 @@ char	**ft_create_env(char **arr)
 	return (arr);
 }
 
+/*
+** Copy an existing environment array,
+or create a new one if the input is NULL.
+*/
 char	**ft_envcpy(char **arr)
 {
 	int		i;

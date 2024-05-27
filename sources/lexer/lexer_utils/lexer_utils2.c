@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Checks if the given character is a quote (single or double).
+*/
 bool	ft_is_quote(char c)
 {
 	if (c == DBL_Q || c == SGL_Q)
@@ -19,6 +22,9 @@ bool	ft_is_quote(char c)
 	return (false);
 }
 
+/*
+** Checks if the given character is a whitespace character.
+*/
 bool	ft_is_space(int c)
 {
 	if (c == 32 || (c >= 9 && c <= 13))
@@ -26,6 +32,9 @@ bool	ft_is_space(int c)
 	return (false);
 }
 
+/*
+** Checks if the given character is an operator (redirection or pipe).
+*/
 bool	ft_is_operator(char c)
 {
 	if (c == REDIR_IN || c == REDIR_OUT || c == PIPE)
@@ -33,6 +42,9 @@ bool	ft_is_operator(char c)
 	return (false);
 }
 
+/*
+** Skips over any whitespace characters in the given string.
+*/
 int	ft_skip_whitespaces(char *str)
 {
 	char	*start;
@@ -43,6 +55,9 @@ int	ft_skip_whitespaces(char *str)
 	return (str - start);
 }
 
+/*
+** Trims leading and trailing whitespace from the input string.
+*/
 int	ft_trim_input(char **input)
 {
 	char	*trimmed;

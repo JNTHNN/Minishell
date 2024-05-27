@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Handle errors by printing messages and exiting if necessary.
+*/
 void	ft_errno(char *s, int code, t_data *data)
 {
 	if (errno != 0)
@@ -34,6 +37,9 @@ void	ft_errno(char *s, int code, t_data *data)
 	}
 }
 
+/*
+** Print environment-related error messages.
+*/
 void	ft_print_env_error(t_data *data)
 {
 	ft_putstr_fd(START_ERR, STDERR_FILENO);
@@ -43,6 +49,9 @@ void	ft_print_env_error(t_data *data)
 	ft_errno(NULL, EX_NOTFOUND, data);
 }
 
+/*
+** Handle argument errors and exit if incorrect arguments are provided.
+*/
 void	ft_handle_arg_error(int argc, char **argv)
 {
 	if (argc != 1 || argv[1])
@@ -52,6 +61,9 @@ void	ft_handle_arg_error(int argc, char **argv)
 	}
 }
 
+/*
+** Print unset command-related error messages.
+*/
 void	ft_print_unset_error(char *err, t_data *data)
 {
 	g_exit_code = EXEC_FAIL;

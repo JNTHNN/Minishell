@@ -77,7 +77,13 @@ int	ft_exec_cmds_loop(t_data *data, int *nb)
 	while (current_cmd)
 	{
 		if (data->exec->trigger_hd == false)
-			ft_trigger_heredoc(data);
+		{
+			ret = ft_trigger_heredoc(data);
+			if (ret == E_OPEN)
+				return (E_OPEN);
+			if (ret == EXIT_HD)
+				return (EXIT_SUCCESS);
+		}
 		data->exec->child_pid[*nb] = fork();
 		data->exec->status = 0;
 		if (data->exec->child_pid[*nb] == F_ERROR)

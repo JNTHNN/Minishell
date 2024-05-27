@@ -105,3 +105,28 @@ int	ft_open_redir_out(t_data *data, t_cmd *cmd)
 	}
 	return (EXIT_SUCCESS);
 }
+
+int	ft_cmd_exec(t_data *data)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	status = 0;
+	if (pid == F_ERROR)
+		return (ft_errno("fork", EXEC_FAIL, data), EXIT_FAILURE);
+	else if (pid == FORKED_CHILD)
+	{
+		ft_restore_signals();
+		ft_execute_command(data, data->cmd);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_code = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+			ft_print_signals(status);
+	}
+	return (EXIT_SUCCESS);
+}

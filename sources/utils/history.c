@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Fill the local command history with the latest input from the user.
+*/
 static void	ft_fill_local_history(t_data *data)
 {
 	t_hist	*hist;
@@ -29,6 +32,9 @@ static void	ft_fill_local_history(t_data *data)
 	hist->newline = ft_strdup(data->input);
 }
 
+/*
+** Create and initialize a new history structure.
+*/
 t_hist	*ft_create_hist(void)
 {
 	t_hist	*hist;
@@ -41,6 +47,10 @@ t_hist	*ft_create_hist(void)
 	return (hist);
 }
 
+/*
+** Handle the command history, including saving new commands 
+and using "!!" to repeat the last command.
+*/
 void	ft_handle_history(t_data *data)
 {
 	ft_fill_local_history(data);
