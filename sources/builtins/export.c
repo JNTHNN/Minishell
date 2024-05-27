@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/21 15:25:06 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:02:41 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_export(t_data *data, t_cmd *cmd)
 	i = 1;
 	if (cmd->args)
 	{
-		if (!ft_strncmp(cmd->args[0], "export", 6))
+		if (!ft_strncmp(cmd->args[0], EXPORT, 6))
 		{
 			if (cmd->args[i])
 			{

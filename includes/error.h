@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/17 21:38:11 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:25:46 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef enum e_err_codes
 	E_ENV = -17,
 	E_CWD = -18,
 	E_VAR_ID = -19,
+	E_PATH = - 20,
 }	t_err_codes;
 
 /*		Handle errors : error.c		*/

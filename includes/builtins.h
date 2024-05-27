@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/23 13:09:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:02:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define HEAD 0
 # define CURR 1
 # define NEW 2
+# define EXPORT "export"
 
 /* Handle all builtins : builtins.c	*/
 bool	ft_is_builtin(char *name);
