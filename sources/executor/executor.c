@@ -34,7 +34,7 @@ static int	ft_exec_simple_cmd(t_data *data)
 	ret = ft_trigger_heredoc(data);
 	if (ret == E_OPEN)
 		return (E_OPEN);
-	if (ret == EXIT_HD)
+	if (ret == EXIT_HD || ret == CTRL_D)
 		return (EXIT_SUCCESS);
 	if (ft_open_redir_in(data, data->cmd)
 		|| ft_open_redir_out(data, data->cmd))

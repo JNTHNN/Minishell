@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
+#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/05/24 11:59:09 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/05/28 17:05:59 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ EXPAND_UTILS_SRC	:= expander_utils expander_utils2 expander_utils3 \
 EXEC_SRC			:= executor
 EXEC_UTILS_SRC		:= executor_utils executor_utils2 executor_utils3 \
 					executor_utils4 executor_utils5 
+HEREDOC_SRC			:= heredoc heredoc_utils
 
 SRC				:= $(addprefix $(SRC_DIR),$(addsuffix .c, $(SRC_FILES)))
 SRC 			+= $(addprefix $(SRC_DIR)builtins/, $(addsuffix .c, $(BUILTINS_SRC)))
@@ -66,6 +67,8 @@ SRC				+= $(addprefix $(SRC_DIR)parser/parser_utils/, $(addsuffix .c, $(PARSER_U
 SRC				+= $(addprefix $(SRC_DIR)expander/expander_utils/, $(addsuffix .c, $(EXPAND_UTILS_SRC)))
 SRC				+= $(addprefix $(SRC_DIR)executor/executor_utils/, $(addsuffix .c, $(EXEC_UTILS_SRC)))
 SRC				+= $(addprefix $(SRC_DIR)builtins/builtins_utils/, $(addsuffix .c, $(BUILTINS_UTILS_SRC)))
+SRC				+= $(addprefix $(SRC_DIR)heredoc/, $(addsuffix .c, $(HEREDOC_SRC)))
+
 
 # **************************************************************************** #
 # 							  	Object files								   #
