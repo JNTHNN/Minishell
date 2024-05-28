@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/24 15:25:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:16:26 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define ERR_CMD ": command not found\033[0m\n"
 # define END_RST "\033[0m"
 # define ERR_ENV_OPEN ": No such file or directory\033[0m\n"
+# define ERR_ENV_ARG ": arguments not allowed\033[0m\n"
 # define ERR_CWD "❌\033[0;31m minibash: cd: error retrieving current directory:\
  getcwd: cannot access parent directories: No such file or directory\033[0m\n"
 # define START_UNSET "❌\033[0;31m minibash: unset: "

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 17:41:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:16:57 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # define HEAD 0
 # define CURR 1
 # define NEW 2
+# define ADD 0
+# define EXIST 1
+# define MODIFY 2
 # define EXPORT "export"
 
 /* Handle all builtins : builtins.c	*/
@@ -62,9 +65,8 @@ int		ft_check_minus(t_cd *cd);
 int64_t	ft_atol(const char *str, int *flag);
 void	ft_print_err_exit(char *arg);
 
-/*  Initialize env in linked list for export : export_utils.c   */
-t_env	*ft_setup_env(char **env);
-void	ft_modify_or_add_env(t_env **head, char *var, t_data *d);
+/*	manipulate var from env : export_utils.c */
+void	ft_modify_or_add_env(t_env **head, char *var, t_data *system);
 
 /* prints for export : export_utils2.c  */
 void	ft_print_env(t_env *head);
@@ -76,5 +78,8 @@ void	ft_update_env(t_env *head, t_data *data);
 /*  var + data for export : export_utils4.c */
 char	*ft_var(char *s);
 char	*ft_data(char *s);
+
+/*  Initialize env in linked list for export : export_utils5.c   */
+t_env	*ft_setup_env(char **env);
 
 #endif

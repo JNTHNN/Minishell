@@ -6,7 +6,7 @@
 #    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/05/24 11:59:09 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/05/28 18:20:41 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ UTILS_SRC			:= error error2 utils utils2 clean clean2 history
 SIGNALS_SRC			:= signals
 BUILTINS_SRC		:= builtins env pwd echo cd exit export unset
 BUILTINS_UTILS_SRC	:= exit_utils export_utils export_utils2 export_utils3 \
-					export_utils4 cd_utils cd_utils2 cd_utils3
+					export_utils4 export_utils5 cd_utils cd_utils2 cd_utils3
 LEXER_SRC			:= lexer
 LEXER_UTILS_SRC 	:= lexer_utils lexer_utils2 lexer_utils3
 PARSER_UTILS_SRC	:= parser_utils parser_utils2 parser_utils3 parser_utils4

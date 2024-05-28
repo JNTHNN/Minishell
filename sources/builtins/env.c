@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:20:22 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 14:49:48 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:19:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ void	ft_env(t_data *data, t_cmd *cmd)
 		{
 			if (!data->env[i])
 				return ;
-			while (data->env[i] && ft_strchr(data->env[i], 61))
-				printf("%s\n", data->env[i++]);
+			while (data->env[i])
+			{
+				if (ft_strchr(data->env[i], 61))
+					printf("%s\n", data->env[i]);
+				i++;
+			}
 		}
 	}
 	else
