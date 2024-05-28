@@ -117,7 +117,7 @@ int	ft_cmd_exec(t_data *data)
 		return (ft_errno("fork", EXEC_FAIL, data), EXIT_FAILURE);
 	else if (pid == FORKED_CHILD)
 	{
-		ft_restore_signals();
+		ft_restore_signals(false);
 		ft_execute_command(data, data->cmd);
 	}
 	else

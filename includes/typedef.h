@@ -78,6 +78,7 @@ struct s_redir_lst
 	t_redirect_type	r_type;
 	char			*filename;
 	char			*hd_path;
+	bool			quoted;
 	int				cmd_id;
 	t_redir_lst		*next;
 	t_redir_lst		*prev;

@@ -15,7 +15,7 @@
 
 /* Handle signals : signals.c	*/
 void	ft_sigint(int sig);
-void	ft_signal(void *type);
+void	ft_signal(void *type, bool heredoc);
 void	ft_get_ctrl_d(t_data *data);
 int		ft_init_signal(void);
 void	rl_replace_line(const char *text, int clear_undo);

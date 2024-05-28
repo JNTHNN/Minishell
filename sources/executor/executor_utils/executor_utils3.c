@@ -51,7 +51,7 @@ static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 		return (ret);
 	if (!cmd->is_builtin)
 	{
-		ft_restore_signals();
+		ft_restore_signals(false);
 		ft_execute_command(data, cmd);
 	}
 	else
@@ -68,6 +68,20 @@ static void	ft_reset_fdio(t_data *data, t_cmd *cmd)
 	data->exec->fdout = -1;
 }
 
+int	ft_check_heredoc(t_data *data)
+{
+	int	ret;
+
+	ret = 0;
+	if (data->exec->trigger_hd == false)
+	{
+		ret = ft_trigger_heredoc(data);
+		if (ret)
+			return (ret);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	ft_exec_cmds_loop(t_data *data, int *nb)
 {
 	t_cmd	*current_cmd;
@@ -76,24 +90,19 @@ int	ft_exec_cmds_loop(t_data *data, int *nb)
 	current_cmd = data->cmd;
 	while (current_cmd)
 	{
-		if (data->exec->trigger_hd == false)
-		{
-			ret = ft_trigger_heredoc(data);
-			if (ret == E_OPEN)
-				return (E_OPEN);
-			if (ret == EXIT_HD)
-				return (EXIT_SUCCESS);
-		}
+		ret = ft_check_heredoc(data);
+		if (ret == E_OPEN)
+			return (ret);
+		if (ret == EXIT_HD)
+			return (EXIT_SUCCESS);
 		data->exec->child_pid[*nb] = fork();
 		data->exec->status = 0;
 		if (data->exec->child_pid[*nb] == F_ERROR)
 			ft_errno(ERR_FORK, EXEC_FAIL, data);
 		if (data->exec->child_pid[*nb] == FORKED_CHILD)
-		{
 			ret = ft_child_process(data, current_cmd, nb);
-			if (ret)
-				return (ret);
-		}
+		if (ret)
+			return (ret);
 		ft_reset_fdio(data, current_cmd);
 		(*nb)++;
 		current_cmd = current_cmd->right;

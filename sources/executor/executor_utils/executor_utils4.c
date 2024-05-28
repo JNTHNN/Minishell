@@ -17,15 +17,17 @@ static int	ft_heredoc_process(t_redir_lst *node)
 	char	*line;
 	int		fd;
 
-	ft_restore_signals();
+	ft_restore_signals(true);
 	fd = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == F_ERROR)
-		exit(EXIT_FAILURE);
+		exit(E_OPEN);
 	while (true)
 	{
 		line = readline("> ");
-		if (!line || ((line && line[0])
-				&& ft_strncmp(line, node->filename, ft_strlen(line)) == 0))
+		if (!line)
+			exit(20);
+		if ((line && line[0])
+			&& ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
 			break ;
 		ft_putendl_fd(line, fd);
 		free(line);
@@ -44,15 +46,12 @@ static int	ft_handle_heredoc(t_redir_lst *node, t_data *data)
 	if (pid == F_ERROR)
 		return (ft_errno("fork", EXEC_FAIL, data), EXIT_FAILURE);
 	else if (pid == FORKED_CHILD)
-	{
-		if (ft_heredoc_process(node))
-			return (E_OPEN);
-	}
+		ft_heredoc_process(node);
 	else
 	{
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
-			g_exit_code = WEXITSTATUS(status);
+			return (WEXITSTATUS(status));
 		if (WIFSIGNALED(status))
 		{
 			ft_print_signals(data->exec->status);
@@ -62,12 +61,12 @@ static int	ft_handle_heredoc(t_redir_lst *node, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_restore_signals(void)
+void	ft_restore_signals(bool heredoc)
 {
 	struct termios	term;
 
 	ft_memset(&term, 0, sizeof(term));
-	ft_signal(SIG_DFL);
+	ft_signal(SIG_DFL, heredoc);
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag |= ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
@@ -101,17 +100,15 @@ int	ft_trigger_heredoc(t_data *data)
 		while (current != NULL)
 		{
 			if (current->r_type == HEREDOC)
-			{
 				ret = ft_handle_heredoc(current, data);
-				if (ret == EXIT_HD)
-					break ;
-				if (ret == E_OPEN)
-					return (E_OPEN);
-			}
+			if (ret == EXIT_HD || ret == CTRL_D)
+				break ;
+			if (ret == E_OPEN)
+				return (E_OPEN);
 			current = current->next;
 		}
 		if (ret)
-			return (EXIT_HD);
+			break ;
 	}
 	data->exec->trigger_hd = true;
 	return (EXIT_SUCCESS);

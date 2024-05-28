@@ -32,7 +32,8 @@ enum	e_pipe_end
 # define EX_NOTFOUND 127
 # define EX_BADSYNTAX 257
 # define EX_USAGE	2
-# define EXIT_HD -1
+# define EXIT_HD -20
+# define CTRL_D 20
 
 /* executor.c */
 int		ft_executor(t_data *data);
@@ -52,7 +53,7 @@ char	**ft_pathiter(char **path, t_cmd *cmd);
 
 /* executor_utils4.c */
 int		ft_cmd_exec(t_data *data);
-void	ft_restore_signals(void);
+void	ft_restore_signals(bool heredoc);
 void	ft_print_signals(int status);
 int		ft_trigger_heredoc(t_data *data);
 

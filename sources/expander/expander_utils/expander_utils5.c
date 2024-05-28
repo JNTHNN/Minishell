@@ -24,6 +24,8 @@ static int	ft_expand_filename(t_redir_lst *node, t_data *data)
 		str = node->filename;
 		if (ft_count_all_quotes(str) || ft_count_dollars(str))
 		{
+			if (ft_is_quote(str[0]))
+				node->quoted = true;
 			new_length = ft_calculate_new_length(str, data);
 			new_str = (char *)malloc(new_length + 1);
 			if (!new_str)

@@ -66,6 +66,7 @@ t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 	new_node->r_type = token.r_type;
 	new_node->filename = ft_strdup(token.next->token);
 	new_node->hd_path = NULL;
+	new_node->quoted = false;
 	new_node->cmd_id = cmd_nb;
 	new_node->next = NULL;
 	new_node->prev = NULL;

@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-static int	ft_hd_path(t_redir_lst *current, int j)
+static int	ft_hd_path(t_redir_lst *current, int *j)
 {
 	char	*nb;
 
-	nb = ft_itoa(j++);
+	nb = ft_itoa((*j)++);
 	current->hd_path = ft_strjoin("/tmp/hd_temp", nb);
 	free(nb);
 	if (!current->hd_path)
@@ -41,7 +41,7 @@ int	ft_build_hd_path(t_data *data)
 			{
 				if (current->r_type == HEREDOC)
 				{
-					if (ft_hd_path(current, j))
+					if (ft_hd_path(current, &j))
 						return (E_MEM);
 				}
 				current = current->next;

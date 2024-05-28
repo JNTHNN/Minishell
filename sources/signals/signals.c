@@ -28,13 +28,14 @@ void	ft_sigint(int sig)
 /*
 ** Set signal handlers for SIGINT and SIGQUIT.
 */
-void	ft_signal(void *type)
+void	ft_signal(void *type, bool heredoc)
 {
 	if (type != SIG_DFL)
 		signal(SIGINT, ft_sigint);
 	else
 		signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, type);
+	if (!heredoc)
+		signal(SIGQUIT, type);
 }
 
 /*
@@ -58,7 +59,7 @@ int	ft_init_signal(void)
 {
 	struct termios	term;
 
-	ft_signal(SIG_IGN);
+	ft_signal(SIG_IGN, false);
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
