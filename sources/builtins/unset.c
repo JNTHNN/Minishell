@@ -6,11 +6,9 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 17:41:38 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:28:04 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minishell.h"
 
 #include "minishell.h"
 
