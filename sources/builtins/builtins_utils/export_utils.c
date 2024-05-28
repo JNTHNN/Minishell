@@ -6,44 +6,54 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:47:58 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:21:39 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-**	add env node to the end list
+**	Checker for var name | return false if error
 */
-static void	ft_envadd_back(t_env **lst, t_env *new)
+static bool	ft_check_name_var(t_env *current, char *name)
 {
-	if (!lst)
-		return ;
-	while (*lst)
-		lst = &(*lst)->next;
-	*lst = new;
+	if ((ft_strncmp(current->var, name, ft_strlen(current->var)) == -61
+			|| ft_strncmp(current->var, name, ft_strlen(current->var)) == 61)
+		|| ((!ft_strncmp(current->var, name, ft_strlen(current->var))
+				&& !ft_strncmp(current->var, name, ft_strlen(current->var)))))
+		return (true);
+	return (false);
 }
 
 /*
-**	create new node for env list
+**	scans the env table to modify the variable: name / data
 */
-static t_env	*ft_new_node(char *var, char *data)
+static int	ft_modify(t_env *current, char *name, char *data)
 {
-	t_env	*node;
+	int	ret;
 
-	node = (t_env *)malloc(sizeof(t_env));
-	if (!node)
-		return (NULL);
-	if (node)
+	ret = 0;
+	while (current)
 	{
-		node->var = ft_var(var);
-		if (data)
-			node->data = ft_strdup(data);
-		else
-			node->data = ft_data(var);
-		node->next = NULL;
+		if (ft_check_name_var(current, name))
+		{
+			if (data)
+			{
+				if (!current->data)
+				{
+					free(current->var);
+					current->var = ft_strdup(name);
+				}
+				ft_reset_env_var(name, current->data);
+				current->data = ft_strdup(data);
+				free(data);
+				return (MODIFY);
+			}
+			ret = EXIST;
+		}
+		current = current->next;
 	}
-	return (node);
+	return (ADD);
 }
 
 /*
@@ -59,41 +69,10 @@ static int	ft_add_env(t_env **head, char *var, char *data)
 }
 
 /*
-**	create the env list from env tab
+**	Check if var env (with or w/o data) already exist then modify
+**	or just add (name or name + data)
 */
-t_env	*ft_setup_env(char **env)
-{
-	t_env	*node[3];
-
-	node[HEAD] = NULL;
-	node[CURR] = NULL;
-	if (!env || !*env)
-		return (NULL);
-	while (*env)
-	{
-		node[NEW] = ft_new_node(*env, NULL);
-		if (!node[NEW])
-			return (NULL);
-		if (!node[HEAD])
-		{
-			node[HEAD] = node[NEW];
-			node[CURR] = node[NEW];
-		}
-		else
-		{
-			node[CURR]->next = node[NEW];
-			node[CURR] = node[NEW];
-		}
-		env++;
-	}
-	return (node[HEAD]);
-}
-
-/*
-**	Check if var env already exist then modify
-**	or just add
-*/
-void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
+void	ft_modify_or_add_env(t_env **head, char *var, t_data *system)
 {
 	t_env	*current;
 	char	*name;
@@ -103,21 +82,13 @@ void	ft_modify_or_add_env(t_env **head, char *var, t_data *d)
 	name = ft_var(var);
 	data = ft_data(var);
 	current = *head;
-	if (data)
+	ret = ft_modify(current, name, data);
+	if (!ret)
 	{
-		while (current)
-		{
-			if (!ft_strncmp(current->var, name, ft_strlen(name)))
-			{
-				ft_reset_env_var(name, current->data);
-				current->data = ft_strdup(data);
-				return (free(data));
-			}
-			current = current->next;
-		}
+		ret = ft_add_env(head, name, data);
+		if (ret)
+			ft_errno(ERR_MEM, EX_MISCERROR, system);
 	}
-	ret = ft_add_env(head, name, data);
-	if (ret)
-		ft_errno(ERR_MEM, EX_MISCERROR, d);
-	ft_reset_env_var(name, data);
+	if (ret != 2)
+		ft_reset_env_var(name, data);
 }
