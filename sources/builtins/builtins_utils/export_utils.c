@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 18:21:39 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:35:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,11 @@ static int	ft_modify(t_env *current, char *name, char *data)
 				free(data);
 				return (MODIFY);
 			}
-			ret = EXIST;
+			return (EXIST);
 		}
 		current = current->next;
 	}
 	return (ADD);
-}
-
-/*
-**	add the new node with var + data in env list
-*/
-static int	ft_add_env(t_env **head, char *var, char *data)
-{
-	t_env	*new_node;
-
-	new_node = ft_new_node(var, data);
-	ft_envadd_back(head, new_node);
-	return (EXIT_SUCCESS);
 }
 
 /*
@@ -89,6 +77,6 @@ void	ft_modify_or_add_env(t_env **head, char *var, t_data *system)
 		if (ret)
 			ft_errno(ERR_MEM, EX_MISCERROR, system);
 	}
-	if (ret != 2)
+	if (ret != MODIFY)
 		ft_reset_env_var(name, data);
 }

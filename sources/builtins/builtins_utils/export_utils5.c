@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:15:00 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 18:21:32 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:32:23 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,18 @@ static t_env	*ft_new_node(char *var, char *data)
 		node->next = NULL;
 	}
 	return (node);
+}
+
+/*
+**	add the new node with var + data in env list
+*/
+int	ft_add_env(t_env **head, char *var, char *data)
+{
+	t_env	*new_node;
+
+	new_node = ft_new_node(var, data);
+	ft_envadd_back(head, new_node);
+	return (EXIT_SUCCESS);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 18:16:57 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:33:09 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char	*ft_var(char *s);
 char	*ft_data(char *s);
 
 /*  Initialize env in linked list for export : export_utils5.c   */
+int		ft_add_env(t_env **head, char *var, char *data);
 t_env	*ft_setup_env(char **env);
 
 #endif
