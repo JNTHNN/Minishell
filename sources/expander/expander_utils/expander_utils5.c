@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 09:11:08 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/30 10:13:05 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:43:18 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,27 +136,23 @@ int	ft_clean_expanded_args(t_data *data)
 				arr_len++;
 			i++;
 		}
-		printf("%i\n", arr_len);
 		new_arr = (char **)malloc((arr_len + 1) * sizeof(char *));
 		if (!new_arr)
 			return (E_MEM);
-		i = 0;
+		i = -1;
 		j = 0;
-		while (i < ft_arrlen(current->args))
+		while (++i < ft_arrlen(current->args))
 		{
 			if (current->args[i][0] != '\0')
 			{
 				new_arr[j] = ft_strdup(current->args[i]);
-				printf("%s\n", new_arr[j]);
 				j++;
 			}
-			i++;
 		}
-		new_arr[i] = NULL;
-		// for (int i = 0 ; new_arr[i] ; i++)
-		// 	printf("%s\n", new_arr[i]);
+		new_arr[j] = NULL;
 		ft_free_array(current->args);
 		current->args = new_arr;
+		current->is_builtin = ft_is_builtin(current->args[0]);
 		current = current->right;
 	}
 	return (EXIT_SUCCESS);

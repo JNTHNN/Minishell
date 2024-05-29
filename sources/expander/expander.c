@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/22 11:23:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:15:40 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,5 @@ int	ft_expand(t_data *data)
 	ret = ft_expand_redir(data);
 	if (ret)
 		return (E_MEM);
-	//printf("%p, %s %s\n", data->cmd->args, data->cmd->args[0], data->cmd->args[1]);
 	return (EXIT_SUCCESS);
 }
