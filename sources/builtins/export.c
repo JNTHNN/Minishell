@@ -6,27 +6,22 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 12:11:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:26:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_is_valid_var_name(int c)
-{
-	if (ft_isalpha(c) || ft_isdigit(c) || c == 61)
-		return (true);
-	return (false);
-}
-
-static int	ft_check_var(char *str, t_data *data)
+/*
+**	Check if the env var nam is valid | return false if not
+*/
+static bool	ft_check_var(char *str, t_data *data)
 {
 	int		i;
 	char	*var;
 
 	i = 0;
 	var = ft_var(str);
-	printf("VAR %s\n", var);
 	if (var[i] == '=')
 		return (free(var), ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), false);
 	if (!var || ft_isdigit(var[i]))

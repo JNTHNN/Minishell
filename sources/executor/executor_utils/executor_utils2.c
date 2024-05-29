@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/24 11:08:09 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:25:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	ft_cmd_exec(t_data *data)
 		if (WIFEXITED(status))
 			g_exit_code = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
-			ft_print_signals(status);
+			ft_print_signals(status, EMPTY);
 	}
 	return (EXIT_SUCCESS);
 }

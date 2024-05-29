@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:00:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 08:28:50 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:57:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	ft_handle_heredoc(t_redir_lst *node, t_data *data)
 			return (WEXITSTATUS(status));
 		if (WIFSIGNALED(status))
 		{
-			ft_print_signals(data->exec->status);
+			ft_print_signals(data->exec->status, EXIT_HD);
 			return (EXIT_HD);
 		}
 	}
@@ -107,6 +107,7 @@ int	ft_trigger_heredoc(t_data *data)
 
 	ret = 0;
 	i = -1;
+	g_exit_code = 0;
 	while (++i < data->nb_of_cmds)
 	{
 		current = data->redirections[i];

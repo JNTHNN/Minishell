@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/17 21:05:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:08:51 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** Returns the size of the cmd list.
 */
-int	ft_cmd_lstsize(t_cmd *lst)
+static int	ft_cmd_lstsize(t_cmd *lst)
 {
 	int	size;
 
@@ -32,21 +32,9 @@ int	ft_cmd_lstsize(t_cmd *lst)
 }
 
 /*
-** Returns the last node in the cmd list.
-*/
-t_cmd	*ft_cmd_lstlast(t_cmd *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->right != NULL)
-		lst = lst->right;
-	return (lst);
-}
-
-/*
 ** Adds a new cmd node to the end of the cmd list.
 */
-void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
+static void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 {
 	t_cmd	*last;
 
@@ -63,6 +51,18 @@ void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 		*lst = new;
 		new->right = NULL;
 	}
+}
+
+/*
+** Returns the last node in the cmd list.
+*/
+t_cmd	*ft_cmd_lstlast(t_cmd *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->right != NULL)
+		lst = lst->right;
+	return (lst);
 }
 
 /*

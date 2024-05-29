@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 08:01:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:47:16 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	ft_wait_children(t_data *data, int *children_nb)
 		if (WIFSIGNALED(exec->status) && exec->status
 			!= SIGPIPE && !first_child)
 		{
-			ft_print_signals(exec->status);
+			ft_print_signals(exec->status, EMPTY);
 			first_child = true;
 		}
 	}
@@ -117,8 +117,10 @@ int	ft_executor(t_data *data)
 	ret = ft_prepare_execution(data);
 	if (ret)
 		return (ret);
-	if (data->nb_of_cmds == 1)
+	if (data->nb_of_cmds == 1 && data->cmd->args)
 	{
+		if (data->cmd->args[0][0] == EMPTY && !data->cmd->args[1])
+			return (EXIT_SUCCESS);
 		ret = ft_exec_simple_cmd(data);
 		if (ret)
 			return (ret);

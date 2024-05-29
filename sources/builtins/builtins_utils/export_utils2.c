@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:27:48 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 16:47:00 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:09:41 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 */
 
 /*
-**	swap nodes a to b
+**	Swap nodes a to b
 */
 static void	ft_swap_nodes(t_env *a, t_env *b)
 {
@@ -33,7 +33,7 @@ static void	ft_swap_nodes(t_env *a, t_env *b)
 }
 
 /*
-**	sorts env list nodes in ascending order ascii
+**	Sorts env list nodes in ascending order ascii
 */
 static void	ft_sort_env(t_env *head)
 {
@@ -63,6 +63,9 @@ static void	ft_sort_env(t_env *head)
 	sorted = unsort;
 }
 
+/*
+**	Reset/free name and data if exists + reassign at NULL
+*/
 void	ft_reset_env_var(char *name, char *data)
 {
 	if (name)
@@ -78,7 +81,7 @@ void	ft_reset_env_var(char *name, char *data)
 }
 
 /*
-**	print env from export
+**	Print env from export
 */
 void	ft_print_env(t_env *head)
 {

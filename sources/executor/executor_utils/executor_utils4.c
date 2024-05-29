@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/28 17:01:19 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:04:07 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_restore_signals(bool heredoc)
 /*
 ** Prints "^C" and ^\Quit if needed when a process is aborted.
 */
-void	ft_print_signals(int status)
+void	ft_print_signals(int status, int flag)
 {
 	if (status == SIGQUIT)
 	{
@@ -40,5 +40,7 @@ void	ft_print_signals(int status)
 	{
 		printf(CLEAR_LINE);
 		g_exit_code = 128 + SIGINT;
+		if (flag == EXIT_HD)
+			g_exit_code = EXEC_FAIL;
 	}
 }

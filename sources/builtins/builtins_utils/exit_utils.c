@@ -6,18 +6,24 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:04:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/10 17:35:56 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:08:09 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+**	Check if result overflow | assign flag as 1 if error
+*/
 static void	ft_secure(int64_t resu, int64_t temp, int sign, int *flag)
 {
 	if ((temp > resu && sign == -1) || (temp > resu && sign == 1))
 		*flag = 1;
 }
 
+/*
+**	Assign negative sign if minus is encountered
+*/
 static int	ft_sign(char c)
 {
 	int	sign;
@@ -28,6 +34,9 @@ static int	ft_sign(char c)
 	return (sign);
 }
 
+/*
+**	Convert a string ascii (if number) to a long long int
+*/
 int64_t	ft_atol(const char *str, int *flag)
 {
 	int		i;
@@ -57,6 +66,9 @@ int64_t	ft_atol(const char *str, int *flag)
 	return (resu * sign);
 }
 
+/*
+**	Prints the error string with the arg in question
+*/
 void	ft_print_err_exit(char *arg)
 {
 	ft_putstr_fd(START_EXIT, STDERR_FILENO);

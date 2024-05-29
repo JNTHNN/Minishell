@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/28 15:16:26 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:04:54 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ typedef enum e_err_codes
 int		ft_handle_error(t_data *data, int ret);
 
 /*		Handle errors : error2.c		*/
-void	ft_handle_arg_error(int argc, char **argv);
-void	ft_print_env_error(t_data *data);
 void	ft_errno(char *s, int code, t_data *data);
+void	ft_print_env_error(t_data *data);
+void	ft_handle_arg_error(int argc, char **argv);
 void	ft_print_unset_error(char *err, t_data *data);
 
 #endif

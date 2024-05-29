@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 08:31:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:05:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 ** Adds redirections to each redirections list.
 */
-int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
+static int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections,
+	int *i)
 {
 	while (*current)
 	{
@@ -48,7 +49,7 @@ int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
 ** adds redirections to each redirections list,
 ** and removes redirections from the token list.
 */
-int	ft_store_redirections(t_data *data)
+static int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
 	t_redir_lst	**redirections;
@@ -71,7 +72,7 @@ int	ft_store_redirections(t_data *data)
 /*
 ** Fills the array of arguments with tokens.
 */
-void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
+static void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 {
 	int	i;
 
@@ -92,7 +93,7 @@ void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 ** Creates the command list from tokens.
 ** Each command gets its own arguments array.
 */
-int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
+static int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 {
 	t_tok_lst	*start;
 	int			arg_count;

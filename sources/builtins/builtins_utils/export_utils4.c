@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:42:31 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/21 15:01:23 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:40:30 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ static char	*ft_strndup(char *s1, int size)
 	}
 	dst[i] = '\0';
 	return (dst);
+}
+
+/*
+**	Check if the env var name content letter/number/equal | return false if not
+*/
+bool	ft_is_valid_var_name(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c) || c == 61 || c == 95)
+		return (true);
+	return (false);
 }
 
 /*
@@ -61,7 +71,7 @@ char	*ft_data(char *s)
 	int		start;
 
 	data = NULL;
-	equal_sign = ft_strrchr(s, '=');
+	equal_sign = ft_strchr(s, '=');
 	if (equal_sign)
 	{
 		start = equal_sign - s + 1;
