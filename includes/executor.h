@@ -34,6 +34,7 @@ enum	e_pipe_end
 # define EX_USAGE	2
 # define EXIT_HD -20
 # define CTRL_D 20
+# define EMPTY 0
 
 /* executor.c */
 int		ft_executor(t_data *data);

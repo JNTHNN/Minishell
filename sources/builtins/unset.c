@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 11:32:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:46:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	ft_check_var(char *str, t_data *data)
 			ft_print_unset_error(ERR_UNSET_VAR_ID, data), false);
 	while (var[i])
 	{
-		if (!ft_is_valid_var_name(var[i])|| var[i] == '=' || !var[0])
+		if (!ft_is_valid_var_name(var[i]) || var[i] == '=' || !var[0])
 			return (free(check_var), free(var), data->err_info = str,
 				ft_print_unset_error(ERR_UNSET_VAR_ID, data), false);
 		i++;

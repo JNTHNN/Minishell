@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 08:01:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:45:04 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	ft_executor(t_data *data)
 		return (ret);
 	if (data->nb_of_cmds == 1)
 	{
+		if (data->cmd->args[0][0] == EMPTY)
+			return (EXIT_SUCCESS);
 		ret = ft_exec_simple_cmd(data);
 		if (ret)
 			return (ret);
