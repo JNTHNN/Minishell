@@ -46,13 +46,13 @@ t_exec	*ft_init_exec(t_data *data);
 /* executor_utils2.c */
 int		ft_open_redir_in(t_data *data, t_cmd *cmd);
 int		ft_open_redir_out(t_data *data, t_cmd *cmd);
+int		ft_cmd_exec(t_data *data);
 
 /* executor_utils3.c */
 int		ft_exec_cmds_loop(t_data *data, int *nb);
 char	**ft_pathiter(char **path, t_cmd *cmd);
 
 /* executor_utils4.c */
-int		ft_cmd_exec(t_data *data);
 void	ft_restore_signals(bool heredoc);
 void	ft_print_signals(int status);
 int		ft_trigger_heredoc(t_data *data);

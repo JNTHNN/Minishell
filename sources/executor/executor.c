@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 10:58:59 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 08:01:18 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,16 @@ static int	ft_exec_simple_cmd(t_data *data)
 		ft_cmd_exec(data);
 	else if (data->cmd->is_builtin)
 		ft_builtin(data, data->cmd);
-	if (dup2(data->exec->tmpin, STDIN_FILENO) == F_ERROR)
-		return (E_DUP);
-	if (dup2(data->exec->tmpout, STDOUT_FILENO) == F_ERROR)
-		return (E_DUP);
-	if (close(data->exec->tmpin) == F_ERROR
-		|| close(data->exec->tmpout) == F_ERROR)
-		return (E_CLOSE);
+	if (data->exec)
+	{
+		if (dup2(data->exec->tmpin, STDIN_FILENO) == F_ERROR)
+			return (E_DUP);
+		if (dup2(data->exec->tmpout, STDOUT_FILENO) == F_ERROR)
+			return (E_DUP);
+		if (close(data->exec->tmpin) == F_ERROR
+			|| close(data->exec->tmpout) == F_ERROR)
+			return (E_CLOSE);
+	}
 	return (EXIT_SUCCESS);
 }
 

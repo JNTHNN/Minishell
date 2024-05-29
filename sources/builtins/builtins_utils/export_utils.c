@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:26:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 18:35:33 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/28 22:10:59 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ static bool	ft_check_name_var(t_env *current, char *name)
 */
 static int	ft_modify(t_env *current, char *name, char *data)
 {
-	int	ret;
-
-	ret = 0;
 	while (current)
 	{
 		if (ft_check_name_var(current, name))
