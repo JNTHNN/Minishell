@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 10:42:56 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:26:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static bool	ft_check_var(char *str, t_data *data)
 
 	i = 0;
 	var = ft_var(str);
-	printf("VAR %s\n", var);
 	if (var[i] == '=')
 		return (free(var), ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), false);
 	if (!var || ft_isdigit(var[i]))
