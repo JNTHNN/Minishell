@@ -15,7 +15,7 @@
 /*
 ** Calculates the length of a string array.
 */
-int	ft_tablen(char **str)
+int	ft_arrlen(char **str)
 {
 	int	i;
 

@@ -64,5 +64,6 @@ void		ft_should_resplit(char *arg, t_data *data);
 int			ft_expand_redir(t_data *data);
 int			ft_expand_cmd_args(t_data *data);
 bool		ft_is_valid_variable_char(char c);
+int			ft_clean_expanded_args(t_data *data);
 
 #endif

@@ -32,7 +32,7 @@ static int	ft_init_new_args(char **old, char **temp, char ***new)
 {
 	int		size;
 
-	size = ft_tablen(temp) + ft_tablen((old));
+	size = ft_arrlen(temp) + ft_arrlen((old));
 	*new = (char **)malloc(size * sizeof(char *));
 	if (!*new)
 		return (E_MEM);
@@ -48,14 +48,14 @@ static int	ft_fill_new_args(char **old, char **temp, char ***new)
 	int		j;
 
 	i = -1;
-	while (++i < ft_tablen(temp))
+	while (++i < ft_arrlen(temp))
 	{
 		(*new)[i] = ft_strdup(temp[i]);
 		if (!(*new)[i])
 			return (free(*new), E_MEM);
 	}
 	j = 1;
-	while (i < ft_tablen(old))
+	while (i < ft_arrlen(old))
 	{
 		(*new)[i] = ft_strdup((old)[j]);
 		if (!(*new)[i])

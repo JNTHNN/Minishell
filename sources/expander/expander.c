@@ -113,8 +113,12 @@ int	ft_expand(t_data *data)
 	ret = ft_expand_cmd_args(data);
 	if (ret)
 		return (E_MEM);
+	ret = ft_clean_expanded_args(data);
+	if (ret)
+		return (E_MEM);
 	ret = ft_expand_redir(data);
 	if (ret)
 		return (E_MEM);
+	//printf("%p, %s %s\n", data->cmd->args, data->cmd->args[0], data->cmd->args[1]);
 	return (EXIT_SUCCESS);
 }

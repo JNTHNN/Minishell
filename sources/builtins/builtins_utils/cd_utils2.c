@@ -21,7 +21,7 @@ char	**ft_remove_first(char **path, t_cd *cd)
 	int		i;
 	int		j;
 
-	i = ft_tablen(path);
+	i = ft_arrlen(path);
 	new_path = (char **)malloc(i * sizeof(char *));
 	if (!new_path)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
@@ -46,7 +46,7 @@ char	**ft_append_pwd(int last, t_cd *cd)
 
 	i = 0;
 	append_pwd = (char **)malloc(sizeof(char *)
-			* (ft_tablen(cd->temp_pwd) + 2));
+			* (ft_arrlen(cd->temp_pwd) + 2));
 	if (!append_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (cd->temp_pwd && cd->temp_pwd[i])
@@ -93,8 +93,8 @@ char	**ft_sup_pwd(t_cd *cd)
 	int		i;
 
 	i = 0;
-	len = ft_tablen(cd->temp_pwd);
-	new_pwd = (char **)malloc(sizeof(char *) * (ft_tablen(cd->temp_pwd)));
+	len = ft_arrlen(cd->temp_pwd);
+	new_pwd = (char **)malloc(sizeof(char *) * (ft_arrlen(cd->temp_pwd)));
 	if (!new_pwd)
 		ft_errno(ERR_MEM, EX_MISCERROR, cd->data);
 	while (i < len - 1)
@@ -118,7 +118,7 @@ char	*ft_pwdcat(char **pwd, t_cd *cd)
 	int		i;
 	int		size;
 
-	size = ft_tablen(pwd);
+	size = ft_arrlen(pwd);
 	temp = NULL;
 	i = 0;
 	if (!pwd)

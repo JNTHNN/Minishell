@@ -110,3 +110,54 @@ bool	ft_is_valid_variable_char(char c)
 		return (true);
 	return (false);
 }
+
+/*
+** Removes empty arguments of command arguments array
+** execpt if there is more than one and replace the array.
+*/
+int	ft_clean_expanded_args(t_data *data)
+{
+	t_cmd	*current;
+	int		i;
+	int		j;
+	int		arr_len;
+	char	**new_arr;
+
+	current = data->cmd;
+	while (current)
+	{
+		if (current->args && ft_arrlen(current->args) == 1)
+			return (EXIT_SUCCESS);
+		i = 0;
+		arr_len = 0;
+		while (current->args[i])
+		{
+			if (current->args[i][0] != '\0')
+				arr_len++;
+			i++;
+		}
+		printf("%i\n", arr_len);
+		new_arr = (char **)malloc((arr_len + 1) * sizeof(char *));
+		if (!new_arr)
+			return (E_MEM);
+		i = 0;
+		j = 0;
+		while (i < ft_arrlen(current->args))
+		{
+			if (current->args[i][0] != '\0')
+			{
+				new_arr[j] = ft_strdup(current->args[i]);
+				printf("%s\n", new_arr[j]);
+				j++;
+			}
+			i++;
+		}
+		new_arr[i] = NULL;
+		// for (int i = 0 ; new_arr[i] ; i++)
+		// 	printf("%s\n", new_arr[i]);
+		ft_free_array(current->args);
+		current->args = new_arr;
+		current = current->right;
+	}
+	return (EXIT_SUCCESS);
+}

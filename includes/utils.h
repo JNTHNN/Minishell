@@ -19,7 +19,7 @@ char	**ft_create_env(char **arr);
 char	**ft_envcpy(char **arr);
 
 /*	utils2.c	*/
-int		ft_tablen(char **str);
+int		ft_arrlen(char **str);
 char	**ft_add_to_env(char **env, char *new_var);
 char	*ft_getenv(t_data *data, char *search);
 
