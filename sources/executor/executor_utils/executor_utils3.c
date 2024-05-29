@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/23 16:56:56 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 08:24:24 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,6 @@ static void	ft_reset_fdio(t_data *data, t_cmd *cmd)
 		g_exit_code = EXIT_SUCCESS;
 	data->exec->fdin = -1;
 	data->exec->fdout = -1;
-}
-
-int	ft_check_heredoc(t_data *data)
-{
-	int	ret;
-
-	ret = 0;
-	if (data->exec->trigger_hd == false)
-	{
-		ret = ft_trigger_heredoc(data);
-		if (ret)
-			return (ret);
-	}
-	return (EXIT_SUCCESS);
 }
 
 int	ft_exec_cmds_loop(t_data *data, int *nb)

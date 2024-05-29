@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/13 17:04:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 08:31:17 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 	int			cmd_id;
 
 	cmd_id = 0;
+	*args = NULL;
 	while (*current)
 	{
 		start = *current;
@@ -95,8 +96,6 @@ int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 				return (E_MEM);
 			ft_fill_cmd_args(arg_count, &(*args), &start);
 		}
-		else
-			*args = NULL;
 		cmd_id++;
 		if (ft_add_cmd_node(&(*args), data, cmd_id))
 			return (E_MEM);

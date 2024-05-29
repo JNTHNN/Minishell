@@ -55,7 +55,6 @@ char	**ft_pathiter(char **path, t_cmd *cmd);
 /* executor_utils4.c */
 void	ft_restore_signals(bool heredoc);
 void	ft_print_signals(int status);
-int		ft_trigger_heredoc(t_data *data);
 
 /* executor_utils5.c */
 void	ft_init_pipes(t_data *data, t_exec *exec);

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:00:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/28 17:14:41 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 08:28:50 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,19 @@ int	ft_trigger_heredoc(t_data *data)
 			return (ret);
 	}
 	data->exec->trigger_hd = true;
+	return (EXIT_SUCCESS);
+}
+
+int	ft_check_heredoc(t_data *data)
+{
+	int	ret;
+
+	ret = 0;
+	if (data->exec->trigger_hd == false)
+	{
+		ret = ft_trigger_heredoc(data);
+		if (ret)
+			return (ret);
+	}
 	return (EXIT_SUCCESS);
 }
