@@ -12,17 +12,26 @@
 
 #include "minishell.h"
 
+/*
+** Checks characters of the variable name are valid or not 
+*/
 bool	ft_is_valid_var_char(char c)
 {
 	return (c == '?' || c == '_' || ft_isalnum(c));
 }
 
+/*
+** Wins some lines of code by incrementing both values in the same time.
+*/
 void	ft_increment(int *idx, int *len)
 {
 	(*idx)++;
 	(*len)++;
 }
 
+/*
+** Gets the legnth of the environment variable before expansion.
+*/
 void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 {
 	char	*var_name;
@@ -51,8 +60,12 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 		ft_increment(i, len);
 }
 
+/*
+** Finds the value of the environment variable,
+** copies it in the new expqnded string. 
+*/
 void	ft_create_var_val(t_data *data, char **str, char **cursor,
-		size_t space_left)
+			size_t space_left)
 {
 	char	*var_name;
 	char	*var_value;
@@ -81,6 +94,9 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 	free(var_name);
 }
 
+/*
+** Skips quotes in calculation if necessary and copy characters.
+*/
 void	ft_process_character(char **old, char **cursor, bool state[2])
 {
 	if (**old == SGL_Q && !state[IN_DBL_Q])

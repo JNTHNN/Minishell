@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Returns the size of the cmd list.
+*/
 int	ft_cmd_lstsize(t_cmd *lst)
 {
 	int	size;
@@ -28,6 +31,9 @@ int	ft_cmd_lstsize(t_cmd *lst)
 	return (size);
 }
 
+/*
+** Returns the last node in the cmd list.
+*/
 t_cmd	*ft_cmd_lstlast(t_cmd *lst)
 {
 	if (!lst)
@@ -37,6 +43,9 @@ t_cmd	*ft_cmd_lstlast(t_cmd *lst)
 	return (lst);
 }
 
+/*
+** Adds a new cmd node to the end of the cmd list.
+*/
 void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 {
 	t_cmd	*last;
@@ -56,6 +65,9 @@ void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 	}
 }
 
+/*
+** Creates a new cmd node with the given args, id, and attributes.
+*/
 t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 {
 	t_cmd	*new_node;
@@ -83,6 +95,9 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 	return (new_node);
 }
 
+/*
+** Adds a new cmd node to the cmd list.
+*/
 int	ft_add_cmd_node(char ***args, t_data *data, int id)
 {
 	t_cmd	*node;

@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Creates a new expanded filename and replaces the old one.
+*/
 static int	ft_expand_filename(t_redir_lst *node, t_data *data)
 {
 	char	*str;
@@ -39,6 +42,9 @@ static int	ft_expand_filename(t_redir_lst *node, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Handles expansion for all redirection (filename).
+*/
 int	ft_expand_redir(t_data *data)
 {
 	int			i;
@@ -63,6 +69,9 @@ int	ft_expand_redir(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Handles expansion for each string in the argument array of the command.
+*/
 int	ft_expand_cmd_args(t_data *data)
 {
 	t_cmd	*current;
@@ -92,6 +101,9 @@ int	ft_expand_cmd_args(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Checks if the char is valid for the environment variable name.
+*/
 bool	ft_is_valid_variable_char(char c)
 {
 	if (ft_isalnum(c) || c == UNDERSCORE)

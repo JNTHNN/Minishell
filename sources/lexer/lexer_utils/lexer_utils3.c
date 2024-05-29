@@ -14,7 +14,7 @@
 
 /*
 ** Handles quoted words in the string,
-advancing the pointer past the quoted section.
+** advancing the pointer past the quoted section.
 */
 void	ft_handle_quoted_word(char **str, char *quote_c)
 {
@@ -33,7 +33,7 @@ void	ft_handle_quoted_word(char **str, char *quote_c)
 
 /*
 ** Checks for improper pipe usage, such as pipes
-at the start, end, or consecutive pipes.
+** at the start, end, or consecutive pipes.
 */
 bool	ft_check_pipes(t_tok_lst *lst)
 {

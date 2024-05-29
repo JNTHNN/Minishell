@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Adds redirections to each redirections list.
+*/
 int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
 {
 	while (*current)
@@ -40,6 +43,11 @@ int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Initializes the array of "redirections" list,
+** adds redirections to each redirections list,
+** and removes redirections from the token list.
+*/
 int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
@@ -60,6 +68,9 @@ int	ft_store_redirections(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Fills the array of arguments with tokens.
+*/
 void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 {
 	int	i;
@@ -77,6 +88,10 @@ void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 	(*args)[count] = NULL;
 }
 
+/*
+** Creates the command list from tokens.
+** Each command gets its own arguments array.
+*/
 int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 {
 	t_tok_lst	*start;
@@ -106,6 +121,11 @@ int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Parses the tokens list, check syntax errors 
+** and creates the redirection list and the command list.
+** Creates the path for the heredoc.
+*/
 int	ft_parse(t_data *data)
 {
 	t_tok_lst	*current;

@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Initilizes the array of pipes
+*/
 void	ft_init_pipes(t_data *data, t_exec *exec)
 {
 	int	nb_of_pipes;
@@ -32,6 +35,9 @@ void	ft_init_pipes(t_data *data, t_exec *exec)
 	}
 }
 
+/*
+** Closes all unnecessary pipes in the current child process.
+*/
 int	ft_close_pipes(t_data *data, t_exec *exec, int skip)
 {
 	int	i;
@@ -59,6 +65,9 @@ int	ft_close_pipes(t_data *data, t_exec *exec, int skip)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Closes all pipes in the parent process.
+*/
 int	ft_close_pipes_in_parent(t_data *data)
 {
 	int	i;
@@ -73,6 +82,9 @@ int	ft_close_pipes_in_parent(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Resets standard input and output to default values at the end of execution.
+*/
 int	ft_reset_stdio(t_data *data)
 {
 	if (dup2(data->exec->tmpin, STDIN_FILENO) == F_ERROR
@@ -84,6 +96,9 @@ int	ft_reset_stdio(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Splits each path from the environment variable PATH.
+*/
 char	**ft_path_abs(t_data *data, t_cmd *cmd)
 {
 	char	*path;

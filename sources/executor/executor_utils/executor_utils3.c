@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Handles the pipe logic between all commands.
+*/
 static int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
 {
 	if (cmd->left && data->exec->fdin == NOT_INIT)
@@ -40,6 +43,9 @@ static int	ft_handle_pipes(t_data *data, t_cmd *cmd, int *nb)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Handles the child process to execute each command in multiple commands loop.
+*/
 static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 {
 	int	ret;
@@ -60,6 +66,9 @@ static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 	return (exit(EXIT_SUCCESS), EXIT_SUCCESS);
 }
 
+/*
+** Resets the exec fdin and fdout for the next command.
+*/
 static void	ft_reset_fdio(t_data *data, t_cmd *cmd)
 {
 	if (cmd->right)
@@ -68,6 +77,9 @@ static void	ft_reset_fdio(t_data *data, t_cmd *cmd)
 	data->exec->fdout = -1;
 }
 
+/*
+** Handles the logic for multiple commands.
+*/
 int	ft_exec_cmds_loop(t_data *data, int *nb)
 {
 	t_cmd	*current_cmd;
@@ -96,6 +108,9 @@ int	ft_exec_cmds_loop(t_data *data, int *nb)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Creates path to the command binary file for each env path.
+*/
 char	**ft_pathiter(char **path, t_cmd *cmd)
 {
 	char	*new_cmd;

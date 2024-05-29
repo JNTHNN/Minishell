@@ -18,8 +18,8 @@
 int	g_exit_code = 0;
 
 /*
-** Increment the SHLVL environment variable by 1 
-each time a minishell is launched.
+** Increments the SHLVL environment variable by 1 
+** each time a minishell is launched.
 */
 static void	ft_increment_shlvl(char **env)
 {
@@ -47,7 +47,7 @@ static void	ft_increment_shlvl(char **env)
 }
 
 /*
-** Initialize the data structure with all useful variables ans structures.
+** Initializes the data structure with all useful variables ans structures.
 */
 static void	ft_init_data(t_data *data, char **envp)
 {
@@ -72,7 +72,7 @@ static void	ft_init_data(t_data *data, char **envp)
 }
 
 /*
-** Read input from the user and handle end-of-file conditions.
+** Reads input from the user and handles end-of-file conditions.
 */
 static int	ft_get_input(t_data *data)
 {

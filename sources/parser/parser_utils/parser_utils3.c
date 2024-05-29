@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Counts how many pipes are present in the token list.
+*/
 int	ft_count_pipes(t_tok_lst *lst)
 {
 	int	i;
@@ -26,6 +29,12 @@ int	ft_count_pipes(t_tok_lst *lst)
 	return (i);
 }
 
+/*
+** Frees and sets the token value to NULL
+** for the current and next nodes in a token list.
+** It "nullifies" redirection token nodes to avoid them to be considered
+** as command arguments.
+*/
 void	ft_nullify_tok_nodes(t_tok_lst *node)
 {
 	t_tok_lst	*next;
@@ -43,6 +52,9 @@ void	ft_nullify_tok_nodes(t_tok_lst *node)
 	}
 }
 
+/*
+** Checks if token is an redirection operator and launch the nullification.
+*/
 void	ft_remove_redir(t_tok_lst *lst)
 {
 	t_tok_lst	*current;
@@ -61,6 +73,9 @@ void	ft_remove_redir(t_tok_lst *lst)
 	}
 }
 
+/*
+** Initializes an array of redirections (lined lists) and set each to NULL.
+*/
 int	ft_init_redir(t_redir_lst ***redirections, t_data **data, int *cmd_nb)
 {
 	int	i;
@@ -76,6 +91,10 @@ int	ft_init_redir(t_redir_lst ***redirections, t_data **data, int *cmd_nb)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Counts the number of tokens between the current node and the next pipe
+** or the end of the list.
+*/
 int	ft_count_cmd_args(t_tok_lst **current)
 {
 	int	arg_count;

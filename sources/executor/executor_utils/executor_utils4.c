@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Restores signals to default behavior to enable them in the child process.
+*/
 void	ft_restore_signals(bool heredoc)
 {
 	struct termios	term;
@@ -23,6 +26,9 @@ void	ft_restore_signals(bool heredoc)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
+/*
+** Prints "^C" and ^\Quit if needed when a process is aborted.
+*/
 void	ft_print_signals(int status)
 {
 	if (status == SIGQUIT)

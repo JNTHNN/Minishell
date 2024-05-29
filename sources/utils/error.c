@@ -13,8 +13,8 @@
 #include "minishell.h"
 
 /*
-** Print an error message for redirection errors 
-based on the error code.
+** Prints an error message for redirection errors 
+** based on the error code.
 */
 static void	ft_print_redir_error(int err_code)
 {
@@ -35,8 +35,8 @@ static void	ft_print_redir_error(int err_code)
 }
 
 /*
-** Print an error message for execution errors 
-based on the error code.
+** Prints an error message for execution errors 
+** based on the error code.
 */
 static void	ft_print_exec_error(int err_code, t_data *data)
 {
@@ -68,7 +68,7 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 }
 
 /*
-** Print a general error message based on the error code.
+** Prints a general error message based on the error code.
 */
 static void	ft_print_error(int err_code, t_data *data)
 {
@@ -99,8 +99,8 @@ static void	ft_print_error(int err_code, t_data *data)
 }
 
 /*
-** Print and handle an error based on the error code,
-then free resources.
+** Prints and handles an error based on the error code,
+** then frees resources.
 */
 static void	ft_throw_error(t_data *data, int err_code)
 {
@@ -109,8 +109,8 @@ static void	ft_throw_error(t_data *data, int err_code)
 }
 
 /*
-** Handle errors by printing and managing resources,
-returning status.
+** Handles errors by printing and managing resources,
+** returning status.
 */
 int	ft_handle_error(t_data *data, int ret)
 {

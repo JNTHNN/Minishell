@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Returns the size of the redir list.
+*/
 int	ft_redir_lstsize(t_redir_lst *lst)
 {
 	int	size;
@@ -28,6 +31,9 @@ int	ft_redir_lstsize(t_redir_lst *lst)
 	return (size);
 }
 
+/*
+** Returns the last node in the redir list.
+*/
 t_redir_lst	*ft_redir_lstlast(t_redir_lst *lst)
 {
 	if (!lst)
@@ -37,6 +43,9 @@ t_redir_lst	*ft_redir_lstlast(t_redir_lst *lst)
 	return (lst);
 }
 
+/*
+** Adds a new redir node to the end of the redir list.
+*/
 void	ft_redir_lstadd_back(t_redir_lst **lst, t_redir_lst *new)
 {
 	t_redir_lst	*last;
@@ -56,6 +65,9 @@ void	ft_redir_lstadd_back(t_redir_lst **lst, t_redir_lst *new)
 	}
 }
 
+/*
+** Creates a new redir node with all its attributes.
+*/
 t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 {
 	t_redir_lst	*new_node;
@@ -73,6 +85,9 @@ t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 	return (new_node);
 }
 
+/*
+** Adds a new redir node to the redir list.
+*/
 int	ft_add_redir_node(t_redir_lst **lst, t_tok_lst *token, int cmd_nb)
 {
 	t_redir_lst	*node;

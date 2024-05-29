@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Creates the new heredoc line with expanded variables.
+*/
 void	ft_create_new_line(char *old, char *new, t_data *data, size_t buffsize)
 {
 	char			*cursor;
@@ -37,6 +40,10 @@ void	ft_create_new_line(char *old, char *new, t_data *data, size_t buffsize)
 	*cursor = '\0';
 }
 
+/*
+** Calculates the new line size by taking in account
+** the environment variable expansion.
+*/
 int	ft_calc_line_new_len(char *str, t_data *data)
 {
 	int		i;

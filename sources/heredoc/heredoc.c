@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** If heredoc delimiter isn't surrounded by quotes, this function handles
+** environment variables expansion in the heredoc. 
+*/
 static int	ft_handle_hd_expansion(char **line, t_data *data)
 {
 	int		new_length;
@@ -35,6 +39,9 @@ static int	ft_handle_hd_expansion(char **line, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Opens the heredoc temp file and write the readline line inside for each input.
+*/
 static int	ft_heredoc_process(t_redir_lst *node, t_data *data)
 {
 	char	*line;
@@ -48,7 +55,7 @@ static int	ft_heredoc_process(t_redir_lst *node, t_data *data)
 	{
 		line = readline("> ");
 		if (!line)
-			exit(20);
+			exit(CTRL_D);
 		if (!node->quoted)
 			ft_handle_hd_expansion(&line, data);
 		if ((line && line[0])
@@ -62,6 +69,9 @@ static int	ft_heredoc_process(t_redir_lst *node, t_data *data)
 	exit(EXIT_SUCCESS);
 }
 
+/*
+** Creates a child process to handle each heredoc.
+*/
 static int	ft_handle_heredoc(t_redir_lst *node, t_data *data)
 {
 	pid_t	pid;
@@ -86,6 +96,9 @@ static int	ft_handle_heredoc(t_redir_lst *node, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Triggers the heredoc logic to handle all heredoc in the input.
+*/
 int	ft_trigger_heredoc(t_data *data)
 {
 	int			i;
@@ -114,6 +127,11 @@ int	ft_trigger_heredoc(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Checks if the ft_trigger_heredoc has already been triggered or not.
+** Useful when there are more than one command; heredoc logic should only be
+** triggered once.
+*/
 int	ft_check_heredoc(t_data *data)
 {
 	int	ret;

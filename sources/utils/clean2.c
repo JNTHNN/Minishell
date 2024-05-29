@@ -13,8 +13,8 @@
 #include "minishell.h"
 
 /*
-** Free memory allocated for the pipes array 
-and close the pipe file descriptors.
+** Frees memory allocated for the pipes array 
+** and closes the pipe file descriptors.
 */
 void	ft_free_pipes(t_data *data, t_exec *exec)
 {
@@ -36,8 +36,8 @@ void	ft_free_pipes(t_data *data, t_exec *exec)
 }
 
 /*
-** Free memory allocated for the exec structure 
-and close related file descriptors.
+** Frees memory allocated for the exec structure 
+** and closes related file descriptors.
 */
 void	ft_free_exec(t_data *data)
 {
@@ -64,8 +64,8 @@ void	ft_free_exec(t_data *data)
 }
 
 /*
-** Free memory allocated in case of error
-during the program execution.
+** Frees memory allocated in case of error
+** during the program execution.
 */
 void	ft_free_if_error(t_data *data)
 {
@@ -91,7 +91,7 @@ void	ft_free_if_error(t_data *data)
 }
 
 /*
-** Reset the data structure for the next command execution.
+** Resets the data structure for the next command execution.
 */
 void	ft_reset_data(t_data *data)
 {

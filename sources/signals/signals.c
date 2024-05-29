@@ -13,8 +13,8 @@
 #include "minishell.h"
 
 /*
-** Handle SIGINT signal and set a custom behavior,
-refresh readline line and redisplay empty prompt for CTRL-C input.
+** Handles SIGINT signal and sets a custom behavior,
+** refreshs readline line and redisplays empty prompt for CTRL-C input.
 */
 void	ft_sigint(int sig)
 {
@@ -26,7 +26,7 @@ void	ft_sigint(int sig)
 }
 
 /*
-** Set signal handlers for SIGINT and SIGQUIT.
+** Sets signal handlers for SIGINT and SIGQUIT.
 */
 void	ft_signal(void *type, bool heredoc)
 {
@@ -39,7 +39,7 @@ void	ft_signal(void *type, bool heredoc)
 }
 
 /*
-** Handle Ctrl-D input to exit the shell gracefully.
+** Handles Ctrl-D input to exit the shell gracefully.
 */
 void	ft_get_ctrl_d(t_data *data)
 {
@@ -53,7 +53,7 @@ void	ft_get_ctrl_d(t_data *data)
 }
 
 /*
-** Initialize signal handling and modify terminal settings.
+** Initializes signal handling and modifies terminal settings.
 */
 int	ft_init_signal(void)
 {

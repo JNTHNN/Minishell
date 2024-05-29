@@ -12,6 +12,9 @@
 
 #include "../includes/minishell.h"
 
+/*
+** Checks if character is a space or not.
+*/
 static bool	ft_check_space(char *arg)
 {
 	while (*arg && *arg != W_SPACE)
@@ -21,6 +24,10 @@ static bool	ft_check_space(char *arg)
 	return (true);
 }
 
+/*
+** Allocates space for the new argument array
+** if the first argument needs to be resplit.
+*/
 static int	ft_init_new_args(char **old, char **temp, char ***new)
 {
 	int		size;
@@ -32,6 +39,9 @@ static int	ft_init_new_args(char **old, char **temp, char ***new)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Fills the new argument array with resplited elements.
+*/
 static int	ft_fill_new_args(char **old, char **temp, char ***new)
 {
 	int		i;
@@ -57,6 +67,9 @@ static int	ft_fill_new_args(char **old, char **temp, char ***new)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Resplits first argument if needed.
+*/
 int	ft_resplit_first_arg(char ***args)
 {
 	char	**temp_args;
@@ -75,6 +88,9 @@ int	ft_resplit_first_arg(char ***args)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Checks if the first argument of the array should be resplited.
+*/
 void	ft_should_resplit(char *arg, t_data *data)
 {
 	if (!arg || ft_count_all_quotes(arg))

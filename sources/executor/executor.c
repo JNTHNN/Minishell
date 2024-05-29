@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Launches the required functions for the execution initialization.
+*/
 static int	ft_prepare_execution(t_data *data)
 {
 	t_exec		*exec;
@@ -27,6 +30,9 @@ static int	ft_prepare_execution(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Handles a single command (or builtin) execution.
+*/
 static int	ft_exec_simple_cmd(t_data *data)
 {
 	int	ret;
@@ -56,6 +62,9 @@ static int	ft_exec_simple_cmd(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Wait all child processes in the multiple command execution.
+*/
 static void	ft_wait_children(t_data *data, int *children_nb)
 {
 	bool	first_child;
@@ -77,6 +86,9 @@ static void	ft_wait_children(t_data *data, int *children_nb)
 	}
 }
 
+/*
+** Handles the logic for multiple commands.
+*/
 static int	ft_exec_multiple_cmds(t_data *data, int *cmd_nb)
 {
 	int	ret;
@@ -93,6 +105,9 @@ static int	ft_exec_multiple_cmds(t_data *data, int *cmd_nb)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Execution entry point of minishell.
+*/
 int	ft_executor(t_data *data)
 {
 	int			i;

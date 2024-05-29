@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-** Free memory allocated for the redirections linked list.
+** Frees memory allocated for the redirections linked list.
 */
 static void	ft_free_redirections(t_redir_lst **lst)
 {
@@ -33,7 +33,7 @@ static void	ft_free_redirections(t_redir_lst **lst)
 }
 
 /*
-** Free memory allocated for the local history (with !! command).
+** Frees memory allocated for the local history (with !! command).
 */
 static void	ft_free_hist(t_hist *hist)
 {
@@ -52,7 +52,7 @@ static void	ft_free_hist(t_hist *hist)
 }
 
 /*
-** Free memory allocated for the tokens linked list used in the lexer.
+** Frees memory allocated for the tokens linked list used in the lexer.
 */
 void	ft_free_tokens(t_tok_lst **tokens)
 {
@@ -75,7 +75,7 @@ void	ft_free_tokens(t_tok_lst **tokens)
 }
 
 /*
-** Free memory allocated for the commands linked list.
+** Frees memory allocated for the commands linked list.
 */
 void	ft_free_cmds(t_cmd **cmd)
 {
@@ -95,7 +95,7 @@ void	ft_free_cmds(t_cmd **cmd)
 }
 
 /*
-** Free all memory allocated in the data structure.
+** Frees all memory allocated in the data structure.
 */
 void	ft_free_data(t_data *data)
 {

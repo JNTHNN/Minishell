@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Loops through all IN redirections and opens fd's needed.
+*/
 static int	ft_open_in_loop(t_data *data, t_exec *exec, t_redir_lst	*current)
 {
 	while (current)
@@ -40,6 +43,9 @@ static int	ft_open_in_loop(t_data *data, t_exec *exec, t_redir_lst	*current)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Loops through all OUT redirections and opens fd's needed.
+*/
 static int	ft_open_out_loop(t_data *data, t_exec *exec, t_redir_lst *current)
 {
 	while (current)
@@ -66,6 +72,9 @@ static int	ft_open_out_loop(t_data *data, t_exec *exec, t_redir_lst *current)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Handles the logic for the opening of all IN redirection.
+*/
 int	ft_open_redir_in(t_data *data, t_cmd *cmd)
 {
 	t_redir_lst	*current;
@@ -86,6 +95,9 @@ int	ft_open_redir_in(t_data *data, t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Handles the logic for the opening of all OUT redirection.
+*/
 int	ft_open_redir_out(t_data *data, t_cmd *cmd)
 {
 	t_redir_lst	*current;
@@ -106,6 +118,9 @@ int	ft_open_redir_out(t_data *data, t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Creates the child process for a lonely command. 
+*/
 int	ft_cmd_exec(t_data *data)
 {
 	pid_t	pid;

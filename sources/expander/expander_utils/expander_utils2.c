@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Checks if the env array contains the the provided environment variable.
+*/
 char	*ft_get_env_value(char **env, char *var_name)
 {
 	int		i;
@@ -33,6 +36,9 @@ char	*ft_get_env_value(char **env, char *var_name)
 	return (var_value);
 }
 
+/*
+** Gets the environment variable name from the token (input).
+*/
 char	*ft_get_var_name(char *str)
 {
 	char	*start;
@@ -47,6 +53,9 @@ char	*ft_get_var_name(char *str)
 	return (ft_substr(start, 0, str - start));
 }
 
+/*
+** Adjusts expanded variable length according to remaining quotes.
+*/
 void	ft_adjust_length_for_quotes(char *str, int *length)
 {
 	bool	in_dbl_q;
@@ -68,6 +77,9 @@ void	ft_adjust_length_for_quotes(char *str, int *length)
 	}
 }
 
+/*
+** Checks if environment variable should be expanded or not.
+*/
 bool	ft_should_expand_var(char *str, char *chr)
 {
 	bool	in_dbl_q;

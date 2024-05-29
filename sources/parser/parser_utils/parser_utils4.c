@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Creates the path of the temporary file for each heredoc.
+*/
 static int	ft_hd_path(t_redir_lst *current, int *j)
 {
 	char	*nb;
@@ -24,6 +27,9 @@ static int	ft_hd_path(t_redir_lst *current, int *j)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Creates the path the temporary file for each heredoc.
+*/
 int	ft_build_hd_path(t_data *data)
 {
 	int			i;
@@ -51,6 +57,9 @@ int	ft_build_hd_path(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Adds an id at each redir node.
+*/
 void	ft_add_redir_node_id(t_redir_lst **redirections)
 {
 	int			i;

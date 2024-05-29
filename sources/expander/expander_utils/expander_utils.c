@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Counts the number of single quotes in the input.
+*/
 int	ft_count_sgl_quotes(char *str)
 {
 	int	i;
@@ -28,6 +31,9 @@ int	ft_count_sgl_quotes(char *str)
 	return (i);
 }
 
+/*
+** Counts the number of double quotes in the input.
+*/
 int	ft_count_dbl_quotes(char *str)
 {
 	int	i;
@@ -44,6 +50,9 @@ int	ft_count_dbl_quotes(char *str)
 	return (i);
 }
 
+/*
+** Counts the number of dollar sign in the input.
+*/
 int	ft_count_dollars(char *str)
 {
 	int	i;
@@ -60,6 +69,9 @@ int	ft_count_dollars(char *str)
 	return (i);
 }
 
+/*
+** Counts the number of all quotes (simple and double) in the input.
+*/
 int	ft_count_all_quotes(char *str)
 {
 	if (!str)
@@ -67,6 +79,9 @@ int	ft_count_all_quotes(char *str)
 	return (ft_count_dbl_quotes(str) + ft_count_sgl_quotes(str));
 }
 
+/*
+** Checks if the environment variable character is valid or not.
+*/
 bool	ft_is_not_valid_variable_char(char c)
 {
 	if (c == '\0' || ft_is_space(c) || ft_is_quote(c)

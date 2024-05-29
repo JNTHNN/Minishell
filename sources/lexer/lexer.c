@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-** Store an operator token from the input string into the token list.
+** Stores an operator token from the input string into the token list.
 */
 static int	ft_store_operator(t_data *data, char *str, int *token_nb)
 {
@@ -36,7 +36,7 @@ static int	ft_store_operator(t_data *data, char *str, int *token_nb)
 }
 
 /*
-** Store a word token from the input string into the token list.
+** Stores a word token from the input string into the token list.
 */
 static int	ft_store_word(t_data *data, char *str, int *token_nb)
 {
@@ -62,7 +62,7 @@ static int	ft_store_word(t_data *data, char *str, int *token_nb)
 }
 
 /*
-** Extract tokens from the input string and store them in the token list.
+** Extracts tokens from the input string and stores them in the token list.
 */
 static int	ft_get_tokens(t_data *data)
 {
@@ -94,7 +94,7 @@ static int	ft_get_tokens(t_data *data)
 }
 
 /*
-** Check if the input string has balanced quotes.
+** Checks if the input string has balanced quotes.
 */
 int	ft_check_quotes(char *input)
 {
@@ -123,7 +123,7 @@ int	ft_check_quotes(char *input)
 }
 
 /*
-** Tokenize the input string and check for syntax errors.
+** Tokenizes the input string and checks for syntax errors.
 */
 int	ft_tokenize(t_data *data)
 {
