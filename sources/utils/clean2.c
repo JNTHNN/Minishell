@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:29:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/15 14:59:13 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:03:56 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Free memory allocated for the pipes array 
 and close the pipe file descriptors.
 */
-void	ft_free_pipes(t_data *data, t_exec *exec)
+static void	ft_free_pipes(t_data *data, t_exec *exec)
 {
 	int	i;
 

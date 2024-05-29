@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 10:29:00 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/29 15:16:01 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:18:51 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_redir_lstsize(t_redir_lst *lst)
+static int	ft_redir_lstsize(t_redir_lst *lst)
 {
 	int	size;
 
@@ -28,7 +28,7 @@ int	ft_redir_lstsize(t_redir_lst *lst)
 	return (size);
 }
 
-t_redir_lst	*ft_redir_lstlast(t_redir_lst *lst)
+static t_redir_lst	*ft_redir_lstlast(t_redir_lst *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -37,7 +37,7 @@ t_redir_lst	*ft_redir_lstlast(t_redir_lst *lst)
 	return (lst);
 }
 
-void	ft_redir_lstadd_back(t_redir_lst **lst, t_redir_lst *new)
+static void	ft_redir_lstadd_back(t_redir_lst **lst, t_redir_lst *new)
 {
 	t_redir_lst	*last;
 
@@ -56,7 +56,7 @@ void	ft_redir_lstadd_back(t_redir_lst **lst, t_redir_lst *new)
 	}
 }
 
-t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
+static t_redir_lst	*ft_create_new_redir(t_tok_lst token, int cmd_nb)
 {
 	t_redir_lst	*new_node;
 

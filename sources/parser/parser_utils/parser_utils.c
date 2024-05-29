@@ -6,13 +6,13 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/17 21:05:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:17:45 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cmd_lstsize(t_cmd *lst)
+static int	ft_cmd_lstsize(t_cmd *lst)
 {
 	int	size;
 
@@ -28,16 +28,7 @@ int	ft_cmd_lstsize(t_cmd *lst)
 	return (size);
 }
 
-t_cmd	*ft_cmd_lstlast(t_cmd *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->right != NULL)
-		lst = lst->right;
-	return (lst);
-}
-
-void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
+static void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 {
 	t_cmd	*last;
 
@@ -54,6 +45,15 @@ void	ft_cmd_lstadd_back(t_cmd **lst, t_cmd *new)
 		*lst = new;
 		new->right = NULL;
 	}
+}
+
+t_cmd	*ft_cmd_lstlast(t_cmd *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->right != NULL)
+		lst = lst->right;
+	return (lst);
 }
 
 t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)

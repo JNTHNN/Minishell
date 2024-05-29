@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 10:27:13 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:00:31 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	ft_print_err_exit(char *arg);
 /*	manipulate var from env : export_utils.c */
 void	ft_modify_or_add_env(t_env **head, char *var, t_data *system);
 
-/* prints for export : export_utils2.c  */
-void	ft_print_env(t_env *head);
+/* prints + utils for export : export_utils2.c  */
 void	ft_reset_env_var(char *name, char *data);
+void	ft_print_env(t_env *head);
 
 /* update_env for export : export_utils3.c    */
 void	ft_update_env(t_env *head, t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:53:19 by anvoets           #+#    #+#             */
-/*   Updated: 2024/05/28 17:09:45 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:15:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,5 @@
 # define PROMPT "\033[0;33mminibash1.0$ \033[0m"
 
 extern int	g_exit_code;
-
-void	ft_show_env(char **env);
-int		ft_input(char *in);
 
 #endif

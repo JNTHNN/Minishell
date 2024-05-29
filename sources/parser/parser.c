@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 08:31:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:24:44 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
+static int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections,
+	int *i)
 {
 	while (*current)
 	{
@@ -40,7 +41,7 @@ int	ft_redir_loop(t_tok_lst **current, t_redir_lst ***redirections, int *i)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_store_redirections(t_data *data)
+static int	ft_store_redirections(t_data *data)
 {
 	t_tok_lst	*current;
 	t_redir_lst	**redirections;
@@ -60,7 +61,7 @@ int	ft_store_redirections(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
+static void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 {
 	int	i;
 
@@ -77,7 +78,7 @@ void	ft_fill_cmd_args(int count, char ***args, t_tok_lst **start)
 	(*args)[count] = NULL;
 }
 
-int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
+static int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 {
 	t_tok_lst	*start;
 	int			arg_count;
