@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 09:11:08 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 18:43:18 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:45:37 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ bool	ft_is_valid_variable_char(char c)
 
 /*
 ** Removes empty arguments of command arguments array
-** execpt if there is more than one and replace the array.
+** execpt if there is more than one and replaces the array.
 */
 int	ft_clean_expanded_args(t_data *data)
 {
