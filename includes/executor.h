@@ -32,9 +32,9 @@ enum	e_pipe_end
 # define EX_NOTFOUND 127
 # define EX_BADSYNTAX 257
 # define EX_USAGE	2
-# define EXIT_HD -20
-# define CTRL_D 20
 # define EMPTY 0
+# define EXEC 1
+# define HEREDOC 2
 
 /* executor.c */
 int		ft_executor(t_data *data);
@@ -55,7 +55,7 @@ char	**ft_pathiter(char **path, t_cmd *cmd);
 
 /* executor_utils4.c */
 void	ft_restore_signals(bool heredoc);
-void	ft_print_signals(int status);
+void	ft_print_signals(int status, int flag);
 
 /* executor_utils5.c */
 void	ft_init_pipes(t_data *data, t_exec *exec);

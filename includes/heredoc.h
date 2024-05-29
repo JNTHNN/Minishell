@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:07:09 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 08:35:03 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:18:47 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEREDOC_H
 # define HEREDOC_H
+
+# define EXIT_HD -20
+# define CTRL_D 20
 
 /* heredoc.c */
 int		ft_trigger_heredoc(t_data *data);
