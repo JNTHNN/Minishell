@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 18:33:09 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:27:13 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	ft_reset_env_var(char *name, char *data);
 void	ft_update_env(t_env *head, t_data *data);
 
 /*  var + data for export : export_utils4.c */
+bool	ft_is_valid_var_name(int c);
 char	*ft_var(char *s);
 char	*ft_data(char *s);
 
