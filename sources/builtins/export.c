@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+int	ft_is_valid_var_name(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c) || c == 61)
+		return (true);
+	return (false);
+}
+
 static int	ft_check_var(char *str, t_data *data)
 {
 	int		i;
@@ -19,13 +26,14 @@ static int	ft_check_var(char *str, t_data *data)
 
 	i = 0;
 	var = ft_var(str);
+	printf("VAR %s\n", var);
 	if (var[i] == '=')
 		return (free(var), ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), false);
 	if (!var || ft_isdigit(var[i]))
 		return (free(var), ft_errno(ERR_VAR_ID, EXEC_FAIL, data), false);
 	while (var[i])
 	{
-		if (!ft_isalnum(var[i]))
+		if (!ft_is_valid_var_name(var[i]))
 			return (free(var), ft_errno(ERR_VAR_EQ, EXEC_FAIL, data), false);
 		i++;
 	}
