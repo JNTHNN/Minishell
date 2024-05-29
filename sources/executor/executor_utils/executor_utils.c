@@ -6,12 +6,15 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/22 17:18:46 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:04:55 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+**	Check if the path exists or points to a folder 
+*/
 static void	ft_check_type(char *cmd, t_data *data, int flag)
 {
 	struct stat	s_stat;
@@ -36,12 +39,18 @@ static void	ft_check_type(char *cmd, t_data *data, int flag)
 	}
 }
 
+/*
+**	Setup error messages for execution
+*/
 static void	ft_handle_exec_error(char *cmd, int code, t_data *data)
 {
 	data->err_info = cmd;
 	ft_handle_error(data, code);
 }
 
+/*
+**	Check + launch the binary files (commands)
+*/
 int	ft_create_exec(t_data *data, t_cmd *cmd)
 {
 	char		**progpath;
@@ -69,6 +78,9 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/*
+**	Check if the commands is an absolute or relative path
+*/
 void	ft_execute_command(t_data *data, t_cmd *cmd)
 {
 	int			ret;
