@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
+#    By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/05/28 18:24:02 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/05/30 21:50:26 by gdelvign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ PARSER_UTILS_SRC	:= parser_utils parser_utils2 parser_utils3 parser_utils4
 PARSER_SRC			:= parser
 EXPAND_SRC			:= expander
 EXPAND_UTILS_SRC	:= expander_utils expander_utils2 expander_utils3 \
-					expander_utils4 expander_utils5
+					expander_utils4 expander_utils5 expander_utils6
 EXEC_SRC			:= executor
 EXEC_UTILS_SRC		:= executor_utils executor_utils2 executor_utils3 \
 					executor_utils4 executor_utils5 

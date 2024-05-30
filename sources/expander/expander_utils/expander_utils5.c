@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 09:11:08 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/30 21:32:25 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:49:53 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,49 +109,4 @@ bool	ft_is_valid_variable_char(char c)
 	if (ft_isalnum(c) || c == UNDERSCORE)
 		return (true);
 	return (false);
-}
-
-/*
-** Removes empty arguments of command arguments array
-** execpt if there is more than one and replaces the array.
-*/
-int	ft_clean_expanded_args(t_data *data)
-{
-	t_cmd	*current;
-	int		i;
-	int		j;
-	int		arr_len;
-	char	**new_arr;
-
-	current = data->cmd;
-	while (current && current->args)
-	{
-		i = 0;
-		arr_len = 0;
-		while (current->args[i])
-		{
-			if (current->args[i][0] != '\0')
-				arr_len++;
-			i++;
-		}
-		new_arr = (char **)malloc((arr_len + 1) * sizeof(char *));
-		if (!new_arr)
-			return (E_MEM);
-		i = -1;
-		j = 0;
-		while (++i < ft_arrlen(current->args))
-		{
-			if (current->args[i][0] != '\0')
-			{
-				new_arr[j] = ft_strdup(current->args[i]);
-				j++;
-			}
-		}
-		new_arr[j] = NULL;
-		ft_free_array(current->args);
-		current->args = new_arr;
-		current->is_builtin = ft_is_builtin(current->args[0]);
-		current = current->right;
-	}
-	return (EXIT_SUCCESS);
 }
