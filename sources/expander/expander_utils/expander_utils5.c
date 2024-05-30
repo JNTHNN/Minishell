@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 09:11:08 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 18:45:37 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:32:25 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,8 @@ int	ft_clean_expanded_args(t_data *data)
 	char	**new_arr;
 
 	current = data->cmd;
-	while (current)
+	while (current && current->args)
 	{
-		if (current->args && ft_arrlen(current->args) == 1)
-			return (EXIT_SUCCESS);
 		i = 0;
 		arr_len = 0;
 		while (current->args[i])
