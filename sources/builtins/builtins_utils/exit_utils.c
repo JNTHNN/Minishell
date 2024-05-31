@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:04:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 10:08:09 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:01:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@
 */
 static void	ft_secure(int64_t resu, int64_t temp, int sign, int *flag)
 {
-	if ((temp > resu && sign == -1) || (temp > resu && sign == 1))
+	if ((temp > resu && sign == -1 && resu != LLONG_MIN) || (temp > resu && sign == 1))
 		*flag = 1;
+	// if (resu == LLONG_MIN)
+	// 	*flag = 0;
+	// printf("ITER n` %d, temp = %lld, resu = %lld, flag %d\n", i, temp, resu, *flag);
 }
 
 /*
@@ -63,6 +66,7 @@ int64_t	ft_atol(const char *str, int *flag)
 			*flag = 1;
 		i++;
 	}
+	// printf("res = %lld\n", resu * sign);
 	return (resu * sign);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/31 16:21:01 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:55:37 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_exit(t_data *data, t_cmd *cmd)
 {
-	int	exit_status;
-	int	flag;
+	u_int64_t	exit_status;
+	int			flag;
 
 	exit_status = (u_int8_t)g_exit_code;
 	flag = 0;
@@ -24,6 +24,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->args[1])
 	{
 		exit_status = ft_atol(cmd->args[1], &flag);
+		// printf("res = %lld, flag = %d\n", exit_status, flag);
 		if (flag || !cmd->args[1][0])
 		{
 			ft_print_err_exit(cmd->args[1]);
