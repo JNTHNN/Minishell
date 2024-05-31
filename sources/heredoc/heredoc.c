@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:00:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 12:57:33 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:17:05 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static int	ft_heredoc_process(t_redir_lst *node, t_data *data)
 {
 	char	*line;
 	int		fd;
+	size_t	len;
 
-	ft_restore_signals(true);
 	fd = open(node->hd_path, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == F_ERROR)
 		exit(E_OPEN);
@@ -56,10 +56,12 @@ static int	ft_heredoc_process(t_redir_lst *node, t_data *data)
 		line = readline("> ");
 		if (!line)
 			exit(CTRL_D);
-		if (!node->quoted)
+		len = ft_strlen(line);
+		if (ft_count_dollars(line) && !ft_strncmp(line, node->filename, len))
+			break ;
+		else if (!node->quoted)
 			ft_handle_hd_expansion(&line, data);
-		if ((line && line[0])
-			&& ft_strncmp(line, node->filename, ft_strlen(line)) == 0)
+		if ((line && line[0]) && !ft_strncmp(line, node->filename, len))
 			break ;
 		ft_putendl_fd(line, fd);
 		free(line);
@@ -81,7 +83,10 @@ static int	ft_handle_heredoc(t_redir_lst *node, t_data *data)
 	if (pid == F_ERROR)
 		return (ft_errno("fork", EXEC_FAIL, data), EXIT_FAILURE);
 	else if (pid == FORKED_CHILD)
+	{
+		ft_restore_signals(true);
 		ft_heredoc_process(node, data);
+	}
 	else
 	{
 		waitpid(pid, &status, 0);

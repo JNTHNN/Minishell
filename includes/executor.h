@@ -34,7 +34,6 @@ enum	e_pipe_end
 # define EX_USAGE	2
 # define EMPTY 0
 # define EXEC 1
-# define HEREDOC 2
 
 /* executor.c */
 int		ft_executor(t_data *data);
