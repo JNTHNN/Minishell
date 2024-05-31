@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:26:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 10:42:32 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:29:23 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,12 @@ void	ft_print_unset_error(char *err, t_data *data)
 	ft_putstr_fd(START_UNSET, STDERR_FILENO);
 	ft_putstr_fd(data->err_info, STDERR_FILENO);
 	ft_putstr_fd(err, STDERR_FILENO);
+}
+
+void	ft_print_export_error(char *err, t_data *data)
+{
+	ft_putstr_fd(START_EXPORT, STDERR_FILENO);
+	ft_putstr_fd(data->err_info, STDERR_FILENO);
+	ft_putstr_fd(err, STDERR_FILENO);
+	ft_errno(NULL, EXEC_FAIL, data);
 }
