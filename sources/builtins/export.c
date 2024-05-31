@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:19:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/31 15:31:07 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:10:17 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static bool	ft_check_var(char *str, t_data *data)
 
 	i = 0;
 	var = ft_var(str);
-	if (var[i] == '=' || !var || ft_isdigit(var[i]))
+	if (!var[0] || var[i] == '=' || !var || ft_isdigit(var[i]))
 		return (data->err_info = str, free(var),
 			ft_print_export_error(ERR_VAR_VID, data), false);
 	while (var[i])
@@ -58,7 +58,7 @@ int	ft_export(t_data *data, t_cmd *cmd)
 				}
 			}
 			else
-				ft_print_env(head);
+				return (ft_print_env(head), ft_free_lst(head), EXIT_SUCCESS);
 		}
 	}
 	return (ft_update_env(head, data), EXIT_SUCCESS);

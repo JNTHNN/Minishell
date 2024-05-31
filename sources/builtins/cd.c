@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:03:27 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 12:57:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:27:40 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ static t_cd	*ft_init_cd(t_data *data, t_cmd *cmd)
 	cd->data = data;
 	cd->cmd = cmd;
 	cd->dir = cmd->args[1];
+	if (!cd->dir[0])
+		return (free(cd), NULL);
 	cd->pwd = NULL;
 	if (getcwd(cwd, PATH_MAX))
 		cd->pwd = cwd;
@@ -123,6 +125,8 @@ void	ft_cd(t_data *data, t_cmd *cmd)
 	t_cd	*cd;
 
 	cd = ft_init_cd(data, cmd);
+	if (!cd)
+		return ;
 	if (ft_check_dir(cd))
 	{
 		if (ft_change_pwd(cd))

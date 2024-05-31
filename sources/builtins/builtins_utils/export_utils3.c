@@ -6,40 +6,11 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:33:05 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/28 15:21:22 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:52:23 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-**	free the env list
-*/
-static void	ft_free_lst(t_env *head)
-{
-	t_env	*next_node;
-	t_env	*temp;
-
-	temp = head;
-	while (temp)
-	{
-		next_node = temp->next;
-		if (temp->var)
-		{
-			free(temp->var);
-			temp->var = NULL;
-		}
-		if (temp->data)
-		{
-			free(temp->data);
-			temp->data = NULL;
-		}
-		free(temp);
-		temp = NULL;
-		temp = next_node;
-	}
-	temp = NULL;
-}
 
 /*
 **	measures the size of the env list
@@ -88,6 +59,35 @@ static char	**ft_ltoa(t_env *head)
 	new_env[i] = NULL;
 	ft_free_lst(temp);
 	return (new_env);
+}
+
+/*
+**	free the env list
+*/
+void	ft_free_lst(t_env *head)
+{
+	t_env	*next_node;
+	t_env	*temp;
+
+	temp = head;
+	while (temp)
+	{
+		next_node = temp->next;
+		if (temp->var)
+		{
+			free(temp->var);
+			temp->var = NULL;
+		}
+		if (temp->data)
+		{
+			free(temp->data);
+			temp->data = NULL;
+		}
+		free(temp);
+		temp = NULL;
+		temp = next_node;
+	}
+	temp = NULL;
 }
 
 /*

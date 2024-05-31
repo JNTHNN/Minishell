@@ -49,6 +49,7 @@ int		ft_open_redir_out(t_data *data, t_cmd *cmd);
 int		ft_cmd_exec(t_data *data);
 
 /* executor_utils3.c */
+void	ft_free_lst(t_env *head);
 int		ft_exec_cmds_loop(t_data *data, int *nb);
 char	**ft_pathiter(char **path, t_cmd *cmd);
 
