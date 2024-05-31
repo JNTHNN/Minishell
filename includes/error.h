@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/31 15:25:24 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:11:33 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@
 \033[0m\n"
 # define ERR_OLDPWD "❌\033[0;31m minibash: cd: OLDPWD not set\033[0m\n"
 # define ERR_HOME "❌\033[0;31m minibash: cd: HOME not set\033[0m\n"
-# define ERR_VAR "❌\033[0;31m minibash: export: not valid in this context \
-\033[0m\n"
-# define ERR_VAR_ID "❌\033[0;31m minibash: export: not an identifier\033[0m\n"
-# define ERR_VAR_EQ "❌\033[0;31m minibash: export: not a valid identifier \
-\033[0m\n"
-# define ERR_U_VAR "❌\033[0;31m minibash: unset: not valid in this context\
-\033[0m\n"
-# define ERR_U_VAR_ID "❌\033[0;31m minibash: unset: not an identifier\033[0m\n"
-# define ERR_U_VAR_EQ "❌\033[0;31m minibash: unset: not a valid identifier \
-\033[0m\n"
 # define ERR_NUM_ARG ": numeric argument required\033[0m\n"
 # define ERR_TOO_ARG "too many arguments\033[0m\n"
 # define START_EXIT "❌\033[0;31mminibash: exit: "
@@ -45,7 +35,7 @@
 # define ERR_CWD "❌\033[0;31m minibash: cd: error retrieving current directory:\
  getcwd: cannot access parent directories: No such file or directory\033[0m\n"
 # define START_UNSET "❌\033[0;31m minibash: unset: `"
-# define ERR_UNSET_VAR_ID "': not a valid identifier\033[0m\n"
+# define ERR_VAR_ID "': not a valid identifier\033[0m\n"
 # define START_EXPORT "❌\033[0;31m minibash: export: `"
 # define ERR_VAR_VID "': not a valid identifier \033[0m\n"
 
