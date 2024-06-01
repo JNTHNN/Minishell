@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:59:27 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 15:08:51 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:05:43 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_cmd	*ft_create_new_cmd(char ***args, t_data *data, int id)
 		new_node->args = *args;
 		new_node->is_builtin = ft_is_builtin(new_node->args[0]);
 	}
+	new_node->arg_size = ft_arrlen(*args);
 	new_node->redirections = data->redirections[id - 1];
 	ft_add_redir_node_id(&new_node->redirections);
 	new_node->data = data;

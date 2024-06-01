@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 21:47:38 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/31 15:58:42 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/02 00:01:11 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ bool	ft_is_valid_variable_char(char c)
 /*
 ** Allocate a new array of arguments to replace the old one.
 */
-static int	ft_create_new_arg_array(char ***new_arr, char **old_arr)
+static int	ft_create_new_arg_array(char ***new_arr, t_cmd *cmd)
 {
 	int	i;
 	int	arr_len;
 
 	i = 0;
 	arr_len = 0;
-	while (old_arr[i])
+	while (i < cmd->arg_size)
 	{
-		if (old_arr[i][0] != '\0')
+		if (cmd->args[i] != NULL)
 			arr_len++;
 		i++;
 	}
@@ -58,12 +58,12 @@ int	ft_clean_expanded_args(t_data *data)
 	current = data->cmd;
 	while (current && current->args)
 	{
-		if (ft_create_new_arg_array(&new_arr, current->args))
+		if (ft_create_new_arg_array(&new_arr, current))
 			return (E_MEM);
 		i = -1;
 		j = 0;
-		while (++i < ft_arrlen(current->args))
-			if (current->args[i][0] != '\0')
+		while (++i < current->arg_size)
+			if (current->args[i] != NULL)
 				new_arr[j++] = ft_strdup(current->args[i]);
 		new_arr[j] = NULL;
 		ft_free_array(current->args);
@@ -95,7 +95,7 @@ int	ft_expand_cmd_args(t_data *data)
 				return (ret);
 			if (!data->resplit)
 			{
-				ret = ft_resplit_first_arg(&current->args);
+				ret = ft_resplit_first_arg(&current->args, current);
 				if (ret)
 					return (ret);
 			}

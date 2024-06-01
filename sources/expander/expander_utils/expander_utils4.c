@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:39:34 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/04/25 09:39:02 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/02 00:06:09 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ static bool	ft_check_space(char *arg)
 ** Allocates space for the new argument array
 ** if the first argument needs to be resplit.
 */
-static int	ft_init_new_args(char **old, char **temp, char ***new)
+static int	ft_init_new_args(char **old, char **temp, char ***new, t_cmd *cmd)
 {
 	int		size;
 
 	size = ft_arrlen(temp) + ft_arrlen((old));
+	cmd->arg_size = size - 1;
 	*new = (char **)malloc(size * sizeof(char *));
 	if (!*new)
 		return (E_MEM);
@@ -70,21 +71,24 @@ static int	ft_fill_new_args(char **old, char **temp, char ***new)
 /*
 ** Resplits first argument if needed.
 */
-int	ft_resplit_first_arg(char ***args)
+int	ft_resplit_first_arg(char ***args, t_cmd *cmd)
 {
 	char	**temp_args;
 	char	**new_args;
 
-	if (!ft_check_space((*args)[0]))
-		return (EXIT_SUCCESS);
-	temp_args = ft_split((*args)[0], ' ');
-	if (ft_init_new_args(*args, temp_args, &new_args))
-		return (E_MEM);
-	if (ft_fill_new_args(*args, temp_args, &new_args))
-		return (E_MEM);
-	ft_free_array((temp_args));
-	ft_free_array((*args));
-	(*args) = new_args;
+	if ((*args)[0])
+	{
+		if (!ft_check_space((*args)[0]))
+			return (EXIT_SUCCESS);
+		temp_args = ft_split((*args)[0], ' ');
+		if (ft_init_new_args(*args, temp_args, &new_args, cmd))
+			return (E_MEM);
+		if (ft_fill_new_args(*args, temp_args, &new_args))
+			return (E_MEM);
+		ft_free_array((temp_args));
+		ft_free_array((*args));
+		(*args) = new_args;
+	}
 	return (EXIT_SUCCESS);
 }
 

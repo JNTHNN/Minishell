@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 12:40:52 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/03 11:22:34 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/01 23:27:46 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 		}
 		else
 			var_value = ft_get_env_value(data->env, var_name);
-		*i += ft_strlen(var_name);
-		*len += ft_strlen(var_value);
+		*i += ft_strlen(var_name) + 1;
+		if (var_value)
+			*len += ft_strlen(var_value);
 		free(var_name);
 		if (var_value && data->is_itoa)
 		{
@@ -57,7 +58,7 @@ void	ft_get_var_val_length(t_data *data, char **str, int *i, int *len)
 		}
 	}
 	else
-		ft_increment(i, len);
+		(*i)++;
 }
 
 /*
@@ -95,7 +96,7 @@ void	ft_create_var_val(t_data *data, char **str, char **cursor,
 }
 
 /*
-** Skips quotes in calculation if necessary and copy characters.
+** Skips quotes in calculation if necessary and copies characters.
 */
 void	ft_process_character(char **old, char **cursor, bool state[2])
 {

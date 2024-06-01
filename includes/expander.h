@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:18:15 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/16 12:10:08 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:17:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void		ft_create_var_val(t_data *data, char **str, char **cursor,
 void		ft_process_character(char **old, char **cursor, bool state[2]);
 
 /* expander_utils4.c */
-int			ft_resplit_first_arg(char ***args);
+int			ft_resplit_first_arg(char ***args, t_cmd *cmd);
 void		ft_should_resplit(char *arg, t_data *data);
 
 /* expander_utils5.c */
