@@ -6,7 +6,7 @@
 #    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/05/28 18:24:02 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/06/02 18:35:52 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,9 @@ SRC_FILES			:= main
 UTILS_SRC			:= error error2 utils utils2 clean clean2 history
 SIGNALS_SRC			:= signals
 BUILTINS_SRC		:= builtins env pwd echo cd exit export unset
-BUILTINS_UTILS_SRC	:= exit_utils export_utils export_utils2 export_utils3 \
-					export_utils4 export_utils5 cd_utils cd_utils2 cd_utils3
+BUILTINS_UTILS_SRC	:= exit_utils exit_utils2 export_utils export_utils2 \
+					export_utils3 export_utils4 export_utils5 cd_utils \
+					cd_utils2 cd_utils3
 LEXER_SRC			:= lexer
 LEXER_UTILS_SRC 	:= lexer_utils lexer_utils2 lexer_utils3
 PARSER_UTILS_SRC	:= parser_utils parser_utils2 parser_utils3 parser_utils4
@@ -87,7 +88,7 @@ CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib \
 					-I $(shell brew --prefix readline)/include
-DEBUG			:= -fsanitize=address
+DEBUG			:= #-fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #

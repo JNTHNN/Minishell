@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 10:30:39 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 11:00:31 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:35:10 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int		ft_check_minus(t_cd *cd);
 
 /*	utils for exit : exit_utils.c		*/
 int64_t	ft_atol(const char *str, int *flag);
+
+/*	prints for exit : exit_utils2.c		*/
 void	ft_print_err_exit(char *arg);
 
 /*	manipulate var from env : export_utils.c */

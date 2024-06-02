@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:04:28 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/31 18:01:59 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:33:56 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@
 */
 static void	ft_secure(int64_t resu, int64_t temp, int sign, int *flag)
 {
-	if ((temp > resu && sign == -1 && resu != LLONG_MIN) || (temp > resu && sign == 1))
+	if ((temp > resu && sign == -1 && resu != LLONG_MIN)
+		|| (temp > resu && sign == 1))
 		*flag = 1;
-	// if (resu == LLONG_MIN)
-	// 	*flag = 0;
-	// printf("ITER n` %d, temp = %lld, resu = %lld, flag %d\n", i, temp, resu, *flag);
 }
 
 /*
@@ -38,49 +36,60 @@ static int	ft_sign(char c)
 }
 
 /*
+**	Check the begin of str if whitespace or sign.
+**	Modify +/- and return index when is digit
+*/
+static int	ft_check(const char *str, int *sign)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		*sign = ft_sign(str[i++]);
+	return (i);
+}
+
+/*
+**	Convert char ascii into long long int
+*/
+static void	ft_convert(const char c, int64_t *resu, int sign, int *flag)
+{
+	int64_t	temp;
+
+	temp = *resu;
+	*resu = *resu * 10 + (c - '0');
+	ft_secure(*resu, temp, sign, flag);
+}
+
+/*
 **	Convert a string ascii (if number) to a long long int
 */
 int64_t	ft_atol(const char *str, int *flag)
 {
 	int		i;
 	int64_t	resu;
-	int64_t	temp;
 	int		sign;
 
-	i = 0;
 	sign = 1;
+	i = 0;
 	resu = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-		sign = ft_sign(str[i++]);
+	if (ft_strlen(str) == 1 && !ft_isdigit(str[i]))
+		return (*flag = 1);
+	i = ft_check(str, &sign);
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]))
-		{
-			temp = resu;
-			resu = resu * 10 + (str[i] - '0');
-			ft_secure(resu, temp, sign, flag);
-		}
+			ft_convert(str[i], &resu, sign, flag);
 		else
-			*flag = 1;
+		{
+			if (str[i] != ' ')
+				*flag = 1;
+			else if (str[i] == ' ' && str[i + 1] == '\0')
+				break ;
+		}
 		i++;
 	}
-	// printf("res = %lld\n", resu * sign);
 	return (resu * sign);
-}
-
-/*
-**	Prints the error string with the arg in question
-*/
-void	ft_print_err_exit(char *arg)
-{
-	ft_putstr_fd(START_EXIT, STDERR_FILENO);
-	if (arg)
-	{
-		ft_putstr_fd(arg, STDERR_FILENO);
-		ft_putstr_fd(ERR_NUM_ARG, STDERR_FILENO);
-	}
-	else
-		ft_putstr_fd(ERR_TOO_ARG, STDERR_FILENO);
 }
