@@ -30,7 +30,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 			exit_status = 255;
 		}
 	}
-	if (!flag && ft_tablen(cmd->args) > 2)
+	if (!flag && ft_arrlen(cmd->args) > 2)
 	{
 		ft_print_err_exit(NULL);
 		g_exit_code = EXIT_FAILURE;

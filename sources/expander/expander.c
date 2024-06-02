@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/22 11:23:17 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/01 23:44:33 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	ft_calculate_new_length(char *str, t_data *data)
 			if (!(str[i + 1]) || ft_is_space(str[i + 1])
 				|| !ft_is_valid_var_char(str[i + 1]))
 				ft_increment(&i, &len);
-			ft_get_var_val_length(data, &str, &i, &len);
+			else
+				ft_get_var_val_length(data, &str, &i, &len);
 		}
 		else
 			ft_increment(&i, &len);
@@ -93,11 +94,16 @@ int	ft_handle_expansion(char ***args, int idx, t_data *data)
 	{
 		new_length = ft_calculate_new_length(str, data);
 		free((*args)[idx]);
-		(*args)[idx] = (char *)malloc(new_length + 1);
-		if (!(*args)[idx])
-			return (E_MEM);
-		cursor = (*args)[idx];
-		ft_create_new_str(str, cursor, data, (new_length + 2));
+		if (new_length == 0 && !ft_count_all_quotes(str))
+			(*args)[idx] = NULL;
+		else
+		{
+			(*args)[idx] = (char *)malloc(new_length + 1);
+			if (!(*args)[idx])
+				return (E_MEM);
+			cursor = (*args)[idx];
+			ft_create_new_str(str, cursor, data, (new_length + 1));
+		}
 	}
 	free(str);
 	return (EXIT_SUCCESS);
@@ -111,6 +117,9 @@ int	ft_expand(t_data *data)
 	int	ret;
 
 	ret = ft_expand_cmd_args(data);
+	if (ret)
+		return (E_MEM);
+	ret = ft_clean_expanded_args(data);
 	if (ret)
 		return (E_MEM);
 	ret = ft_expand_redir(data);
