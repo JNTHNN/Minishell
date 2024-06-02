@@ -34,11 +34,16 @@ enum	e_pipe_end
 # define EX_USAGE	2
 # define EMPTY 0
 # define EXEC 1
+# define ABS 1
+# define DOT 2
+# define DIR 3
 
 /* executor.c */
 int		ft_executor(t_data *data);
 
 /* executor_utils.c */
+void	ft_check_type(char *cmd, t_data *data, int flag);
+void	ft_handle_exec_error(char *cmd, int code, t_data *data);
 int		ft_create_exec(t_data *data, t_cmd *cmd);
 void	ft_execute_command(t_data *data, t_cmd *cmd);
 t_exec	*ft_init_exec(t_data *data);
@@ -56,6 +61,8 @@ char	**ft_pathiter(char **path, t_cmd *cmd);
 /* executor_utils4.c */
 void	ft_restore_signals(bool heredoc);
 void	ft_print_signals(int status, int flag);
+void	ft_relative_exec(t_data *data, t_cmd *cmd);
+int		ft_type_of_arg(char *arg);
 
 /* executor_utils5.c */
 void	ft_init_pipes(t_data *data, t_exec *exec);

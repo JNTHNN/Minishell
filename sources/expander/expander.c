@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 20:15:04 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/01 23:44:33 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/02 19:11:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_calculate_new_length(char *str, t_data *data)
 */
 size_t	ft_space_left(size_t buffsize, char *cursor, char *start)
 {
-	return (buffsize - (cursor - start) - 1);
+	return (buffsize - (cursor - start));
 }
 
 /*

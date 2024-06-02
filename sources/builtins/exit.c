@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:36:19 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/02 17:13:40 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:40:47 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->args[1])
 	{
 		exit_status = ft_atol(cmd->args[1], &flag);
-		if (flag || !cmd->args[1][0] || (flag && ft_tablen(cmd->args) > 2))
+		if (flag || !cmd->args[1][0] || (flag && ft_arrlen(cmd->args) > 2))
 		{
 			ft_print_err_exit(cmd->args[1]);
 			exit_status = 255;

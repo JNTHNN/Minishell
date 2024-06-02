@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 14:04:55 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:24:07 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 **	Check if the path exists or points to a folder 
 */
-static void	ft_check_type(char *cmd, t_data *data, int flag)
+void	ft_check_type(char *cmd, t_data *data, int flag)
 {
 	struct stat	s_stat;
 
@@ -42,7 +42,7 @@ static void	ft_check_type(char *cmd, t_data *data, int flag)
 /*
 **	Setup error messages for execution
 */
-static void	ft_handle_exec_error(char *cmd, int code, t_data *data)
+void	ft_handle_exec_error(char *cmd, int code, t_data *data)
 {
 	data->err_info = cmd;
 	ft_handle_error(data, code);
@@ -55,7 +55,6 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 {
 	char		**progpath;
 	int			i;
-	struct stat	s_stat;
 
 	progpath = ft_path_abs(data, cmd);
 	i = 0;
@@ -73,8 +72,7 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 		i++;
 	}
 	ft_free_array(progpath);
-	if (!lstat(cmd->args[0], &s_stat) && S_ISDIR(s_stat.st_mode))
-		return (E_NOTF);
+	ft_handle_error(data, E_NOTF);
 	return (EXIT_SUCCESS);
 }
 
@@ -83,26 +81,24 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 */
 void	ft_execute_command(t_data *data, t_cmd *cmd)
 {
-	int			ret;
-
 	if (cmd->args && cmd->args[0])
 	{
-		if (!ft_strncmp(cmd->args[0], "/", 1)
-			|| !ft_strncmp(cmd->args[0], "./", 2))
+		if (ft_type_of_arg(cmd->args[0]) == ABS)
 		{
 			ft_check_type(cmd->args[0], data, EXEC_ABS);
 			if (execve(cmd->args[0], cmd->args, data->env) == -1)
 				ft_handle_exec_error(cmd->args[0], E_EXECVE, data);
 		}
-		else
+		else if (ft_type_of_arg(cmd->args[0]) == DOT
+			|| ft_type_of_arg(cmd->args[0]) == DIR)
 		{
-			ret = ft_create_exec(data, cmd);
-			if (ret)
-				ft_handle_exec_error(cmd->args[0], ret, data);
-			ft_check_type(cmd->args[0], data, EXEC_REL);
+			if (ft_type_of_arg(cmd->args[0]) == DIR)
+				ft_handle_exec_error(cmd->args[0], E_DIR, data);
+			ft_handle_exec_error(cmd->args[0], E_NOTF, data);
 		}
-		data->err_info = cmd->args[0];
-		ft_handle_error(data, E_NOTF);
+		else
+			ft_relative_exec(data, cmd);
+		ft_handle_exec_error(cmd->args[0], E_NOTF, data);
 	}
 }
 

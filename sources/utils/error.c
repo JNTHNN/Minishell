@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/31 17:12:21 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/02 20:47:25 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,26 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 {
 	if (err_code == E_EXECVE)
 		ft_errno(data->err_info, EX_NOEXEC, data);
-	else if (err_code == E_DIR)
-	{
-		errno = EISDIR;
-		ft_errno(data->err_info, EX_NOEXEC, data);
-	}
-	else if (err_code == E_NOTF)
-	{
-		ft_putstr_fd(START_ERR, STDERR_FILENO);
-		ft_putstr_fd(data->err_info, STDERR_FILENO);
-		ft_putstr_fd(ERR_CMD, STDERR_FILENO);
-		errno = 0;
-		ft_errno(NULL, EX_NOTFOUND, data);
-	}
-	else if (err_code == E_PATH)
-	{
-		ft_putstr_fd(START_ERR, STDERR_FILENO);
-		ft_putstr_fd(data->err_info, STDERR_FILENO);
-		ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
-		errno = 0;
-		ft_errno(NULL, EX_NOTFOUND, data);
-	}
 	else
-		ft_errno(data->err_info, EX_NOTFOUND, data);
+	{
+		errno = 0;
+		ft_putstr_fd(START_ERR, STDERR_FILENO);
+		ft_putstr_fd(data->err_info, STDERR_FILENO);
+		if (err_code == E_DIR)
+		{
+			ft_putstr_fd(ERR_DIR, STDERR_FILENO);
+			ft_errno(NULL, EX_NOEXEC, data);
+		}
+		else if (err_code == E_NOTF)
+			ft_putstr_fd(ERR_CMD, STDERR_FILENO);
+		else if (err_code == E_PATH)
+			ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
+		else if (err_code == E_EXECVE_2)
+			ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
+		else
+			ft_errno(data->err_info, EX_NOTFOUND, data);
+		ft_errno(NULL, EX_NOTFOUND, data);
+	}
 }
 
 /*

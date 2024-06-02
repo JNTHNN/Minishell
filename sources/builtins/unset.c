@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 09:30:58 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/02 18:39:23 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/02 19:41:04 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	ft_unset(t_data *data, t_cmd *cmd)
 		{
 			if (!ft_check_var(cmd->args[i], data))
 				break ;
-			if (!ft_strncmp(cmd->args[i], data->env[j],
-					ft_strlen(cmd->args[i])))
+			if (ft_strncmp(cmd->args[i], data->env[j],
+					ft_strlen(data->env[i])) == -61)
 			{
 				free(data->env[j]);
 				while (data->env[j])
