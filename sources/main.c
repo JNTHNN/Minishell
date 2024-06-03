@@ -6,17 +6,51 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 15:42:18 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/31 15:36:18 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:42:23 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*
+** Unique global variable declaration.
+*/
 int	g_exit_code = 0;
 
+/*
+** Increments the SHLVL environment variable by 1 
+** each time a minishell is launched.
+*/
+static void	ft_increment_shlvl(char **env)
+{
+	int		i;
+	char	*shlvl_val;
+	int		i_val;
+	char	*new_str;
+
+	i = -1;
+	while (env[++i])
+	{
+		if (!ft_strncmp(env[i], "SHLVL=", 6))
+		{
+			shlvl_val = ft_strdup(ft_strchr(env[i], '=') + 1);
+			i_val = ft_atoi(shlvl_val);
+			free(shlvl_val);
+			i_val++;
+			shlvl_val = ft_itoa(i_val);
+			new_str = ft_strjoin("SHLVL=", shlvl_val);
+			free(shlvl_val);
+			free(env[i]);
+			env[i] = new_str;
+		}
+	}
+}
+
+/*
+** Initializes the data structure with all useful variables ans structures.
+*/
 static void	ft_init_data(t_data *data, char **envp)
 {
-	(void)envp;
 	data->input = NULL;
 	data->tokens = NULL;
 	data->cmd = NULL;
@@ -34,11 +68,20 @@ static void	ft_init_data(t_data *data, char **envp)
 		errno = ENOMEM;
 		exit(errno);
 	}
+	ft_increment_shlvl(data->env);
 }
 
+/*
+** Reads input from the user and handles end-of-file conditions.
+*/
 static int	ft_get_input(t_data *data)
 {
 	ft_init_signal();
+	if (data->input)
+	{
+		free(data->input);
+		data->input = NULL;
+	}
 	data->input = readline(PROMPT);
 	ft_get_ctrl_d(data);
 	if (ft_trim_input(&data->input))
@@ -46,7 +89,10 @@ static int	ft_get_input(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	ft_minishell_loop(t_data *data)
+/* 
+** Main execution loop that processes user input and handles commands. 
+*/
+static void	ft_minishell_loop(t_data *data)
 {
 	int		ret;
 
@@ -73,69 +119,18 @@ static int	ft_minishell_loop(t_data *data)
 			ft_reset_data(data);
 		}
 	}
-    return 0;
 }
 
-static int	ft_get_test_input(t_data *data, char *input)
-{
-	data->input = input;
-	// if (ft_trim_input(&data->input))
-	// 	return (E_MEM);
-	return (EXIT_SUCCESS);
-}
-// RESULTS
-// Total: 660; Fail: 274; Pass: 386
-static int	ft_minishell_test_mode(t_data *data, char **arg_input)
-{
-    int     i;
-	int		ret;
-
-    i = 0;
-	while (arg_input[i])
-	{
-		ret = ft_get_test_input(data, arg_input[i]);
-		if (ft_handle_error(data, ret))
-			continue ;
-		if (data->input && data->input[0])
-		{
-			ret = ft_tokenize(data);
-			if (ft_handle_error(data, ret))
-				continue ;
-			ret = ft_parse(data);
-			if (ft_handle_error(data, ret))
-				continue ;
-			ret = ft_expand(data);
-			if (ft_handle_error(data, ret))
-				continue ;
-			ret = ft_executor(data);
-			if (ft_handle_error(data, ret))
-				continue ;
-			ft_reset_data(data);
-		}
-        i++;
-	}
-    return 0;
-}
-
+/* 
+**  Program initialization and entry point for the minishell.
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
-    char	**arg_input;
 
-    if (argc == 3 && ft_strncmp(argv[1], "-c", 2) == 0 && argv[2])
-	{
-		arg_input = ft_split(argv[2], ';');
-		if (!arg_input)
-            exit(EXIT_FAILURE);
-		ft_init_data(&data, envp);
-        ft_minishell_test_mode(&data, arg_input);
-	    /* ft_free_data(&data); */
-    }
-    else {
-		ft_handle_arg_error(argc, argv);
-		ft_init_data(&data, envp);
-		ft_minishell_loop(&data);
-		ft_free_data(&data);
-    }
-	return (g_exit_code);
+	ft_handle_arg_error(argc, argv);
+	ft_init_data(&data, envp);
+	ft_minishell_loop(&data);
+	ft_free_data(&data);
+	return (EXIT_SUCCESS);
 }
