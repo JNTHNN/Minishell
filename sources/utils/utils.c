@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/22 17:19:25 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:34:29 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ char	**ft_create_env(char **arr)
 {
 	char	temp[PATH_MAX];
 
-	arr = (char **)malloc(4 * sizeof(char *));
+	arr = (char **)malloc(5 * sizeof(char *));
 	if (!arr)
 		return (NULL);
 	if (getcwd(temp, sizeof(temp)))
 		arr[0] = ft_strjoin(PWD, temp);
 	arr[1] = ft_strdup("SHLVL=1");
-	arr[2] = ft_strdup("/usr/bin/env");
-	arr[3] = NULL;
+	arr[2] = ft_strdup("_=/usr/bin/env");
+	arr[3] = ft_strdup("OLDPWD");
+	arr[4] = NULL;
 	return (arr);
 }
 
@@ -67,7 +68,7 @@ char	**ft_envcpy(char **arr)
 	i = 0;
 	while (arr[i])
 		i++;
-	cpy = malloc((i + 1) * sizeof(char *));
+	cpy = malloc((i + 2) * sizeof(char *));
 	if (!cpy)
 		return (NULL);
 	i = -1;
@@ -77,6 +78,7 @@ char	**ft_envcpy(char **arr)
 		if (!cpy[i])
 			return (ft_free_array(cpy));
 	}
-	cpy[i] = NULL;
+	cpy[i] = ft_strdup("OLDPWD");
+	cpy[i + 1] = NULL;
 	return (cpy);
 }

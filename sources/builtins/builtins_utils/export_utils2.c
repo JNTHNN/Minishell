@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:27:48 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/29 10:09:41 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:37:13 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,11 @@ void	ft_print_env(t_env *head)
 	while (node)
 	{
 		if (node->var && node->data)
+		{
+			if (!ft_strncmp(node->var, "_=", 2))
+				node = node->next;
 			printf("declare -x %s\"%s\"\n", node->var, node->data);
+		}
 		node = node->next;
 	}
 	node = head;
