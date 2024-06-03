@@ -6,18 +6,18 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 12:40:52 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/01 23:27:46 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/03 08:29:20 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Checks characters of the variable name are valid or not 
+** Checks if characters of the variable name are valid or not.
 */
 bool	ft_is_valid_var_char(char c)
 {
-	return (c == '?' || c == '_' || ft_isalnum(c));
+	return (c == '?' || c == '_' || ft_isalnum(c) || ft_is_quote(c));
 }
 
 /*
