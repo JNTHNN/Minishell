@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/03 15:28:04 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 19:08:36 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,16 @@ void	ft_execute_command(t_data *data, t_cmd *cmd)
 {
 	if (cmd->args && cmd->args[0])
 	{
-		if (ft_type_of_arg(cmd->args[0]) == ABS)
+		if (ft_type_of_arg(cmd->args[0], cmd->data) == ABS)
 		{
 			ft_check_type(cmd->args[0], data, EXEC_ABS);
 			if (execve(cmd->args[0], cmd->args, data->env) == -1)
 				ft_handle_exec_error(cmd->args[0], E_EXECVE, data);
 		}
-		else if (ft_type_of_arg(cmd->args[0]) == DOT
-			|| ft_type_of_arg(cmd->args[0]) == DIR)
+		else if (ft_type_of_arg(cmd->args[0], cmd->data) == DOT
+			|| ft_type_of_arg(cmd->args[0], cmd->data) == DIR)
 		{
-			if (ft_type_of_arg(cmd->args[0]) == DIR)
+			if (ft_type_of_arg(cmd->args[0], cmd->data) == DIR)
 			{
 				ft_check_type(cmd->args[0], data, EXEC_REL);
 				ft_handle_exec_error(cmd->args[0], E_PATH, data);

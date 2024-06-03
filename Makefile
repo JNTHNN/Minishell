@@ -6,7 +6,7 @@
 #    By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/12 11:21:00 by gdelvign          #+#    #+#              #
-#    Updated: 2024/06/03 11:09:14 by jgasparo         ###   ########.fr        #
+#    Updated: 2024/06/03 18:56:58 by jgasparo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LIBFT 			:= libft.a
 # **************************************************************************** #
 
 SRC_FILES			:= main
-UTILS_SRC			:= error error2 utils utils2 clean clean2 history
+UTILS_SRC			:= error error2 error3 utils utils2 clean clean2 history
 SIGNALS_SRC			:= signals
 BUILTINS_SRC		:= builtins env pwd echo cd exit export unset
 BUILTINS_UTILS_SRC	:= exit_utils exit_utils2 export_utils export_utils2 \
@@ -88,7 +88,7 @@ CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib \
 					-I $(shell brew --prefix readline)/include
-DEBUG			:= -fsanitize=address
+DEBUG			:= #-fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #

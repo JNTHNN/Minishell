@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/02 21:24:20 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 19:08:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_relative_exec(t_data *data, t_cmd *cmd)
 	ft_handle_error(data, E_PATH);
 }
 
-int	ft_type_of_arg(char *arg)
+int	ft_type_of_arg(char *arg, t_data *data)
 {
 	if (!ft_strncmp(arg, "/", 1)
 		|| !ft_strncmp(arg, "./", 2))
@@ -65,7 +65,8 @@ int	ft_type_of_arg(char *arg)
 		|| !ft_strncmp(arg, "..", 2))
 	{
 		if (!ft_strncmp(arg, "./", 2)
-			|| !ft_strncmp(arg, "../", 3))
+			|| !ft_strncmp(arg, "../", 3)
+			|| !ft_getenv(data, "PATH="))
 			return (DIR);
 		return (DOT);
 	}
