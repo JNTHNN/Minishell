@@ -6,11 +6,31 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/03 12:34:29 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:38:03 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**	Adapts the allocated size according to OLDPWD
+*/
+static char	**ft_setup_env_oldpwd(char **arr, int *flag)
+{
+	char	**cpy;
+
+	cpy = NULL;
+	if (!getenv("OLDPWD"))
+	{
+		cpy = malloc((ft_arrlen(arr) + 2) * sizeof(char *));
+		*flag = 1;
+	}
+	else
+		cpy = malloc((ft_arrlen(arr) + 1) * sizeof(char *));
+	if (!cpy)
+		return (NULL);
+	return (cpy);
+}
 
 /*
 ** Frees a dynamically allocated array of strings
@@ -61,14 +81,12 @@ char	**ft_envcpy(char **arr)
 {
 	int		i;
 	char	**cpy;
+	int		flag;
 
 	cpy = NULL;
 	if (!arr || !arr[0])
 		return (ft_create_env(cpy));
-	i = 0;
-	while (arr[i])
-		i++;
-	cpy = malloc((i + 2) * sizeof(char *));
+	cpy = ft_setup_env_oldpwd(arr, &flag);
 	if (!cpy)
 		return (NULL);
 	i = -1;
@@ -78,7 +96,12 @@ char	**ft_envcpy(char **arr)
 		if (!cpy[i])
 			return (ft_free_array(cpy));
 	}
-	cpy[i] = ft_strdup("OLDPWD");
-	cpy[i + 1] = NULL;
+	if (flag)
+	{
+		cpy[i] = ft_strdup("OLDPWD");
+		cpy[i + 1] = NULL;
+		return (cpy);
+	}
+	cpy[i] = NULL;
 	return (cpy);
 }

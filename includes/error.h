@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/03 12:09:15 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:08:16 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define ERR_VAR_ID "': not a valid identifier\033[0m\n"
 # define START_EXPORT "❌\033[0;31m minibash: export: `"
 # define ERR_DIR ": is a directory\033[0m\n"
+# define ERR_AMBIGU ": ambiguous redirect\033[0m\n"
 
 typedef enum e_err_codes
 {
@@ -60,7 +61,8 @@ typedef enum e_err_codes
 	E_ENV = -17,
 	E_CWD = -18,
 	E_VAR_ID = -19,
-	E_PATH = - 20,
+	E_PATH = -20,
+	E_AMBIGU = -21
 }	t_err_codes;
 
 /*		Handle errors : error.c		*/
@@ -72,5 +74,8 @@ void	ft_print_env_error(t_data *data);
 void	ft_handle_arg_error(int argc, char **argv);
 void	ft_print_unset_error(char *err, t_data *data);
 void	ft_print_export_error(char *err, t_data *data);
+
+/*		Extra : error3.c		*/
+void	ft_print_exec_error_dir(t_data *data, int err_code);
 
 #endif
