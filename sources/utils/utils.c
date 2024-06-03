@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/03 12:34:29 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:36:31 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	**ft_envcpy(char **arr)
 		if (!cpy[i])
 			return (ft_free_array(cpy));
 	}
-	cpy[i] = ft_strdup("OLDPWD");
-	cpy[i + 1] = NULL;
+	cpy[i] = NULL;
 	return (cpy);
 }

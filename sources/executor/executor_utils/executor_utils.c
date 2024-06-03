@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/03 09:26:56 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:28:04 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	ft_check_type(char *cmd, t_data *data, int flag)
 void	ft_handle_exec_error(char *cmd, int code, t_data *data)
 {
 	data->err_info = cmd;
+	if (ft_strchr(data->err_info, '/'))
+		code = E_PATH;
 	ft_handle_error(data, code);
 }
 
@@ -93,7 +95,10 @@ void	ft_execute_command(t_data *data, t_cmd *cmd)
 			|| ft_type_of_arg(cmd->args[0]) == DIR)
 		{
 			if (ft_type_of_arg(cmd->args[0]) == DIR)
-				ft_handle_exec_error(cmd->args[0], E_DIR, data);
+			{
+				ft_check_type(cmd->args[0], data, EXEC_REL);
+				ft_handle_exec_error(cmd->args[0], E_PATH, data);
+			}
 			ft_handle_exec_error(cmd->args[0], E_NOTF, data);
 		}
 		else

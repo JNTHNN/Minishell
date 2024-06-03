@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:26:11 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/02 20:47:25 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:07:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,8 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 		ft_errno(data->err_info, EX_NOEXEC, data);
 	else
 	{
-		errno = 0;
-		ft_putstr_fd(START_ERR, STDERR_FILENO);
-		ft_putstr_fd(data->err_info, STDERR_FILENO);
-		if (err_code == E_DIR)
-		{
-			ft_putstr_fd(ERR_DIR, STDERR_FILENO);
-			ft_errno(NULL, EX_NOEXEC, data);
-		}
-		else if (err_code == E_NOTF)
+		ft_print_exec_error_dir(data, err_code);
+		if (err_code == E_NOTF)
 			ft_putstr_fd(ERR_CMD, STDERR_FILENO);
 		else if (err_code == E_PATH)
 			ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
