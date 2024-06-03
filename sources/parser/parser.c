@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 21:42:39 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/29 15:05:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:04:14 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ static int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 	int			cmd_id;
 
 	cmd_id = 0;
-	*args = NULL;
 	while (*current)
 	{
+		*args = NULL;
 		start = *current;
 		arg_count = ft_count_cmd_args(current);
 		if (arg_count)
