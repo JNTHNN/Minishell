@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/05/24 15:27:51 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:24:32 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	**ft_path_abs(t_data *data, t_cmd *cmd)
 	char	*path;
 	char	**my_path;
 
-	path = ft_getenv(data, "PATH");
+	path = ft_get_env_value(data->env, "PATH");
 	if (!path)
 	{
 		data->err_info = cmd->args[0];
