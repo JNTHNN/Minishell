@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/02 20:54:03 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:09:15 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,31 +74,3 @@ void	ft_print_unset_error(char *err, t_data *data);
 void	ft_print_export_error(char *err, t_data *data);
 
 #endif
-
-// Available test blocks:
-// - basic
-// - basic-no-env
-// - spaces
-// - pipes
-// - quotes
-// - env-variables
-// - syntax
-// - echo
-// - echo-no-env
-// - env
-// - env-no-env
-// - export
-// - export-no-env
-// - unset
-// - unset-no-env
-// - pwd
-// - pwd-no-env
-// - cd
-// - cd-no-env
-// - exit
-// - exit-no-env
-// - infile
-// - outfile-trunc
-// - outfile-append
-// - infile-outfile
-// - exit-status
