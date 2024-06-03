@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 15:13:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/16 11:35:09 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:25:59 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 	}
 	while (cmd->args[i])
 	{
-		cmd->args[i] = ft_extra(data, cmd->args[i]);
+		cmd->args[i] = ft_strdup(ft_extra(data, cmd->args[i]));
 		ft_putstr_fd(cmd->args[i], 1);
 		if (cmd->args[i + 1])
 			ft_putstr_fd(" ", 1);

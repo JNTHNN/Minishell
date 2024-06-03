@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/05/24 12:57:53 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:07:52 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	ft_seek_replace(t_data *data, char *search, char *pwd)
 	found = 0;
 	while (data->env[i])
 	{
-		if (!ft_strncmp(data->env[i], search, ft_strlen(search)))
+		if (!ft_strncmp(data->env[i], search, ft_strlen(search))
+			|| !ft_strncmp(data->env[i], search, ft_strlen("OLDPWD")))
 		{
 			free(data->env[i]);
 			data->env[i] = ft_strjoin(search, pwd);
