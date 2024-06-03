@@ -42,8 +42,7 @@ static int	ft_exec_simple_cmd(t_data *data)
 		return (E_OPEN);
 	if (ret == EXIT_HD || ret == CTRL_D)
 		return (EXIT_SUCCESS);
-	if (ft_open_redir_in(data, data->cmd)
-		|| ft_open_redir_out(data, data->cmd))
+	if (ft_open_first_redir(data, data->cmd))
 		return (E_OPEN);
 	if (!data->cmd->is_builtin && data->cmd->args)
 		ft_cmd_exec(data);
@@ -117,9 +116,9 @@ int	ft_executor(t_data *data)
 	ret = ft_prepare_execution(data);
 	if (ret)
 		return (ret);
-	if (data->nb_of_cmds == 1 && data->cmd->args)
+	if (data->nb_of_cmds == 1)
 	{
-		if (!data->cmd->args[0])
+		if (data->cmd->args && !data->cmd->args[0])
 			return (EXIT_SUCCESS);
 		ret = ft_exec_simple_cmd(data);
 		if (ret)

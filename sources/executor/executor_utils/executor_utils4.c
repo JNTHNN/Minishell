@@ -71,3 +71,32 @@ int	ft_type_of_arg(char *arg)
 	}
 	return (EXIT_SUCCESS);
 }
+
+int	ft_open_first_redir(t_data *data, t_cmd *cmd)
+{
+	t_redir_lst	*current;
+
+	if (!cmd->redirections)
+		return (EXIT_SUCCESS);
+	current = cmd->redirections;
+	while (current)
+	{
+		if (current->r_type != HEREDOC)
+			break ;
+		current = current->next;
+	}
+	if (current)
+	{
+		if (current->r_type == IN)
+		{
+			if (ft_open_redir_in(data, cmd)
+				|| ft_open_redir_out(data, cmd))
+				return (E_OPEN);
+		}
+		else
+			if (ft_open_redir_out(data, cmd)
+				|| ft_open_redir_in(data, cmd))
+				return (E_OPEN);
+	}
+	return (EXIT_SUCCESS);
+}

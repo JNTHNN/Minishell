@@ -58,6 +58,12 @@ static void	ft_print_exec_error(int err_code, t_data *data)
 			ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
 		else if (err_code == E_EXECVE_2)
 			ft_putstr_fd(ERR_ENV_OPEN, STDERR_FILENO);
+		else if (err_code == E_AMBIGU)
+		{
+			ft_putstr_fd(ERR_AMBIGU, STDERR_FILENO);
+			ft_errno(NULL, EXEC_FAIL, data);
+			return ;
+		}
 		else
 			ft_errno(data->err_info, EX_NOTFOUND, data);
 		ft_errno(NULL, EX_NOTFOUND, data);
@@ -81,7 +87,7 @@ static void	ft_print_error(int err_code, t_data *data)
 	else if (err_code == E_DUP)
 		ft_errno(NULL, EX_MISCERROR, data);
 	else if ((err_code <= E_EXECVE && err_code >= E_EXECVE_2)
-		|| err_code == E_PATH)
+		|| err_code == E_PATH || err_code == E_AMBIGU)
 		ft_print_exec_error(err_code, data);
 	else if (err_code == E_CLOSE)
 		ft_errno(NULL, EX_MISCERROR, data);

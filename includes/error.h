@@ -38,6 +38,7 @@
 # define ERR_VAR_ID "': not a valid identifier\033[0m\n"
 # define START_EXPORT "❌\033[0;31m minibash: export: `"
 # define ERR_DIR ": is a directory\033[0m\n"
+# define ERR_AMBIGU ": ambiguous redirect\033[0m\n"
 
 typedef enum e_err_codes
 {
@@ -60,7 +61,8 @@ typedef enum e_err_codes
 	E_ENV = -17,
 	E_CWD = -18,
 	E_VAR_ID = -19,
-	E_PATH = - 20,
+	E_PATH = -20,
+	E_AMBIGU = -21
 }	t_err_codes;
 
 /*		Handle errors : error.c		*/

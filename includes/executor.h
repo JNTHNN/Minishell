@@ -63,6 +63,7 @@ void	ft_restore_signals(bool heredoc);
 void	ft_print_signals(int status, int flag);
 void	ft_relative_exec(t_data *data, t_cmd *cmd);
 int		ft_type_of_arg(char *arg);
+int		ft_open_first_redir(t_data *data, t_cmd *cmd);
 
 /* executor_utils5.c */
 void	ft_init_pipes(t_data *data, t_exec *exec);

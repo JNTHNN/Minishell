@@ -56,19 +56,22 @@ int	ft_clean_expanded_args(t_data *data)
 	char	**new_arr;
 
 	current = data->cmd;
-	while (current && current->args)
+	while (current)
 	{
-		if (ft_create_new_arg_array(&new_arr, current))
-			return (E_MEM);
-		i = -1;
-		j = 0;
-		while (++i < current->arg_size)
-			if (current->args[i] != NULL)
-				new_arr[j++] = ft_strdup(current->args[i]);
-		new_arr[j] = NULL;
-		ft_free_array(current->args);
-		current->args = new_arr;
-		current->is_builtin = ft_is_builtin(current->args[0]);
+		if (current->args)
+		{
+			if (ft_create_new_arg_array(&new_arr, current))
+				return (E_MEM);
+			i = -1;
+			j = 0;
+			while (++i < current->arg_size)
+				if (current->args[i] != NULL)
+					new_arr[j++] = ft_strdup(current->args[i]);
+			new_arr[j] = NULL;
+			ft_free_array(current->args);
+			current->args = new_arr;
+			current->is_builtin = ft_is_builtin(current->args[0]);
+		}
 		current = current->right;
 	}
 	return (EXIT_SUCCESS);

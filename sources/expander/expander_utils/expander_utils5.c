@@ -117,6 +117,8 @@ static int	ft_expand_filename(t_redir_lst *node, t_data *data)
 			if (node->r_type == HEREDOC)
 				return (ft_handle_delimiter_expansion(node));
 			new_length = ft_calculate_new_length(node->filename, data);
+			if (new_length == 0)
+				return (E_AMBIGU);
 			new_str = (char *)malloc(new_length + 1);
 			if (!new_str)
 				return (E_MEM);

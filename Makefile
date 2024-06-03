@@ -88,7 +88,7 @@ CPPFLAGS		:= -MMD -MP
 READL			:=	-L/usr/local/lib -I/usr/local/include -lreadline \
 					-L $(shell brew --prefix readline)/lib \
 					-I $(shell brew --prefix readline)/include
-DEBUG			:= #-fsanitize=address
+DEBUG			:= -fsanitize=address
 
 # **************************************************************************** #
 # 							  	   Colors	    							   #
