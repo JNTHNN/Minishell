@@ -50,8 +50,8 @@ static int	ft_child_process(t_data *data, t_cmd *cmd, int *nb)
 {
 	int	ret;
 
-	if (ft_open_redir_in(data, cmd) || ft_open_redir_out(data, cmd))
-		return (E_OPEN);
+	if (ft_open_first_redir(data, cmd))
+		ft_handle_error(data, E_OPEN);
 	ret = ft_handle_pipes(data, cmd, nb);
 	if (ret)
 		return (ret);

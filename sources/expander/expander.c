@@ -64,7 +64,9 @@ void	ft_create_new_str(char *old, char *new, t_data *data, size_t buffsize)
 		if (*old == DOLLAR && !state[IN_SGL_Q])
 		{
 			old++;
-			if (!(*old) || ft_is_space(*old) || !ft_is_valid_var_char(*old))
+			if (!(*old) || ft_is_space(*old) || !ft_is_valid_var_char(*old)
+				|| (ft_is_quote(*old) && *(old - 1) == '$'
+					&& ft_is_quote(*(old - 2))))
 				*cursor++ = '$';
 			else
 			{
@@ -124,6 +126,6 @@ int	ft_expand(t_data *data)
 		return (E_MEM);
 	ret = ft_expand_redir(data);
 	if (ret)
-		return (E_MEM);
+		return (ret);
 	return (EXIT_SUCCESS);
 }

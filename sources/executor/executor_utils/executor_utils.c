@@ -72,7 +72,7 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 		i++;
 	}
 	ft_free_array(progpath);
-	ft_handle_error(data, E_NOTF);
+	ft_handle_exec_error(cmd->args[0], E_NOTF, data);
 	return (EXIT_SUCCESS);
 }
 

@@ -100,9 +100,9 @@ static int	ft_parse_loop(t_tok_lst **current, char ***args, t_data *data)
 	int			cmd_id;
 
 	cmd_id = 0;
-	*args = NULL;
 	while (*current)
 	{
+		*args = NULL;
 		start = *current;
 		arg_count = ft_count_cmd_args(current);
 		if (arg_count)
