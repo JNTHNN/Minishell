@@ -38,11 +38,11 @@ static int	ft_check_option(char *option)
 static char	*ft_extra(t_data *data, char *s)
 {
 	if (!ft_strncmp(s, TILDE, 2) && ft_getenv(data, HOME))
-		s = ft_getenv(data, HOME) + 5;
+		return (free(s), ft_strdup(ft_getenv(data, HOME) + 5));
 	else if (!ft_strncmp(s, TPLUS, 3) && ft_getenv(data, PWD))
-		s = ft_getenv(data, PWD) + 4;
+		return (free(s), ft_strdup(ft_getenv(data, PWD) + 4));
 	else if (!ft_strncmp(s, TMINUS, 3) && ft_getenv(data, OLDPWD))
-		s = ft_getenv(data, OLDPWD) + 7;
+		return (free(s), ft_strdup(ft_getenv(data, OLDPWD) + 7));
 	return (s);
 }
 
@@ -61,7 +61,7 @@ void	ft_echo(t_data *data, t_cmd *cmd)
 	}
 	while (cmd->args[i])
 	{
-		cmd->args[i] = ft_strdup(ft_extra(data, cmd->args[i]));
+		cmd->args[i] = ft_extra(data, cmd->args[i]);
 		ft_putstr_fd(cmd->args[i], 1);
 		if (cmd->args[i + 1])
 			ft_putstr_fd(" ", 1);
