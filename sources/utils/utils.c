@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:37:03 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/03 18:45:56 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:55:12 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,15 @@
 /*
 **	Adapts the allocated size according to OLDPWD
 */
-static char	**ft_setup_env_oldpwd(char **arr, int *flag)
+static int	ft_setup_env_oldpwd(char **arr, char ***cpy)
 {
-	char	**cpy;
-
-	cpy = NULL;
 	if (!getenv("OLDPWD"))
-	{
-		cpy = malloc((ft_arrlen(arr) + 2) * sizeof(char *));
-		*flag = 1;
-	}
+		*cpy = (char **)malloc((ft_arrlen(arr) + 2) * sizeof(char *));
 	else
-		cpy = malloc((ft_arrlen(arr) + 1) * sizeof(char *));
-	if (!cpy)
-		return (NULL);
-	return (cpy);
+		*cpy = (char **)malloc((ft_arrlen(arr) + 1) * sizeof(char *));
+	if (!*cpy)
+		return (E_MEM);
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -81,26 +75,25 @@ char	**ft_envcpy(char **arr)
 {
 	int		i;
 	char	**cpy;
-	int		flag;
 
 	cpy = NULL;
 	if (!arr || !arr[0])
 		return (ft_create_env(cpy));
-	cpy = ft_setup_env_oldpwd(arr, &flag);
-	if (!cpy)
+	if (ft_setup_env_oldpwd(arr, &cpy))
 		return (NULL);
 	i = -1;
 	while (arr[++i])
 	{
 		cpy[i] = ft_strdup(arr[i]);
 		if (!cpy[i])
-			return (ft_free_array(cpy));
+			return (ft_free_array(cpy), NULL);
 	}
-	if (flag)
+	if (!getenv("OLDPWD"))
 	{
 		cpy[i] = ft_strdup("OLDPWD");
-		cpy[i + 1] = NULL;
-		return (cpy);
+		if (!cpy[i])
+			return (ft_free_array(cpy), NULL);
+		i++;
 	}
 	cpy[i] = NULL;
 	return (cpy);

@@ -6,7 +6,7 @@
 /*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 21:47:38 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/02 00:01:11 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:20:03 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,22 @@ static int	ft_create_new_arg_array(char ***new_arr, t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+void	ft_free_arr_by_length(t_cmd *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (++i < cmd->arg_size)
+	{
+		if (cmd->args[i])
+		{
+			free(cmd->args[i]);
+			cmd->args[i] = NULL;
+		}
+	}
+	free(cmd->args);
+}
+
 /*
 ** Removes empty arguments of command arguments array
 ** and replaces the array int the command node.
@@ -68,7 +84,7 @@ int	ft_clean_expanded_args(t_data *data)
 				if (current->args[i] != NULL)
 					new_arr[j++] = ft_strdup(current->args[i]);
 			new_arr[j] = NULL;
-			ft_free_array(current->args);
+			ft_free_arr_by_length(current);
 			current->args = new_arr;
 			current->is_builtin = ft_is_builtin(current->args[0]);
 		}

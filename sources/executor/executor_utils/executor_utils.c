@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/03 19:08:36 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:14:20 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,8 @@ int	ft_create_exec(t_data *data, t_cmd *cmd)
 	while (progpath[i])
 	{
 		if (!access(progpath[i], F_OK | X_OK))
-		{
 			if (execve(progpath[i], cmd->args, data->env) == -1)
 				return (E_EXECVE);
-		}
 		i++;
 	}
 	ft_free_array(progpath);

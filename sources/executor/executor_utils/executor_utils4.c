@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
+/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:05:20 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/03 19:08:59 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:48:06 by gdelvign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ int	ft_type_of_arg(char *arg, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+/*
+** Defines if execution should launch redir_in or redir_out first.
+*/
 int	ft_open_first_redir(t_data *data, t_cmd *cmd)
 {
 	t_redir_lst	*current;
@@ -80,24 +83,15 @@ int	ft_open_first_redir(t_data *data, t_cmd *cmd)
 	if (!cmd->redirections)
 		return (EXIT_SUCCESS);
 	current = cmd->redirections;
-	while (current)
+	if (current->r_type == IN || current->r_type == HEREDOC)
 	{
-		if (current->r_type != HEREDOC)
-			break ;
-		current = current->next;
+		if (ft_open_redir_in(data, cmd)
+			|| ft_open_redir_out(data, cmd))
+			return (E_OPEN);
 	}
-	if (current)
-	{
-		if (current->r_type == IN)
-		{
-			if (ft_open_redir_in(data, cmd)
-				|| ft_open_redir_out(data, cmd))
-				return (E_OPEN);
-		}
-		else
-			if (ft_open_redir_out(data, cmd)
-				|| ft_open_redir_in(data, cmd))
-				return (E_OPEN);
-	}
+	else
+		if (ft_open_redir_out(data, cmd)
+			|| ft_open_redir_in(data, cmd))
+			return (E_OPEN);
 	return (EXIT_SUCCESS);
 }
