@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 20:27:53 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/03 18:07:52 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/05 12:00:27 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@
 static void	ft_setup_pwd_oldpwd(t_cd *cd)
 {
 	if (cd->pwd)
-		cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	{
+		if (!cd->temp_pwd)
+			cd->new_pwd = ft_strdup(cd->pwd);
+		else
+			cd->new_pwd = ft_pwdcat(cd->temp_pwd, cd);
+	}
 	ft_seek_replace(cd->data, PWD, cd->new_pwd);
 	ft_seek_replace(cd->data, OLDPWD, cd->pwd);
 }
@@ -108,7 +113,8 @@ void	ft_cd_relative(t_cd *cd)
 		else if (ft_strncmp(cd->temp_path[i], CURRENT, 2) != 0)
 			cd->temp = ft_append_pwd(i, cd);
 		i++;
-		cd->temp_pwd = cd->temp;
+		if (cd->temp)
+			cd->temp_pwd = cd->temp;
 	}
 	ft_setup_pwd_oldpwd(cd);
 }

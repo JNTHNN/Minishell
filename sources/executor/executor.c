@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:49:37 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/04 19:54:52 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:46:43 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,20 @@ static void	ft_wait_children(t_data *data, int *children_nb)
 {
 	bool	first_child;
 	t_exec	*exec;
+	int		last_child_pid;
+	pid_t	pid;
 
 	first_child = false;
 	exec = data->exec;
+	last_child_pid = exec->child_pid[*children_nb - 1];
 	while ((*children_nb)--)
 	{
-		exec->child_pid[*children_nb] = waitpid(0, &exec->status, 0);
-		if (WIFEXITED(exec->status))
-			g_exit_code = WEXITSTATUS(data->exec->status);
-		if (WIFSIGNALED(exec->status) && exec->status
-			!= SIGPIPE && !first_child)
+		pid = waitpid(0, &exec->status, 0);
+		if (pid == last_child_pid)
+			if (WIFEXITED(exec->status))
+				g_exit_code = WEXITSTATUS(exec->status);
+		if (WIFSIGNALED(exec->status)
+			&& exec->status != SIGPIPE && !first_child)
 		{
 			ft_print_signals(exec->status, EMPTY);
 			first_child = true;
