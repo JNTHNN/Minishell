@@ -68,7 +68,7 @@ static int	ft_heredoc_process(t_redir_lst *node, t_data *data)
 	}
 	free(line);
 	close(fd);
-	exit(EXIT_SUCCESS);
+	return (ft_free_data(data), exit(EXIT_SUCCESS), EXIT_SUCCESS);
 }
 
 /*
