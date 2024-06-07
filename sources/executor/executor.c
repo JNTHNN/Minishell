@@ -134,7 +134,7 @@ int	ft_executor(t_data *data)
 		ret = ft_exec_multiple_cmds(data, &i);
 		if (ret)
 			return (ret);
+		ft_wait_children(data, &i);
 	}
-	ft_wait_children(data, &i);
 	return (EXIT_SUCCESS);
 }
