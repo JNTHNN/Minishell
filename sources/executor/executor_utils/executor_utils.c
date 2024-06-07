@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdelvign <gdelvign@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:29:15 by jgasparo          #+#    #+#             */
-/*   Updated: 2024/06/04 20:14:20 by gdelvign         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:26:58 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	ft_execute_command(t_data *data, t_cmd *cmd)
 {
 	if (cmd->args && cmd->args[0])
 	{
+		ft_dot(cmd->args[0], cmd->data);
 		if (ft_type_of_arg(cmd->args[0], cmd->data) == ABS)
 		{
 			ft_check_type(cmd->args[0], data, EXEC_ABS);

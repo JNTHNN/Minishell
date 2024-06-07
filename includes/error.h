@@ -6,7 +6,7 @@
 /*   By: jgasparo <jgasparo@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 14:15:31 by gdelvign          #+#    #+#             */
-/*   Updated: 2024/06/03 15:08:16 by jgasparo         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:28:25 by jgasparo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 # define START_EXPORT "❌\033[0;31m minibash: export: `"
 # define ERR_DIR ": is a directory\033[0m\n"
 # define ERR_AMBIGU ": ambiguous redirect\033[0m\n"
+# define DOT_ERROR1 "❌\033[0;31m minibash: .: filename argument required"
+# define DOT_ERROR2 ".: usage: . filename [arguments]\033[0m\n"
 
 typedef enum e_err_codes
 {
@@ -77,5 +79,6 @@ void	ft_print_export_error(char *err, t_data *data);
 
 /*		Extra : error3.c		*/
 void	ft_print_exec_error_dir(t_data *data, int err_code);
+void	ft_dot(char *arg, t_data *data);
 
 #endif
