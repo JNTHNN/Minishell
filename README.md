@@ -2,6 +2,8 @@
 
 *Création d'un shell minimaliste - Shell/Bash / Processus / Descripteur de fichier*
 
+Projet réalisé avec [@GDelvign](https://github.com/Gillian-Delvigne)
+
 ## Principe de base
 
 ### Plan d'action
